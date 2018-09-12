@@ -11,11 +11,12 @@ var EnemyManager = (function (){
         //     console.log( "I am private" );
         // }
      
-        var _map = map;
+        var _map = map; // TODO Convert this variable to singleton grabber from game manager
         var _enemySpawnTimeLimit = 5;
         var _currentSpawnTimer = 5;
-        var allEnemies = [];
-     
+        var _allEnemies = [];
+        var _howManyMustDie = 0; // A cheat to kill enemies
+
         //var privateRandomNumber = Math.random();
      
         return {
@@ -32,28 +33,41 @@ var EnemyManager = (function (){
                     var index = _map.GetRandomIndex();
                     var start = new Vector2(0,0);
                     var end = _map.GetIndexVectorPosition(index);
-                    
+                    var enemyIndex = _allEnemies.length;
+
                     var newEnemy = new StandardEnemy(index,start, end , _map)
-                    allEnemies.push(newEnemy);
+                    _allEnemies.push(newEnemy);
                     
                     _currentSpawnTimer = _enemySpawnTimeLimit;
                 }
 
-                // Update all enemies
-                for(var i = 0; i < allEnemies.length; i++)
+                //Kill however many must die 
+                while(_howManyMustDie > 0)
                 {
-                    allEnemies[i].Update(deltaTime);
+                    _howManyMustDie--;
+                    _allEnemies.shift();// Maybe inefficent?
+                }
+
+                // Update all enemies
+                for(var i = 0; i < _allEnemies.length; i++)
+                {
+                    _allEnemies[i].Update(deltaTime);
                 }
             },
 
             Draw: function(graphics){
 
                 // Draw all enemies
-                for(var i = 0; i < allEnemies.length; i++)
+                for(var i = 0; i < _allEnemies.length; i++)
                 {
-                    allEnemies[i].Draw(graphics);
+                    _allEnemies[i].Draw(graphics);
                 }
                 
+            },
+
+            QueueKillOldestEnemy: function()
+            {
+                _howManyMustDie++;
             }
      
           //publicProperty: "I am also public",

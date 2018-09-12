@@ -31,9 +31,12 @@ var StandardEnemy = /** @class */ (function (){
         this.Sprite.setScale(this.Sprite.scaleX + (this.ScaleSpeed * deltaTime), this.Sprite.scaleY + (this.ScaleSpeed * deltaTime));
 
         var placement = new Vector2(this.EndPosition.x - this.Position.x, this.EndPosition.y - this.Position.y);
-        if(placement.dot(this.Direction) < 0);
+
+
+        if((placement.dot(this.Direction) < 0.0))
         {
-            this.Sprite.destory();
+            this.Sprite.destroy();
+            EnemyManager.getInstance().QueueKillOldestEnemy();
         }
     };
 
