@@ -33,7 +33,6 @@ var EnemyManager = (function (){
                     var index = _map.GetRandomIndex();
                     var start = new Vector2(0,0);
                     var end = _map.GetIndexVectorPosition(index);
-                    var enemyIndex = _allEnemies.length;
 
                     var newEnemy = new StandardEnemy(index,start, end , _map)
                     _allEnemies.push(newEnemy);

@@ -23,7 +23,7 @@ var Player = /** @class */ (function (){
         }
         else if(input.space.isDown && this.PrevKey != input.space.keyCode)
         {
-
+            BulletManager.getInstance().FireBullet(this.PIndex);
             this.PrevKey = input.space.keyCode;
         }
         else if (input.space.isUp && input.left.isUp && input.right.isUp)

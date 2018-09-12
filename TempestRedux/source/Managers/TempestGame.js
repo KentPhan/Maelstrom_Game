@@ -28,6 +28,9 @@ var TempestGame = /** @class */ (function () {
         self.Map = new Map(points);
         this.EnemyManager = new EnemyManager.getInstance(self.Map)
 
+        this.BulletManager = new BulletManager.getInstance(self.Map);
+
+
     }
     TempestGame.prototype.Create = function () {
         self.Camera = new Camera(window.Scene);
@@ -38,11 +41,14 @@ var TempestGame = /** @class */ (function () {
         self.Map.Update(self.Input);
 
         this.EnemyManager.Update(deltaTime);
+        this.BulletManager.Update(deltaTime);
     };
     TempestGame.prototype.Draw = function () {
         self.Graphics.clear();
         self.Map.Draw(self.Graphics);
+
         this.EnemyManager.Draw(self.Graphics);
+        this.BulletManager.Draw(self.Graphics);
         
         // var line = new Phaser.Geom.Line(0, 300, 400, 100);
         // var pointer = this.Input.activePointer;
