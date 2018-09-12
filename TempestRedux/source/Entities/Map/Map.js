@@ -30,7 +30,7 @@ var Map = /** @class */ (function (){
         var pIndex = 1
         var offset = new Vector2((this.ExPoints[pIndex + 1].x - this.ExPoints[pIndex].x)* 0.5, (this.ExPoints[pIndex + 1].y - this.ExPoints[pIndex].y)* 0.5)
         var newPosition = new Vector2(this.ExPoints[pIndex].x + offset.x, this.ExPoints[pIndex].y + offset.y)
-        this.Player = new Player(pIndex, newPosition, this);
+        this.Player = new Player(pIndex, newPosition);
     }
 
     Map.prototype.Update = function(input){

@@ -1,14 +1,12 @@
 var StandardEnemy = /** @class */ (function (){
    
     // Should pool... But Fuck it... Maybe Later
-    function StandardEnemy(pIndex, position, endPosition, mapRef)
+    function StandardEnemy(pIndex, position, endPosition)
     {
         this.PIndex = pIndex;
         this.Position = position;
         this.EndPosition = endPosition;
 
-        this.Map = mapRef;
-        
         this.Speed =  100.0;
         this.ScaleSpeed = .1;
 
@@ -18,7 +16,7 @@ var StandardEnemy = /** @class */ (function (){
         this.Direction = direction;
 
         // THIS IS REALLL SHITTY I THINK
-        this.Sprite = window.Scene.add.image(0,0,'alien');
+        this.Sprite = TempestGame.getInstance().GetCurrentScene().add.image(0,0,'alien');
         this.Sprite.scaleX = 0.2;
         this.Sprite.scaleY = 0.2;        
     }

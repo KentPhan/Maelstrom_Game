@@ -40,7 +40,7 @@
         {
             this.load.image('alien', 'assets/test.png');
             this.load.image('bullet', 'assets/testbullet.png');
-            Tempest = new TempestGame(game, this);
+            Tempest = TempestGame.getInstance(game, this);
         }
 
         function create ()

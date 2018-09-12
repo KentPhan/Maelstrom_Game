@@ -1,13 +1,11 @@
 var StandardBullet = /** @class */ (function (){
    
     // Should pool... But Fuck it... Maybe Later
-    function StandardBullet(pIndex, position, endPosition, mapRef)
+    function StandardBullet(pIndex, position, endPosition)
     {
         this.PIndex = pIndex;
         this.Position = position;
         this.EndPosition = endPosition;
-
-        this.Map = mapRef;
         
         this.Speed =  300.0;
         this.ScaleSpeed = .1;
@@ -18,7 +16,7 @@ var StandardBullet = /** @class */ (function (){
         this.Direction = direction;
 
         // THIS IS REALLL SHITTY I THINK
-        this.Sprite = window.Scene.add.image(0,0,'bullet');
+        this.Sprite = TempestGame.getInstance().GetCurrentScene().add.image(0,0,'bullet');
         this.Sprite.scaleX = 0.2;
         this.Sprite.scaleY = 0.2;        
     }

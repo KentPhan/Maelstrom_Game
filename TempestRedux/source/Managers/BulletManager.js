@@ -2,7 +2,7 @@ var BulletManager = (function (){
 
     var instance;
 
-    function init(map) {
+    function init() {
  
         // Singleton
      
@@ -11,7 +11,6 @@ var BulletManager = (function (){
         //     console.log( "I am private" );
         // }
      
-        var _map = map; // TODO Convert this variable to singleton grabber from game manager
         var _allBullets = [];
         var _bulletsToAdd = [];
 
@@ -51,9 +50,9 @@ var BulletManager = (function (){
             },
 
             FireBullet: function(pIndex){
-                var start = _map.GetIndexVectorPosition(pIndex)
+                var start = TempestGame.getInstance().GetCurrentMap().GetIndexVectorPosition(pIndex)
                 var end = new Vector2(0,0);
-                var newBullet = new StandardBullet(pIndex,start, end , _map)
+                var newBullet = new StandardBullet(pIndex,start, end)
                 _bulletsToAdd.push(newBullet);
             }
      
@@ -69,10 +68,10 @@ var BulletManager = (function (){
  
         // Get the Singleton instance if one exists
         // or create one if it doesn't
-        getInstance: function (map) {
+        getInstance: function () {
      
           if ( !instance ) {
-            instance = init(map);
+            instance = init();
           }
      
           return instance;

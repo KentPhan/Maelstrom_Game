@@ -2,39 +2,33 @@ var EnemyManager = (function (){
 
     var instance;
 
-    function init(map) {
+    function init() {
  
         // Singleton
      
-        // Private methods and variables
-        // function privateMethod(){
-        //     console.log( "I am private" );
-        // }
-     
-        var _map = map; // TODO Convert this variable to singleton grabber from game manager
         var _enemySpawnTimeLimit = 5;
         var _currentSpawnTimer = 5;
         var _allEnemies = [];
         var _howManyMustDie = 0; // A cheat to kill enemies
 
-        //var privateRandomNumber = Math.random();
+        
      
         return {
      
-          // Public methods and variables
-        //   publicMethod: function () {
-        //     console.log( "The public can see me!" );
-        //   },
+            // Public methods and variables
+            //   publicMethod: function () {
+            //     console.log( "The public can see me!" );
+            //   },
 
             Update: function(deltaTime){
                 _currentSpawnTimer -= deltaTime;
                 if(_currentSpawnTimer <=0)
                 {
-                    var index = _map.GetRandomIndex();
+                    var index = TempestGame.getInstance().GetCurrentMap().GetRandomIndex();
                     var start = new Vector2(0,0);
-                    var end = _map.GetIndexVectorPosition(index);
+                    var end = TempestGame.getInstance().GetCurrentMap().GetIndexVectorPosition(index);
 
-                    var newEnemy = new StandardEnemy(index,start, end , _map)
+                    var newEnemy = new StandardEnemy(index,start, end)
                     _allEnemies.push(newEnemy);
                     
                     _currentSpawnTimer = _enemySpawnTimeLimit;
@@ -69,11 +63,10 @@ var EnemyManager = (function (){
                 _howManyMustDie++;
             }
      
-          //publicProperty: "I am also public",
-     
-        //   getRandomNumber: function() {
-        //     return privateRandomNumber;
-        //   }
+            //   publicProperty: "I am also public",
+            //   getRandomNumber: function() {
+            //     return privateRandomNumber;
+            //   }
         };
       };
 
@@ -81,10 +74,10 @@ var EnemyManager = (function (){
  
         // Get the Singleton instance if one exists
         // or create one if it doesn't
-        getInstance: function (map) {
+        getInstance: function () {
      
           if ( !instance ) {
-            instance = init(map);
+            instance = init();
           }
      
           return instance;

@@ -1,17 +1,23 @@
-// TODO NEED TO CHANGE TO INSTANCE LIKE ENEMY MANAGER
-var TempestGame = /** @class */ (function () {
-    var self = this;
-    self.Graphics = null;
-    self.Input = null;
-    self.Camera = null;
-    self.Map = null;
-    self.Player =null;
 
-    function TempestGame(game, scene) {
+var TempestGame = /** @class */ (function ()
+{
+    // Singleton
+    var instance;
+    
+    function init(game, scene)
+    {
+        // Private methods and variables
+        // function privateMethod(){
+        //     console.log( "I am private" );
+        // }
+
         
-        window.Scene = scene;
-        self.Graphics = scene.add.graphics({ lineStyle: { width: 4, color: 0xaa00aa }});;
-        self.Input = scene.input.keyboard.createCursorKeys();
+        //var privateRandomNumber = Math.random();
+        var _camera = null;
+        var _scene = scene;
+
+        var _graphics = _scene.add.graphics({ lineStyle: { width: 4, color: 0xaa00aa }});;
+        var _input = _scene.input.keyboard.createCursorKeys();
 
         // Map TEMP till we get something better.
         var points = [
@@ -24,40 +30,61 @@ var TempestGame = /** @class */ (function () {
             new Vector2(-100,100),
             new Vector2(-100,0),
         ]
+        var _currentMap = new Map(points);
 
-        self.Map = new Map(points);
-        this.EnemyManager = new EnemyManager.getInstance(self.Map)
+        // Current Managers
+        var _enemyManager = new EnemyManager.getInstance()
+        var _bulletManager = new BulletManager.getInstance();
 
-        this.BulletManager = new BulletManager.getInstance(self.Map);
+        return{
 
-
-    }
-    TempestGame.prototype.Create = function () {
-        self.Camera = new Camera(window.Scene);
-    };
-    TempestGame.prototype.Update = function () {
-        var deltaTime = self.game.loop.delta/1000;
-
-        self.Map.Update(self.Input);
-
-        this.EnemyManager.Update(deltaTime);
-        this.BulletManager.Update(deltaTime);
-    };
-    TempestGame.prototype.Draw = function () {
-        self.Graphics.clear();
-        self.Map.Draw(self.Graphics);
-
-        this.EnemyManager.Draw(self.Graphics);
-        this.BulletManager.Draw(self.Graphics);
+            Create: function () {
+                _camera = new Camera(_scene);
+            },
         
-        // var line = new Phaser.Geom.Line(0, 300, 400, 100);
-        // var pointer = this.Input.activePointer;
-        // line.x2 = pointer.x;
-        // line.y2 = pointer.y;
-        // self.Graphics.strokeLineShape(line);
-        // var height = Phaser.Geom.Line.Height(line);
-        // self.Graphics.lineStyle(2, 0x00aa00);
-        // self.Graphics.lineBetween(2, 300, 2, 300 - height);
+            Update:  function () {
+                var deltaTime = game.loop.delta/1000;
+        
+                _currentMap.Update(_input);
+        
+                _enemyManager.Update(deltaTime);
+                _bulletManager.Update(deltaTime);
+            },
+        
+            Draw: function () {
+                _graphics.clear();
+                _currentMap.Draw(_graphics);
+        
+                _enemyManager.Draw(_graphics);
+                _bulletManager.Draw(_graphics);
+            },
+
+            GetCurrentMap : function(){
+                return _currentMap;
+            },
+
+            GetGraphics: function(){
+                return _graphics;
+            },
+
+            GetCurrentScene: function(){
+                return _scene;
+            }
+
+            //publicProperty: "I am also public",
+            //   getRandomNumber: function() {
+            //     return privateRandomNumber;
+            //   }
+            
+        }
     };
-    return TempestGame;
-}());
+    return{
+        getInstance: function(game, scene){
+            if ( !instance ) {
+                instance = init(game, scene);
+              }
+         
+              return instance;
+        }
+    };
+})();
