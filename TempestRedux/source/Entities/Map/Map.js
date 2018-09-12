@@ -1,7 +1,5 @@
 var Map = /** @class */ (function (){
     
-
-
     function Map(points)
     {
         this.ExPoints = points;
@@ -97,6 +95,14 @@ var Map = /** @class */ (function (){
             return this.ExPoints.length - 1;
         else
             return nextIndex;
+    }
+
+    Map.prototype.GetCenter = function(){
+        return new Vector2(0,0);
+    }
+
+    Map.prototype.GetRandomIndex = function(){
+        return Math.floor(Math.random() * this.ExPoints.length)
     }
 
     Map.prototype.GetIndexVectorPosition  = function(index){

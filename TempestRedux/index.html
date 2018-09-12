@@ -7,8 +7,11 @@
 
     
     <script src="source/Managers/TempestGame.js"></script>
+    <script src="source/Managers/EnemyManager.js"></script>
+
     <script src="source/Entities/Map/Map.js"></script>
     <script src="source/Entities/Player/Player.js"></script>
+    <script src="source/Entities/Enemies/StandardEnemy.js"></script>
     <script src="source/Entities/Camera/Camera.js"></script>
     <script>
         // Included
@@ -32,7 +35,8 @@
 
         function preload()
         {
-            Tempest = new TempestGame(this);
+            this.load.image('alien', 'assets/test.png');
+            Tempest = new TempestGame(game, this);
         }
 
         function create ()

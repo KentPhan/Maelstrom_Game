@@ -1,17 +1,16 @@
-
+// TODO NEED TO CHANGE TO INSTANCE LIKE ENEMY MANAGER
 var TempestGame = /** @class */ (function () {
     var self = this;
-    self.Scene = null;
     self.Graphics = null;
     self.Input = null;
     self.Camera = null;
     self.Map = null;
     self.Player =null;
 
-    function TempestGame(scene) {
+    function TempestGame(game, scene) {
         
-        self.Scene = scene;
-        self.Graphics = scene.add.graphics({ lineStyle: { width: 4, color: 0xaa00aa }, fillStyle:{color:0x000000} });;
+        window.Scene = scene;
+        self.Graphics = scene.add.graphics({ lineStyle: { width: 4, color: 0xaa00aa }});;
         self.Input = scene.input.keyboard.createCursorKeys();
 
         // Map TEMP till we get something better.
@@ -27,16 +26,23 @@ var TempestGame = /** @class */ (function () {
         ]
 
         self.Map = new Map(points);
+        this.EnemyManager = new EnemyManager.getInstance(self.Map)
+
     }
     TempestGame.prototype.Create = function () {
-        self.Camera = new Camera(self.Scene);
+        self.Camera = new Camera(window.Scene);
     };
     TempestGame.prototype.Update = function () {
+        var deltaTime = self.game.loop.delta/1000;
+
         self.Map.Update(self.Input);
+
+        this.EnemyManager.Update(deltaTime);
     };
     TempestGame.prototype.Draw = function () {
         self.Graphics.clear();
         self.Map.Draw(self.Graphics);
+        this.EnemyManager.Draw(self.Graphics);
         
         // var line = new Phaser.Geom.Line(0, 300, 400, 100);
         // var pointer = this.Input.activePointer;
