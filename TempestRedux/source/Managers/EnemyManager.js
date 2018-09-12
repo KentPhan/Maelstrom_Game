@@ -32,9 +32,8 @@ var EnemyManager = (function (){
                     var index = _map.GetRandomIndex();
                     var start = new Vector2(0,0);
                     var end = _map.GetIndexVectorPosition(index);
-                    var direction = new Vector2(end.x - start.x , end.y - start.y)
-                    direction.normalize();
-                    var newEnemy = new StandardEnemy(index,start, direction , _map)
+                    
+                    var newEnemy = new StandardEnemy(index,start, end , _map)
                     allEnemies.push(newEnemy);
                     
                     _currentSpawnTimer = _enemySpawnTimeLimit;

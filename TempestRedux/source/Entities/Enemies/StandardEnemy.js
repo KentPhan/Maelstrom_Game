@@ -1,15 +1,20 @@
 var StandardEnemy = /** @class */ (function (){
    
     // Should pool... But Fuck it... Maybe Later
-    function StandardEnemy(pIndex, position, direction, mapRef)
+    function StandardEnemy(pIndex, position, endPosition, mapRef)
     {
         this.PIndex = pIndex;
         this.Position = position;
+        this.EndPosition = endPosition;
 
         this.Map = mapRef;
         
         this.Speed =  100.0;
         this.ScaleSpeed = .1;
+
+        var direction = new Vector2(endPosition.x - position.x , endPosition.y - position.y)
+        direction.normalize();
+
         this.Direction = direction;
 
         // THIS IS REALLL SHITTY I THINK
@@ -19,11 +24,17 @@ var StandardEnemy = /** @class */ (function (){
     }
 
     StandardEnemy.prototype.Update = function (deltaTime) {
+
         var velocity = new Vector2(this.Direction.x * this.Speed * deltaTime, this.Direction.y * this.Speed * deltaTime);
         this.Position.add(velocity);
         this.Sprite.setPosition(this.Position.x, this.Position.y, 0)
         this.Sprite.setScale(this.Sprite.scaleX + (this.ScaleSpeed * deltaTime), this.Sprite.scaleY + (this.ScaleSpeed * deltaTime));
-        console.log(this.Position);
+
+        var placement = new Vector2(this.EndPosition.x - this.Position.x, this.EndPosition.y - this.Position.y);
+        if(placement.dot(this.Direction) < 0);
+        {
+            this.Sprite.destory();
+        }
     };
 
     StandardEnemy.prototype.Draw = function (graphics) {
