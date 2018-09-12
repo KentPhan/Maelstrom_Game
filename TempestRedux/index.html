@@ -3,51 +3,50 @@
 <head>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
     <script src="node_modules/phaser/dist/phaser.js"></script>
+    <script src="node_modules/phaser/dist/phaser-core.js"></script>
 
     
     <script src="source/Managers/TempestGame.js"></script>
     <script src="source/Entities/Map/Map.js"></script>
     <script src="source/Entities/Camera/Camera.js"></script>
     <script>
-            // Included
-            var Vector2 = Phaser.Math.Vector2;
+        // Included
+        var Vector2 = Phaser.Math.Vector2;
 
 
-            var config = {
-                type: Phaser.CANVAS,
-                width: 1500,
-                height: 900,
-                physics: {
-                    default: 'arcade',
-                    arcade: {
-                        gravity: { y: 200 }
-                    }
-                },
-                scene: {
-                    preload: preload,
-                    create: create,
-                    update: update
-                }
-            };
-
-             new Phaser.Game(config);
-
-             var Tempest;
-            function preload()
-            {
-                Tempest = new TempestGame(this, Phaser);
+        var config = {
+            type: Phaser.CANVAS,
+            width: 1000,
+            height: 1000,
+            scene: {
+                preload: preload,
+                create: create,
+                update: update
             }
+        };
 
-            function create ()
-            {
-                Tempest.Create();
-            }
+        var game = new Phaser.Game(config);
 
-            function update()
-            {
-                Tempest.Update();
-                Tempest.Draw();
-            }
+        var Tempest;
+
+        function preload()
+        {
+            Tempest = new TempestGame(this);
+        }
+
+
+
+        function create ()
+        {
+            Tempest.Create(this);
+        }
+
+        function update()
+        {
+            Tempest.Update();
+            Tempest.Draw();
+
+        }
     </script>
 </head>
 <body>

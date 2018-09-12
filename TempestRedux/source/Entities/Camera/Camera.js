@@ -3,19 +3,10 @@ var Camera = /** @class */ (function (){
 
     function Camera(scene)
     {
-        self.Scene = scene;
-        self.Camera = null;
-    }
-
-    Camera.prototype.Preload = function(){
-        
-    }
-
-    Camera.prototype.Create = function(){
-        self.Camera = self.Scene.cameras3d.addOrthographicCamera(800, 600).setPosition(0, 0, 200);
-    }
-
-    Camera.prototype.Update = function(){
+        // Generate an empty sprite in the middle of the world. Have camera follow it to center camera
+        // ... I know... its fucking stupid...
+        var origin = scene.add.image(0,0);
+        scene.cameras.main.startFollow(origin, true);
     }
 
     return Camera;

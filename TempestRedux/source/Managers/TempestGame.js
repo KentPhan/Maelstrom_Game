@@ -1,36 +1,40 @@
 
 var TempestGame = /** @class */ (function () {
     var self = this;
+    self.Scene = null;
+    self.Graphics = null;
+    self.Input = null;
+    self.Camera = null;
+    self.Map = null;
 
-    function TempestGame(scene, phaser) {
+    function TempestGame(scene) {
         
-        this.Scene = scene;
+        self.Scene = scene;
         self.Graphics = scene.add.graphics({ lineStyle: { width: 4, color: 0xaa00aa } });;
-        this.Input = scene.input;
-    
-        // Remove
-        this.text = this.Scene.add.text(50, 50, '');
-        
+        self.Input = scene.input;
+
         // Map
         var points = [
+            new Vector2(-100,-100),
+            new Vector2(0,-100),
+            new Vector2(100,-100),
             new Vector2(100,0),
-            new Vector2(0,0),
-            new Vector2(0,100),
             new Vector2(100,100),
+            new Vector2(0,100),
+            new Vector2(-100,100),
+            new Vector2(-100,0),
         ]
 
-        self.Map = new Map();
-        // self.Camera = new Camera(scene);
-
+        self.Map = new Map(points);
+        
     }
     TempestGame.prototype.Create = function () {
-        
+        self.Camera = new Camera(self.Scene);
     };
     TempestGame.prototype.Update = function () {
     };
     TempestGame.prototype.Draw = function () {
         self.Graphics.clear();
-
         self.Map.Draw(self.Graphics);
         
         // var line = new Phaser.Geom.Line(0, 300, 400, 100);
@@ -41,9 +45,6 @@ var TempestGame = /** @class */ (function () {
         // var height = Phaser.Geom.Line.Height(line);
         // self.Graphics.lineStyle(2, 0x00aa00);
         // self.Graphics.lineBetween(2, 300, 2, 300 - height);
-
-        // // Remove
-        // this.text.setText("Line Height: " + height);
     };
     return TempestGame;
 }());
