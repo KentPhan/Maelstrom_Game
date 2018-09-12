@@ -6,14 +6,15 @@ var TempestGame = /** @class */ (function () {
     self.Input = null;
     self.Camera = null;
     self.Map = null;
+    self.Player =null;
 
     function TempestGame(scene) {
         
         self.Scene = scene;
-        self.Graphics = scene.add.graphics({ lineStyle: { width: 4, color: 0xaa00aa } });;
-        self.Input = scene.input;
+        self.Graphics = scene.add.graphics({ lineStyle: { width: 4, color: 0xaa00aa }, fillStyle:{color:0x000000} });;
+        self.Input = scene.input.keyboard.createCursorKeys();
 
-        // Map
+        // Map TEMP till we get something better.
         var points = [
             new Vector2(-100,-100),
             new Vector2(0,-100),
@@ -26,12 +27,12 @@ var TempestGame = /** @class */ (function () {
         ]
 
         self.Map = new Map(points);
-        
     }
     TempestGame.prototype.Create = function () {
         self.Camera = new Camera(self.Scene);
     };
     TempestGame.prototype.Update = function () {
+        self.Map.Update(self.Input);
     };
     TempestGame.prototype.Draw = function () {
         self.Graphics.clear();
