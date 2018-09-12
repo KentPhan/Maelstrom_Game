@@ -5,25 +5,30 @@ var Player = /** @class */ (function (){
         this.PIndex = pIndex;
         this.Position = position;
         this.Map = mapRef;
-        this.KeyDown = false;
+        this.PrevKey = 0;
     }
 
     Player.prototype.Update = function (input) {
-        if(input.left.isDown && !this.KeyDown)
+        if(input.left.isDown && this.PrevKey != input.left.keyCode)
         {
             this.PIndex = this.Map.GetNextIndexCCW(this.PIndex);
             this.Position =  this.Map.GetIndexVectorPosition(this.PIndex)
-            this.KeyDown = true;
+            this.PrevKey = input.left.keyCode;
         }
-        else if(input.right.isDown&& !this.KeyDown)
+        else if(input.right.isDown && this.PrevKey != input.right.keyCode)
         {
             this.PIndex = this.Map.GetNextIndexCW(this.PIndex);
             this.Position = this.Map.GetIndexVectorPosition(this.PIndex)
-            this.KeyDown = true;
+            this.PrevKey = input.right.keyCode;
         }
-        else if(input.left.isUp && input.right.isUp)
+        else if(input.space.isDown && this.PrevKey != input.space.keyCode)
         {
-            this.KeyDown = false;
+            
+            this.PrevKey = input.space.keyCode;
+        }
+        else if (input.space.isUp && input.left.isUp && input.right.isUp)
+        {
+            this.PrevKey = 0;
         }
     };
 
