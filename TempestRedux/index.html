@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
-    <script src="node_modules/phaser/dist/phaser.js"></script>
-    <script src="node_modules/phaser/dist/phaser-core.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script> -->
 
+    <!-- <script src="node_modules/phaser/dist/phaser.js"></script>
+    <script src="node_modules/phaser/dist/phaser-core.js"></script> -->
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.12.0/dist/phaser.min.js"></script>
     
     <script src="source/Managers/TempestGame.js"></script>
     <script src="source/Managers/EnemyManager.js"></script>
@@ -16,14 +17,20 @@
     <script src="source/Entities/Enemies/StandardEnemy.js"></script>
     
     <script src="source/Entities/Camera/Camera.js"></script>
+
+    <script src="source/Entities/Effects/PlayerDeathEffect.js"></script>
+
     <script>
         // Included
         var Vector2 = Phaser.Math.Vector2;
 
         var config = {
-            type: Phaser.CANVAS,
+            type: Phaser.AUTO,
             width: 1280,
             height: 720,
+            physics:{
+                default: 'arcade'
+            },
             scene: {
                 preload: preload,
                 create: create,
@@ -35,20 +42,18 @@
 
         var Tempest;
 
-        //var score = 0;
-        //var scoreText;
-
         function preload()
         {
+            this.load.image('part', 'assets/particles/test.png');
             this.load.image('alien', 'assets/test.png');
             this.load.image('bullet', 'assets/testbullet.png');
+
             Tempest = TempestGame.getInstance(game, this);
         }
 
         function create ()
         {
             Tempest.Create(this);
-            //this.scoreText = this.add.text(-480, -480, "Score: " + score,  { font: "Bold 32px Arial", fill: '#ffffff' });
         }
 
         function update()

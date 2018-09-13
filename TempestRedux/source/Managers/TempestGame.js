@@ -18,7 +18,7 @@ var TempestGame = /** @class */ (function ()
         var _camera = null;
         var _scene = scene;
 
-        var _graphics = _scene.add.graphics({ lineStyle: { width: 4, color: 0xaa00aa }});;
+        var _graphics = _scene.add.graphics({ lineStyle: { width: 4, color: 0xaa00aa }});
         var _input = _scene.input.keyboard.createCursorKeys();
 
         // Map TEMP till we get something better.
@@ -56,6 +56,9 @@ var TempestGame = /** @class */ (function ()
             Create: function () {
                 _camera = new Camera(_scene);
                 _scoreText = _scene.add.text(-480, -480, "Score: " + _score,  { font: "Bold 32px Arial", fill: '#ffffff' });
+
+                
+                var _playerDeathEffect = new PlayerDeathEffect();
             },
         
             Update:  function () {
