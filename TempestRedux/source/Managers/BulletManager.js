@@ -25,7 +25,7 @@ var BulletManager = (function (){
 
             Update: function(deltaTime){
 
-                // Add to add bullets
+                // Bullets to add
                 for(var i = 0; i < _bulletsToAdd.length; i++)
                 {
                     _allBullets.push(_bulletsToAdd[i]);
@@ -35,6 +35,13 @@ var BulletManager = (function (){
                 // Update all bullets
                 for(var i = 0; i < _allBullets.length; i++)
                 {
+                    // Check for ones that must die
+                    if(_allBullets[i].MustIDie())
+                    {
+                        _allBullets.splice(i,1)
+                        i--;
+                        continue;
+                    }
                     _allBullets[i].Update(deltaTime);
                 }
             },
@@ -54,6 +61,19 @@ var BulletManager = (function (){
                 var end = new Vector2(0,0);
                 var newBullet = new StandardBullet(pIndex,start, end)
                 _bulletsToAdd.push(newBullet);
+            },
+
+            GetBulletsInMapIndex(index)
+            {
+                var bulletsInMapIndex = [];
+                for(var i = 0; i < _allBullets.length; i++)
+                {
+                    if(_allBullets[i].GetPIndex() == index)
+                    {
+                        bulletsInMapIndex.push(_allBullets[i]);
+                    }
+                }
+                return bulletsInMapIndex;
             }
      
           //publicProperty: "I am also public",

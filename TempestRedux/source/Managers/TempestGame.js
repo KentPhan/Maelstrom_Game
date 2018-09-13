@@ -23,7 +23,7 @@ var TempestGame = /** @class */ (function ()
         var points = [
             new Vector2(-150,-100),
             new Vector2(0,-110),
-            new Vector2(150,-100),
+            new Vector2(50,-100),
             new Vector2(100,0),
             new Vector2(100,100),
             new Vector2(0,100),

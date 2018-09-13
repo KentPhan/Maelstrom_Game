@@ -3,6 +3,7 @@ var StandardEnemy = /** @class */ (function (){
     // Should pool... But Fuck it... Maybe Later
     function StandardEnemy(pIndex, position, endPosition)
     {
+        this.MustDie = false;
         this.PIndex = pIndex;
         this.Position = position;
         this.EndPosition = endPosition;
@@ -30,17 +31,35 @@ var StandardEnemy = /** @class */ (function (){
 
         var placement = new Vector2(this.EndPosition.x - this.Position.x, this.EndPosition.y - this.Position.y);
 
-
+        // If past destination, destroy this enemy
+        // TODO Add cost of having enemy get past player here
         if((placement.dot(this.Direction) < 0.0))
         {
-            this.Sprite.destroy();
-            EnemyManager.getInstance().QueueKillOldestEnemy();
+            this.IMustDie();
         }
     };
 
     StandardEnemy.prototype.Draw = function (graphics) {
         //graphics.fillCircle(this.Position.x,this.Position.y, 10);
     };
+
+    StandardEnemy.prototype.GetPIndex = function () {
+        return this.PIndex;
+    };
+
+    StandardEnemy.prototype.GetPosition = function () {
+        return this.Position;
+    };
+
+    StandardEnemy.prototype.IMustDie = function(){
+        this.Sprite.destroy();
+        this.MustDie = true;
+        return this.MustDie;
+    }
+
+    StandardEnemy.prototype.MustIDie = function(){
+        return this.MustDie;
+    }
 
     return StandardEnemy;
 }())

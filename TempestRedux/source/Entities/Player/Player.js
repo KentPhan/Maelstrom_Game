@@ -35,7 +35,6 @@ var Player = /** @class */ (function (){
         graphics.fillCircle(this.Position.x,this.Position.y, 25);
     };
 
-
     Player.prototype.GetPIndex = function () {
         return this.PIndex;
     };

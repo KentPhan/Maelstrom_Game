@@ -9,10 +9,7 @@ var EnemyManager = (function (){
         var _enemySpawnTimeLimit = 5;
         var _currentSpawnTimer = 5;
         var _allEnemies = [];
-        var _howManyMustDie = 0; // A cheat to kill enemies
 
-        
-     
         return {
      
             // Public methods and variables
@@ -22,6 +19,8 @@ var EnemyManager = (function (){
 
             Update: function(deltaTime){
                 _currentSpawnTimer -= deltaTime;
+
+                // Spawning more enemies timer Probs need to swap for something smarter and better later
                 if(_currentSpawnTimer <=0)
                 {
                     var index = TempestGame.getInstance().GetCurrentMap().GetRandomIndex();
@@ -34,16 +33,17 @@ var EnemyManager = (function (){
                     _currentSpawnTimer = _enemySpawnTimeLimit;
                 }
 
-                //Kill however many must die 
-                while(_howManyMustDie > 0)
-                {
-                    _howManyMustDie--;
-                    _allEnemies.shift();// Maybe inefficent?
-                }
-
                 // Update all enemies
                 for(var i = 0; i < _allEnemies.length; i++)
                 {
+                    // Check for ones that must die
+                    if(_allEnemies[i].MustIDie())
+                    {
+                        _allEnemies.splice(i,1)
+                        i--;
+                        continue;
+                    }
+
                     _allEnemies[i].Update(deltaTime);
                 }
             },
@@ -58,11 +58,18 @@ var EnemyManager = (function (){
                 
             },
 
-            QueueKillOldestEnemy: function()
+            GetEnemiesInMapIndex(index)
             {
-                _howManyMustDie++;
+                var enemiesInMapIndex = [];
+                for(var i = 0; i < _allEnemies.length; i++)
+                {
+                    if(_allEnemies[i].GetPIndex() == index)
+                    {
+                        enemiesInMapIndex.push(_allEnemies[i]);
+                    }
+                }
+                return enemiesInMapIndex;
             }
-     
             //   publicProperty: "I am also public",
             //   getRandomNumber: function() {
             //     return privateRandomNumber;
