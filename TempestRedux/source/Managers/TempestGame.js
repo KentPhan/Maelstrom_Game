@@ -24,7 +24,7 @@ var TempestGame = /** @class */ (function ()
 
         // Current Managers
         var _enemyManager = new EnemyManager.getInstance()
-        var _bulletManager = new BulletManager.getInstance();
+        // var _bulletManager = new BulletManager.getInstance();
 
         var _score = 0;
         var _scoreText;
@@ -67,7 +67,7 @@ var TempestGame = /** @class */ (function ()
                 _currentMap.Update(deltaTime, _input);
         
                 _enemyManager.Update(deltaTime);
-                _bulletManager.Update(deltaTime);
+                // _bulletManager.Update(deltaTime);
             },
         
             Draw: function () {
@@ -75,7 +75,7 @@ var TempestGame = /** @class */ (function ()
                 _currentMap.Draw(_graphics);
         
                 _enemyManager.Draw(_graphics);
-                _bulletManager.Draw(_graphics);
+                // _bulletManager.Draw(_graphics);
             },
 
             GetCurrentMap : function(){

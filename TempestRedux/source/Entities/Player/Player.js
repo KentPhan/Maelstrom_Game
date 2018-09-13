@@ -33,10 +33,20 @@ var Player = /** @class */ (function (){
             // Flip stuff
             if(this.FlipCurrentCooldown < 0)
             {
+                // Flip to other size
                 this.PIndex = TempestGame.getInstance().GetCurrentMap().GetFlipIndex(this.PIndex)
                 this.Position = TempestGame.getInstance().GetCurrentMap().GetIndexVectorPosition(this.PIndex)    
                 this.PrevKey = input.space.keyCode;
                 this.FlipCurrentCooldown = this.FlipCooldown;
+
+                // Destroy all enemies in current PIndex
+                var enemies = EnemyManager.getInstance().GetEnemiesInMapIndex(this.PIndex);
+                for(var i = 0; i < enemies.length; i++)
+                {
+                    enemies[i].IMustDie();
+                    TempestGame.getInstance().AddToScore()
+                }
+
             }
 
             // Bullet stuff
