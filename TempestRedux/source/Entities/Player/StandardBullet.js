@@ -9,7 +9,7 @@ var StandardBullet = /** @class */ (function (){
         this.EndPosition = endPosition;
         
         this.Speed =  300.0;
-        this.ScaleSpeed = .1;
+        this.ScaleSpeed = .07;
 
         var direction = new Vector2(endPosition.x - position.x , endPosition.y - position.y)
         direction.normalize();
@@ -18,8 +18,8 @@ var StandardBullet = /** @class */ (function (){
 
         // THIS IS REALLL SHITTY I THINK
         this.Sprite = TempestGame.getInstance().GetCurrentScene().add.image(0,0,'bullet');
-        this.Sprite.scaleX = 0.2;
-        this.Sprite.scaleY = 0.2;        
+        this.Sprite.scaleX = 0.1;
+        this.Sprite.scaleY = 0.1;        
     }
 
     StandardBullet.prototype.Update = function (deltaTime) {
@@ -27,7 +27,7 @@ var StandardBullet = /** @class */ (function (){
         var velocity = new Vector2(this.Direction.x * this.Speed * deltaTime, this.Direction.y * this.Speed * deltaTime);
         this.Position.add(velocity);
         this.Sprite.setPosition(this.Position.x, this.Position.y, 0)
-        // this.Sprite.setScale(this.Sprite.scaleX + (this.ScaleSpeed * deltaTime), this.Sprite.scaleY + (this.ScaleSpeed * deltaTime));
+        this.Sprite.setScale(this.Sprite.scaleX - (this.ScaleSpeed * deltaTime), this.Sprite.scaleY - (this.ScaleSpeed * deltaTime));
 
         var toEndPosition = new Vector2(this.EndPosition.x - this.Position.x, this.EndPosition.y - this.Position.y);
 

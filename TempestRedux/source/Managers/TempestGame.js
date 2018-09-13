@@ -21,14 +21,24 @@ var TempestGame = /** @class */ (function ()
 
         // Map TEMP till we get something better.
         var points = [
-            new Vector2(-150,-100),
-            new Vector2(0,-110),
-            new Vector2(50,-100),
-            new Vector2(100,0),
-            new Vector2(100,100),
-            new Vector2(0,100),
-            new Vector2(-100,100),
-            new Vector2(-100,0),
+            new Vector2(-10,100),
+            new Vector2(10,100),
+            new Vector2(15,80),
+            new Vector2(30,50),
+            new Vector2(70,40),
+            new Vector2(100,35),
+            new Vector2(100,-35),
+            new Vector2(50,-50),
+            new Vector2(50,-75),
+            new Vector2(10,-100),
+            new Vector2(-10,-100),
+            new Vector2(-50,-75),
+            new Vector2(-50,-50),
+            new Vector2(-100,-35),
+            new Vector2(-100,35),
+            new Vector2(-70,40),
+            new Vector2(-30,50),
+            new Vector2(-15,80)
         ]
         var _currentMap = new Map(points);
 

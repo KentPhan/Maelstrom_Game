@@ -8,8 +8,8 @@ var StandardEnemy = /** @class */ (function (){
         this.Position = position;
         this.EndPosition = endPosition;
 
-        this.Speed =  100.0;
-        this.ScaleSpeed = .1;
+        this.Speed =  50.0;
+        this.ScaleSpeed = .05;
 
         var direction = new Vector2(endPosition.x - position.x , endPosition.y - position.y)
         direction.normalize();
@@ -18,8 +18,8 @@ var StandardEnemy = /** @class */ (function (){
 
         // THIS IS REALLL SHITTY I THINK
         this.Sprite = TempestGame.getInstance().GetCurrentScene().add.image(0,0,'alien');
-        this.Sprite.scaleX = 0.2;
-        this.Sprite.scaleY = 0.2;        
+        this.Sprite.scaleX = 0.05;
+        this.Sprite.scaleY = 0.05;        
     }
 
     StandardEnemy.prototype.Update = function (deltaTime) {

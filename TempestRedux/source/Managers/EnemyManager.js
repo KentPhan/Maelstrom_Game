@@ -6,8 +6,8 @@ var EnemyManager = (function (){
  
         // Singleton
      
-        var _enemySpawnTimeLimit = 5;
-        var _currentSpawnTimer = 5;
+        var _enemySpawnTimeLimit = 1.0;
+        var _currentSpawnTimer = 5; 
         var _allEnemies = [];
 
         return {

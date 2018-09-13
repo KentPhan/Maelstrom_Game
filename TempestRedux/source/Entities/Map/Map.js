@@ -4,7 +4,7 @@ var Map = /** @class */ (function (){
     {
         this.ExPoints = points;
         this.InnerScale = 0.15;
-        this.TotalScale = 3.0;
+        this.TotalScale = 4.2;
 
         if(this.ExPoints.length <= 1)
             return;
