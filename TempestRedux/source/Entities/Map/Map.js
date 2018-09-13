@@ -1,10 +1,12 @@
 var Map = /** @class */ (function (){
     
-    function Map(game, points)
+    function Map(points)
     {
         this.ExPoints = points;
         this.InnerScale = 0.075;
         this.TotalScale = 2.5;
+        this.BaseLineColor = 0xF00000;
+        this.FlipLineColor = 0xFFFF33;
 
         if(this.ExPoints.length <= 1)
             return;
@@ -25,9 +27,7 @@ var Map = /** @class */ (function (){
                 (this.ExPoints[i].x * this.InnerScale,
                      this.ExPoints[i].y * this.InnerScale))
         }
-    }
 
-    Map.prototype.Create = function(){
         //Spawn Player
         var pIndex = 1
         var offset = new Vector2((this.ExPoints[pIndex + 1].x - this.ExPoints[pIndex].x)* 0.5, (this.ExPoints[pIndex + 1].y - this.ExPoints[pIndex].y)* 0.5)
@@ -41,59 +41,66 @@ var Map = /** @class */ (function (){
 
 
     Map.prototype.Draw = function(graphics){
+
+        // For drawing map stuff relevant to player
         var playerIndex = this.Player.GetPIndex();
         var playerFlipIndex = this.GetFlipIndex(playerIndex);
 
         if(this.ExPoints.length <= 1)
             return;
 
-
         // Draw Outside
-        var firstVector = this.ExPoints[0]
-        graphics.moveTo(firstVector.x,firstVector.y);
-        for(var i = 1; i < this.ExPoints.length; i++)
-        {
-            // graphics.lineStyle(1, 0xF00000, 1)
-            var vector = this.ExPoints[i];
-            graphics.lineTo(vector.x, vector.y);
-            // graphics.strokePath();
-
-            // if(i == playerFlipIndex)
-            // {
-            //     console.log(playerFlipIndex);
-            //     graphics.lineStyle(1, 0xFFFF33, 1)
-            //     var vector = this.ExPoints[i];
-            //     graphics.lineTo(vector.x, vector.y);
-            //     graphics.strokePath();
-            // }
-            // else
-            // {
-            //     graphics.lineStyle(1, 0xF00000, 1)
-            //     var vector = this.ExPoints[i];
-            //     graphics.lineTo(vector.x, vector.y);
-            //     graphics.strokePath();
-            // }
-        }
-        graphics.lineTo(firstVector.x, firstVector.y);
-        graphics.strokePath();
-
-        // Draw Inside
-        firstVector = this.InPoints[0]
-        graphics.moveTo(firstVector.x,firstVector.y);
-        for(var i = 1; i < this.InPoints.length; i++)
-        {;
-            var vector = this.InPoints[i];
-            graphics.lineTo(vector.x, vector.y);
-        }
-        graphics.lineTo(firstVector.x, firstVector.y);
-        graphics.strokePath();
-
-        // Draw Pathing Lines
         for(var i = 0; i < this.ExPoints.length; i++)
         {
-            graphics.moveTo(this.ExPoints[i].x, this.ExPoints[i].y);
-            graphics.lineTo(this.InPoints[i].x, this.InPoints[i].y);
-            graphics.strokePath();
+            var nextPoint;
+            if(i >= (this.ExPoints.length - 1))
+            {
+                nextPoint = this.ExPoints[0];
+            }
+            else
+            {
+                nextPoint = this.ExPoints[i+1];
+            }
+
+            // Draw lines
+            if(i == playerFlipIndex)
+                graphics.lineStyle(1, this.FlipLineColor, 1);
+            else
+                graphics.lineStyle(1, this.BaseLineColor, 1)
+            graphics.lineBetween(this.ExPoints[i].x,this.ExPoints[i].y,nextPoint.x,nextPoint.y)         
+        }
+
+        //Draw Inside
+        for(var i = 0; i < this.InPoints.length; i++)
+        {
+            var nextPoint;
+            if(i >= (this.InPoints.length - 1))
+            {
+                nextPoint = this.InPoints[0];
+            }
+            else
+            {
+                nextPoint = this.InPoints[i+1];
+            }
+
+            // Draw lines
+            if(i == playerFlipIndex)
+                graphics.lineStyle(1, this.FlipLineColor, 1);
+            else
+                graphics.lineStyle(1, this.BaseLineColor, 1)
+            graphics.lineBetween(this.InPoints[i].x,this.InPoints[i].y,nextPoint.x,nextPoint.y)         
+        }
+
+        // // Draw Pathing Lines
+        for(var i = 0; i < this.ExPoints.length; i++)
+        {
+            // Define color
+            if(i == playerFlipIndex  || i == (playerFlipIndex + 1))
+                graphics.lineStyle(1, this.FlipLineColor, 1);
+            else
+                graphics.lineStyle(1, this.BaseLineColor, 1)
+
+            graphics.lineBetween(this.ExPoints[i].x,this.ExPoints[i].y, this.InPoints[i].x, this.InPoints[i].y);
         }
 
         //TODO: Draw Player here FOR NOW. probs move later

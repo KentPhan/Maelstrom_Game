@@ -16,33 +16,11 @@ var TempestGame = /** @class */ (function ()
         
         //var privateRandomNumber = Math.random();
         var _camera = null;
+        var _currentMap = null;
         var _scene = scene;
 
-        var _graphics = _scene.add.graphics({ lineStyle: { width: 4, color: 0xaa00aa }});
+        var _graphics = _scene.add.graphics({ });
         var _input = _scene.input.keyboard.createCursorKeys();
-
-        // Map TEMP till we get something better.
-        var points = [
-            new Vector2(-10,100),
-            new Vector2(10,100),
-            new Vector2(15,80),
-            new Vector2(30,50),
-            new Vector2(70,40),
-            new Vector2(100,35),
-            new Vector2(100,-35),
-            new Vector2(50,-50),
-            new Vector2(50,-75),
-            new Vector2(10,-100),
-            new Vector2(-10,-100),
-            new Vector2(-50,-75),
-            new Vector2(-50,-50),
-            new Vector2(-100,-35),
-            new Vector2(-100,35),
-            new Vector2(-70,40),
-            new Vector2(-30,50),
-            new Vector2(-15,80)
-        ]
-        var _currentMap = new Map(this, points);
 
         // Current Managers
         var _enemyManager = new EnemyManager.getInstance()
@@ -54,11 +32,33 @@ var TempestGame = /** @class */ (function ()
         return{
 
             Create: function () {
+
+                // Map TEMP till we get something better.
+                var points = [
+                    new Vector2(-10,100),
+                    new Vector2(10,100),
+                    new Vector2(15,80),
+                    new Vector2(30,50),
+                    new Vector2(70,40),
+                    new Vector2(100,35),
+                    new Vector2(100,-35),
+                    new Vector2(50,-50),
+                    new Vector2(50,-75),
+                    new Vector2(10,-100),
+                    new Vector2(-10,-100),
+                    new Vector2(-50,-75),
+                    new Vector2(-50,-50),
+                    new Vector2(-100,-35),
+                    new Vector2(-100,35),
+                    new Vector2(-70,40),
+                    new Vector2(-30,50),
+                    new Vector2(-15,80)
+                ]
+                _currentMap = new Map(points);                
                 _camera = new Camera(_scene);
                 _scoreText = _scene.add.text(-480, -480, "Score: " + _score,  { font: "Bold 32px Arial", fill: '#ffffff' });
-                _currentMap.Create();
                 
-                var _playerDeathEffect = new PlayerDeathEffect();
+                //var _playerDeathEffect = new PlayerDeathEffect();
             },
         
             Update:  function () {
@@ -71,7 +71,7 @@ var TempestGame = /** @class */ (function ()
             },
         
             Draw: function () {
-                _graphics.clear();
+                // _graphics.clear();
                 _currentMap.Draw(_graphics);
         
                 _enemyManager.Draw(_graphics);

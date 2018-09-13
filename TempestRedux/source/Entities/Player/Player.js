@@ -58,7 +58,7 @@ var Player = /** @class */ (function (){
     };
 
     Player.prototype.Draw = function (graphics) {
-        graphics.fillCircle(this.Position.x,this.Position.y, 25);
+        // graphics.fillCircle(this.Position.x,this.Position.y, 25);
     };
 
     Player.prototype.GetPIndex = function () {
