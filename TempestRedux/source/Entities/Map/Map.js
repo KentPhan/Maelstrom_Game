@@ -1,6 +1,6 @@
 var Map = /** @class */ (function (){
     
-    function Map(points)
+    function Map(game, points)
     {
         this.ExPoints = points;
         this.InnerScale = 0.15;

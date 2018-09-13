@@ -3,6 +3,8 @@ var TempestGame = /** @class */ (function ()
 {
     // Singleton
     var instance;
+    // Score Fields
+    
     
     function init(game, scene)
     {
@@ -40,16 +42,20 @@ var TempestGame = /** @class */ (function ()
             new Vector2(-30,50),
             new Vector2(-15,80)
         ]
-        var _currentMap = new Map(points);
+        var _currentMap = new Map(this, points);
 
         // Current Managers
         var _enemyManager = new EnemyManager.getInstance()
         var _bulletManager = new BulletManager.getInstance();
 
+        var _score = 0;
+        var _scoreText;
+
         return{
 
             Create: function () {
                 _camera = new Camera(_scene);
+                _scoreText = _scene.add.text(-480, -480, "Score: " + _score,  { font: "Bold 32px Arial", fill: '#ffffff' });
             },
         
             Update:  function () {
@@ -79,7 +85,12 @@ var TempestGame = /** @class */ (function ()
 
             GetCurrentScene: function(){
                 return _scene;
+            },
+
+            AddToScore: function(){
+                return _scoreText.text =  "Score: " + _score++;
             }
+            
 
             //publicProperty: "I am also public",
             //   getRandomNumber: function() {

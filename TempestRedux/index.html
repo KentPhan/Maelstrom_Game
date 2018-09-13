@@ -20,11 +20,10 @@
         // Included
         var Vector2 = Phaser.Math.Vector2;
 
-
         var config = {
             type: Phaser.CANVAS,
-            width: 1000,
-            height: 1000,
+            width: 1920,
+            height: 1080,
             scene: {
                 preload: preload,
                 create: create,
@@ -36,6 +35,9 @@
 
         var Tempest;
 
+        //var score = 0;
+        //var scoreText;
+
         function preload()
         {
             this.load.image('alien', 'assets/test.png');
@@ -46,6 +48,7 @@
         function create ()
         {
             Tempest.Create(this);
+            //this.scoreText = this.add.text(-480, -480, "Score: " + score,  { font: "Bold 32px Arial", fill: '#ffffff' });
         }
 
         function update()

@@ -38,6 +38,7 @@ var StandardBullet = /** @class */ (function (){
             return;
         }
 
+
         // Check if passing an enemy
         var enemies = EnemyManager.getInstance().GetEnemiesInMapIndex(this.PIndex);
         for(var i = 0; i < enemies.length; i++)
@@ -50,14 +51,12 @@ var StandardBullet = /** @class */ (function (){
             // TODO Do score here
             if((toEnemy.dot(this.Direction) < 0.0))
             {
+                TempestGame.getInstance().AddToScore()
                 enemy.IMustDie();
                 this.IMustDie();
                 return;
-            }
-            
+            }            
         }
-
-            
     };
 
     StandardBullet.prototype.Draw = function (graphics) {
