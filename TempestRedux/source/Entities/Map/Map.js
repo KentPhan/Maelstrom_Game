@@ -3,8 +3,8 @@ var Map = /** @class */ (function (){
     function Map(game, points)
     {
         this.ExPoints = points;
-        this.InnerScale = 0.15;
-        this.TotalScale = 4.2;
+        this.InnerScale = 0.075;
+        this.TotalScale = 2.5;
 
         if(this.ExPoints.length <= 1)
             return;
