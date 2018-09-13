@@ -88,7 +88,7 @@ var TempestGame = /** @class */ (function ()
             },
 
             AddToScore: function(){
-                return _scoreText.text =  "Score: " + _score++;
+                return _scoreText.text =  "Score: " + ++_score;
             }
             
 
