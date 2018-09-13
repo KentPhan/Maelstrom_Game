@@ -33,8 +33,8 @@ var Map = /** @class */ (function (){
         this.Player = new Player(pIndex, newPosition);
     }
 
-    Map.prototype.Update = function(input){
-        this.Player.Update(input);
+    Map.prototype.Update = function(deltaTime , input){
+        this.Player.Update(deltaTime, input);
     }
 
 

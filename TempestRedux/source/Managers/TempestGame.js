@@ -55,7 +55,7 @@ var TempestGame = /** @class */ (function ()
             Update:  function () {
                 var deltaTime = game.loop.delta/1000;
         
-                _currentMap.Update(_input);
+                _currentMap.Update(deltaTime, _input);
         
                 _enemyManager.Update(deltaTime);
                 _bulletManager.Update(deltaTime);

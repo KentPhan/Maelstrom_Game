@@ -5,9 +5,11 @@ var Player = /** @class */ (function (){
         this.PIndex = pIndex;
         this.Position = position;
         this.PrevKey = 0;
+        this.BulletCooldown = 0.1;
+        this.BulletCurrentCooldown = 0;
     }
 
-    Player.prototype.Update = function (input) {
+    Player.prototype.Update = function (deltaTime,input) {
         if(input.left.isDown && this.PrevKey != input.left.keyCode)
         {
             this.PIndex = TempestGame.getInstance().GetCurrentMap().GetNextIndexCCW(this.PIndex);
@@ -22,13 +24,20 @@ var Player = /** @class */ (function (){
         }
         else if(input.space.isDown && this.PrevKey != input.space.keyCode)
         {
-            BulletManager.getInstance().FireBullet(this.PIndex);
-            this.PrevKey = input.space.keyCode;
+            if(this.BulletCurrentCooldown < 0)
+            {
+                BulletManager.getInstance().FireBullet(this.PIndex);
+                this.PrevKey = input.space.keyCode;
+                this.BulletCurrentCooldown = this.BulletCooldown;
+            }
+            
         }
         else if (input.space.isUp && input.left.isUp && input.right.isUp)
         {
             this.PrevKey = 0;
         }
+
+        this.BulletCurrentCooldown -= deltaTime;
     };
 
     Player.prototype.Draw = function (graphics) {
