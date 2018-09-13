@@ -33,6 +33,8 @@ var Map = /** @class */ (function (){
         var offset = new Vector2((this.ExPoints[pIndex + 1].x - this.ExPoints[pIndex].x)* 0.5, (this.ExPoints[pIndex + 1].y - this.ExPoints[pIndex].y)* 0.5)
         var newPosition = new Vector2(this.ExPoints[pIndex].x + offset.x, this.ExPoints[pIndex].y + offset.y)
         this.Player = new Player(pIndex, newPosition);
+
+        this.DrawMap()
     }
 
     Map.prototype.Update = function(deltaTime , input){
@@ -41,13 +43,21 @@ var Map = /** @class */ (function (){
 
 
     Map.prototype.Draw = function(graphics){
+        //TODO: Draw Player here FOR NOW. probs move later
+        this.Player.Draw(graphics);
+    }
+
+    Map.prototype.DrawMap = function()
+    {
+        var graphics = TempestGame.getInstance().GetGraphics()
+        graphics.clear();
+
+        if(this.ExPoints.length <= 1)
+            return;
 
         // For drawing map stuff relevant to player
         var playerIndex = this.Player.GetPIndex();
         var playerFlipIndex = this.GetFlipIndex(playerIndex);
-
-        if(this.ExPoints.length <= 1)
-            return;
 
         // Draw Outside
         for(var i = 0; i < this.ExPoints.length; i++)
@@ -67,7 +77,7 @@ var Map = /** @class */ (function (){
                 graphics.lineStyle(1, this.FlipLineColor, 1);
             else
                 graphics.lineStyle(1, this.BaseLineColor, 1)
-            graphics.lineBetween(this.ExPoints[i].x,this.ExPoints[i].y,nextPoint.x,nextPoint.y)         
+            graphics.lineBetween(this.ExPoints[i].x,this.ExPoints[i].y,nextPoint.x,nextPoint.y);         
         }
 
         //Draw Inside
@@ -88,7 +98,7 @@ var Map = /** @class */ (function (){
                 graphics.lineStyle(1, this.FlipLineColor, 1);
             else
                 graphics.lineStyle(1, this.BaseLineColor, 1)
-            graphics.lineBetween(this.InPoints[i].x,this.InPoints[i].y,nextPoint.x,nextPoint.y)         
+            graphics.lineBetween(this.InPoints[i].x,this.InPoints[i].y,nextPoint.x,nextPoint.y);
         }
 
         // // Draw Pathing Lines
@@ -102,9 +112,6 @@ var Map = /** @class */ (function (){
 
             graphics.lineBetween(this.ExPoints[i].x,this.ExPoints[i].y, this.InPoints[i].x, this.InPoints[i].y);
         }
-
-        //TODO: Draw Player here FOR NOW. probs move later
-        this.Player.Draw(graphics);
     }
 
     Map.prototype.GetNextIndexCW = function(index){

@@ -1,23 +1,22 @@
 var StandardEnemy = /** @class */ (function (){
    
     // Should pool... But Fuck it... Maybe Later
-    function StandardEnemy(pIndex, position, endPosition)
+    function StandardEnemy()
     {
-        this.MustDie = false;
-        this.PIndex = pIndex;
-        this.Position = position;
-        this.EndPosition = endPosition;
+        this.Active = false;
+        
+        this.PIndex = -1;
+        this.Position = null;
+        this.EndPosition = null;
 
         this.Speed =  50.0;
         this.ScaleSpeed = .05;
 
-        var direction = new Vector2(endPosition.x - position.x , endPosition.y - position.y)
-        direction.normalize();
-
-        this.Direction = direction;
+        this.Direction = null;
 
         // THIS IS REALLL SHITTY I THINK
         this.Sprite = TempestGame.getInstance().GetCurrentScene().add.image(0,0,'alien');
+        this.Sprite.visible = false;
         this.Sprite.scaleX = 0.05;
         this.Sprite.scaleY = 0.05;        
     }
@@ -51,14 +50,34 @@ var StandardEnemy = /** @class */ (function (){
         return this.Position;
     };
 
-    StandardEnemy.prototype.IMustDie = function(){
-        this.Sprite.destroy();
-        this.MustDie = true;
-        return this.MustDie;
+    StandardEnemy.prototype.IMustLive = function(pIndex, position, endPosition){
+        this.Active = true;
+        this.Sprite.visible = true;
+        this.Sprite.scaleX = 0.05;
+        this.Sprite.scaleY = 0.05;        
+        
+        this.PIndex = pIndex;
+        this.Position = position;
+        this.EndPosition = endPosition;
+
+        var direction = new Vector2(endPosition.x - position.x , endPosition.y - position.y)
+        direction.normalize();
+        this.Direction = direction;
     }
 
-    StandardEnemy.prototype.MustIDie = function(){
-        return this.MustDie;
+    StandardEnemy.prototype.IMustDie = function(){
+        this.Active = false;
+        this.Sprite.visible = false;
+        
+        this.PIndex = -1;
+        this.Position = null;
+        this.EndPosition = null;
+
+        this.Direction = null;
+    }
+
+    StandardEnemy.prototype.AreYouAlive = function(){
+        return this.Active;
     }
 
     return StandardEnemy;

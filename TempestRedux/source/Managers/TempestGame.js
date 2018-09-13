@@ -57,13 +57,12 @@ var TempestGame = /** @class */ (function ()
                 _currentMap = new Map(points);                
                 _camera = new Camera(_scene);
                 _scoreText = _scene.add.text(-480, -480, "Score: " + _score,  { font: "Bold 32px Arial", fill: '#ffffff' });
-                
+                _enemyManager.InitializePools();
                 //var _playerDeathEffect = new PlayerDeathEffect();
             },
         
             Update:  function () {
                 var deltaTime = game.loop.delta/1000;
-        
                 _currentMap.Update(deltaTime, _input);
         
                 _enemyManager.Update(deltaTime);
