@@ -25,7 +25,9 @@ var Map = /** @class */ (function (){
                 (this.ExPoints[i].x * this.InnerScale,
                      this.ExPoints[i].y * this.InnerScale))
         }
+    }
 
+    Map.prototype.Create = function(){
         //Spawn Player
         var pIndex = 1
         var offset = new Vector2((this.ExPoints[pIndex + 1].x - this.ExPoints[pIndex].x)* 0.5, (this.ExPoints[pIndex + 1].y - this.ExPoints[pIndex].y)* 0.5)
@@ -39,11 +41,11 @@ var Map = /** @class */ (function (){
 
 
     Map.prototype.Draw = function(graphics){
-    
+        var playerIndex = this.Player.GetPIndex();
+        var playerFlipIndex = this.GetFlipIndex(playerIndex);
+
         if(this.ExPoints.length <= 1)
             return;
-
-        graphics.lineStyle(1, 0xFF0000, 1);
 
 
         // Draw Outside
@@ -51,8 +53,26 @@ var Map = /** @class */ (function (){
         graphics.moveTo(firstVector.x,firstVector.y);
         for(var i = 1; i < this.ExPoints.length; i++)
         {
+            // graphics.lineStyle(1, 0xF00000, 1)
             var vector = this.ExPoints[i];
             graphics.lineTo(vector.x, vector.y);
+            // graphics.strokePath();
+
+            // if(i == playerFlipIndex)
+            // {
+            //     console.log(playerFlipIndex);
+            //     graphics.lineStyle(1, 0xFFFF33, 1)
+            //     var vector = this.ExPoints[i];
+            //     graphics.lineTo(vector.x, vector.y);
+            //     graphics.strokePath();
+            // }
+            // else
+            // {
+            //     graphics.lineStyle(1, 0xF00000, 1)
+            //     var vector = this.ExPoints[i];
+            //     graphics.lineTo(vector.x, vector.y);
+            //     graphics.strokePath();
+            // }
         }
         graphics.lineTo(firstVector.x, firstVector.y);
         graphics.strokePath();
@@ -67,7 +87,6 @@ var Map = /** @class */ (function (){
         }
         graphics.lineTo(firstVector.x, firstVector.y);
         graphics.strokePath();
-
 
         // Draw Pathing Lines
         for(var i = 0; i < this.ExPoints.length; i++)
@@ -87,6 +106,17 @@ var Map = /** @class */ (function (){
             return 0;
         else
             return nextIndex;
+    }
+
+    Map.prototype.GetFlipIndex = function(index){
+        var divisor = (index + (this.ExPoints.length/2));
+
+        return divisor % this.ExPoints.length;
+
+        // if(divisor < this.ExPoints.length)
+        //     return divisor % this.ExPoints.length;
+        // else
+        //     return this.ExPoints.length % divisor;
     }
 
     Map.prototype.GetNextIndexCCW = function(index){
@@ -114,7 +144,6 @@ var Map = /** @class */ (function (){
 
         var offset = new Vector2((this.ExPoints[nextIndex].x - this.ExPoints[index].x)* 0.5, (this.ExPoints[nextIndex].y - this.ExPoints[index].y)* 0.5)
         return new Vector2(this.ExPoints[index].x + offset.x, this.ExPoints[index].y + offset.y);
-
     }
 
     return Map;

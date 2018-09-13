@@ -56,7 +56,7 @@ var TempestGame = /** @class */ (function ()
             Create: function () {
                 _camera = new Camera(_scene);
                 _scoreText = _scene.add.text(-480, -480, "Score: " + _score,  { font: "Bold 32px Arial", fill: '#ffffff' });
-
+                _currentMap.Create();
                 
                 var _playerDeathEffect = new PlayerDeathEffect();
             },

@@ -5,8 +5,14 @@ var Player = /** @class */ (function (){
         this.PIndex = pIndex;
         this.Position = position;
         this.PrevKey = 0;
-        this.BulletCooldown = 0.1;
-        this.BulletCurrentCooldown = 0;
+
+        this.FlipCooldown = 0.1;
+        this.FlipCurrentCooldown = 0;
+        // this.BulletCooldown = 0.1;
+        // this.BulletCurrentCooldown = 0;
+        this.Sprite = TempestGame.getInstance().GetCurrentScene().add.image(0,0,'bullet');
+        this.Sprite.scaleX = 0.1;
+        this.Sprite.scaleY = 0.1;        
     }
 
     Player.prototype.Update = function (deltaTime,input) {
@@ -24,20 +30,31 @@ var Player = /** @class */ (function (){
         }
         else if(input.space.isDown && this.PrevKey != input.space.keyCode)
         {
-            if(this.BulletCurrentCooldown < 0)
+            // Flip stuff
+            if(this.FlipCurrentCooldown < 0)
             {
-                BulletManager.getInstance().FireBullet(this.PIndex);
+                this.PIndex = TempestGame.getInstance().GetCurrentMap().GetFlipIndex(this.PIndex)
+                this.Position = TempestGame.getInstance().GetCurrentMap().GetIndexVectorPosition(this.PIndex)    
                 this.PrevKey = input.space.keyCode;
-                this.BulletCurrentCooldown = this.BulletCooldown;
+                this.FlipCurrentCooldown = this.FlipCooldown;
             }
-            
+
+            // Bullet stuff
+            // if(this.BulletCurrentCooldown < 0)
+            // {
+            //     BulletManager.getInstance().FireBullet(this.PIndex);
+            //     this.PrevKey = input.space.keyCode;
+            //     this.BulletCurrentCooldown = this.BulletCooldown;
+            // }
         }
         else if (input.space.isUp && input.left.isUp && input.right.isUp)
         {
             this.PrevKey = 0;
         }
 
-        this.BulletCurrentCooldown -= deltaTime;
+        this.FlipCurrentCooldown -= deltaTime;
+        this.Sprite.setPosition(this.Position.x, this.Position.y, 0)
+        // this.BulletCurrentCooldown -= deltaTime;
     };
 
     Player.prototype.Draw = function (graphics) {
