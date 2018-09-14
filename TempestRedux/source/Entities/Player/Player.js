@@ -19,14 +19,14 @@ var Player = /** @class */ (function (){
         if(input.left.isDown && this.PrevKey != input.left.keyCode)
         {
             this.PIndex = TempestGame.getInstance().GetCurrentMap().GetNextIndexCCW(this.PIndex);
-            this.Position =  TempestGame.getInstance().GetCurrentMap().GetIndexVectorPosition(this.PIndex)
+            this.Position =  TempestGame.getInstance().GetCurrentMap().GetEdgeVectorPosition(this.PIndex)
             this.PrevKey = input.left.keyCode;
             TempestGame.getInstance().GetCurrentMap().DrawMap();
         }
         else if(input.right.isDown && this.PrevKey != input.right.keyCode)
         {
             this.PIndex = TempestGame.getInstance().GetCurrentMap().GetNextIndexCW(this.PIndex);
-            this.Position = TempestGame.getInstance().GetCurrentMap().GetIndexVectorPosition(this.PIndex)
+            this.Position = TempestGame.getInstance().GetCurrentMap().GetEdgeVectorPosition(this.PIndex)
             this.PrevKey = input.right.keyCode;
             TempestGame.getInstance().GetCurrentMap().DrawMap();
         }
@@ -37,7 +37,7 @@ var Player = /** @class */ (function (){
             {
                 // Flip to other size
                 this.PIndex = TempestGame.getInstance().GetCurrentMap().GetFlipIndex(this.PIndex)
-                this.Position = TempestGame.getInstance().GetCurrentMap().GetIndexVectorPosition(this.PIndex)    
+                this.Position = TempestGame.getInstance().GetCurrentMap().GetEdgeVectorPosition(this.PIndex)    
                 this.PrevKey = input.space.keyCode;
                 this.FlipCurrentCooldown = this.FlipCooldown;
 

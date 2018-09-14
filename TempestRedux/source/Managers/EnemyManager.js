@@ -5,7 +5,7 @@ var EnemyManager = (function (){
     function init() {
  
         // Singleton
-     
+        var _active = true;
         var _enemySpawnTimeLimit = 1.0;
         var _currentSpawnTimer = 5; 
 
@@ -26,18 +26,17 @@ var EnemyManager = (function (){
                 {
                     _standardPool.push(new StandardEnemy())
                 }
-                
             },
 
             Update: function(deltaTime){
                 _currentSpawnTimer -= deltaTime;
 
                 // Spawning more enemies timer Probs need to swap for something smarter and better later
-                if(_currentSpawnTimer <=0)
+                if(_currentSpawnTimer <=0 && _active)
                 {
                     var index = TempestGame.getInstance().GetCurrentMap().GetRandomIndex();
                     var start = new Vector2(0,0);
-                    var end = TempestGame.getInstance().GetCurrentMap().GetIndexVectorPosition(index);
+                    var end = TempestGame.getInstance().GetCurrentMap().GetEdgeVectorPosition(index);
 
                     var newEnemy = _standardPool.pop();
                     newEnemy.IMustLive(index,start,end)
@@ -58,18 +57,15 @@ var EnemyManager = (function (){
                         continue;
                     }
 
-                    _activeEnemies[i].Update(deltaTime);
+                    if(_active)
+                        _activeEnemies[i].Update(deltaTime);
                 }
             },
 
             Draw: function(graphics){
-
-                // Draw all enemies
-                for(var i = 0; i < _activeEnemies.length; i++)
-                {
-                    _activeEnemies[i].Draw(graphics);
-                }
-                
+                if(!_active)
+                    return;
+                // Nothing so far
             },
 
             GetEnemiesInMapIndex(index)
@@ -83,6 +79,23 @@ var EnemyManager = (function (){
                     }
                 }
                 return enemiesInMapIndex;
+            },
+
+            ResetEnemies()
+            {
+                for(var i = 0; i < _activeEnemies.length; i++)
+                {
+                    _activeEnemies[i].IMustDie();
+                }
+            },
+
+            DeactivateEnemies(){
+                _active = false;
+            },
+
+            ActivateEnemies()
+            {
+                _active = true;
             }
             //   publicProperty: "I am also public",
             //   getRandomNumber: function() {

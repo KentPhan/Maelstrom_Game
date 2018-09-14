@@ -147,7 +147,7 @@ var Map = /** @class */ (function (){
         return Math.floor(Math.random() * this.ExPoints.length)
     }
 
-    Map.prototype.GetIndexVectorPosition  = function(index){
+    Map.prototype.GetEdgeVectorPosition  = function(index){
         
         // Caluclates player positions always to the right of the index in the ExPoints
         var nextIndex = index + 1;

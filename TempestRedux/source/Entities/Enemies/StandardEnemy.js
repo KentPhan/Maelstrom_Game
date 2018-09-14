@@ -1,10 +1,18 @@
 var StandardEnemy = /** @class */ (function (){
    
-    // Should pool... But Fuck it... Maybe Later
+
+
+    // TODO rename to Flipper
     function StandardEnemy()
     {
         this.Active = false;
-        
+        this.EnemyStates = {
+            "TowardsEdge":1,
+            "OnEdge":2
+        }
+        this.CurrentState = this.EnemyStates.TowardsEdge;
+
+
         this.PIndex = -1;
         this.Position = null;
         this.EndPosition = null;
@@ -23,23 +31,26 @@ var StandardEnemy = /** @class */ (function (){
 
     StandardEnemy.prototype.Update = function (deltaTime) {
 
-        var velocity = new Vector2(this.Direction.x * this.Speed * deltaTime, this.Direction.y * this.Speed * deltaTime);
-        this.Position.add(velocity);
-        this.Sprite.setPosition(this.Position.x, this.Position.y, 0)
-        this.Sprite.setScale(this.Sprite.scaleX + (this.ScaleSpeed * deltaTime), this.Sprite.scaleY + (this.ScaleSpeed * deltaTime));
-
-        var placement = new Vector2(this.EndPosition.x - this.Position.x, this.EndPosition.y - this.Position.y);
-
-        // If past destination, destroy this enemy
-        // TODO Add cost of having enemy get past player here
-        if((placement.dot(this.Direction) < 0.0))
+        if(this.CurrentState == this.EnemyStates.TowardsEdge)
+        {
+            var velocity = new Vector2(this.Direction.x * this.Speed * deltaTime, this.Direction.y * this.Speed * deltaTime);
+            this.Position.add(velocity);
+            this.Sprite.setPosition(this.Position.x, this.Position.y, 0)
+            this.Sprite.setScale(this.Sprite.scaleX + (this.ScaleSpeed * deltaTime), this.Sprite.scaleY + (this.ScaleSpeed * deltaTime));
+    
+            var placement = new Vector2(this.EndPosition.x - this.Position.x, this.EndPosition.y - this.Position.y);
+    
+            // If past destination, destroy this enemy
+            // TODO Add cost of having enemy get past player here
+            if((placement.dot(this.Direction) < 0.0))
+            {
+                this.CurrentState = this.EnemyStates.OnEdge;
+            }
+        }
+        else if (this.CurrentState == this.EnemyStates.OnEdge)
         {
             this.IMustDie();
         }
-    };
-
-    StandardEnemy.prototype.Draw = function (graphics) {
-        //graphics.fillCircle(this.Position.x,this.Position.y, 10);
     };
 
     StandardEnemy.prototype.GetPIndex = function () {
@@ -55,6 +66,7 @@ var StandardEnemy = /** @class */ (function (){
         this.Sprite.visible = true;
         this.Sprite.scaleX = 0.05;
         this.Sprite.scaleY = 0.05;        
+        this.CurrentState = this.EnemyStates.TowardsEdge;
         
         this.PIndex = pIndex;
         this.Position = position;
