@@ -41,10 +41,7 @@ var Map = /** @class */ (function (){
         this.Player.Update(deltaTime, input);
     }
 
-
     Map.prototype.Draw = function(graphics){
-        //TODO: Draw Player here FOR NOW. probs move later
-        this.Player.Draw(graphics);
     }
 
     Map.prototype.DrawMap = function()
@@ -105,7 +102,8 @@ var Map = /** @class */ (function (){
         for(var i = 0; i < this.ExPoints.length; i++)
         {
             // Define color
-            if(i == playerFlipIndex  || i == (playerFlipIndex + 1))
+            var nextIndex =  ((this.ExPoints.length - 1 ) == playerFlipIndex)? 0 : playerFlipIndex + 1;
+            if(i == playerFlipIndex  || i == nextIndex)
                 graphics.lineStyle(1, this.FlipLineColor, 1);
             else
                 graphics.lineStyle(1, this.BaseLineColor, 1)

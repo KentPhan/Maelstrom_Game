@@ -6,13 +6,13 @@ var TempestGame = /** @class */ (function ()
     // Score Fields
     
     
-    function init(game, scene)
+    function init(scene)
     {
         // Private methods and variables
         // function privateMethod(){
         //     console.log( "I am private" );
         // }
-
+        
         
         //var privateRandomNumber = Math.random();
         var _camera = null;
@@ -56,10 +56,10 @@ var TempestGame = /** @class */ (function ()
                 ]
                 _currentMap = new Map(points);                
                 _camera = new Camera(_scene);
-                _scoreText = _scene.add.text(-480, -480, "Score: " + _score,  { font: "Bold 32px Arial", fill: '#ffffff' });
+                _scoreText = _scene.add.text(-600, -325, "Score: " + _score,  { font: "Bold 32px Arial", fill: '#ffffff' });
                 _enemyManager.InitializePools();
                 //var _playerDeathEffect = new PlayerDeathEffect();
-            },
+            }, 
         
             Update:  function () {
                 var deltaTime = game.loop.delta/1000;
@@ -70,11 +70,6 @@ var TempestGame = /** @class */ (function ()
             },
         
             Draw: function () {
-                // _graphics.clear();
-                _currentMap.Draw(_graphics);
-        
-                _enemyManager.Draw(_graphics);
-                // _bulletManager.Draw(_graphics);
             },
 
             GetCurrentMap : function(){
@@ -102,9 +97,9 @@ var TempestGame = /** @class */ (function ()
         }
     };
     return{
-        getInstance: function(game, scene){
+        getInstance: function(scene){
             if ( !instance ) {
-                instance = init(game, scene);
+                instance = init(scene);
               }
          
               return instance;
