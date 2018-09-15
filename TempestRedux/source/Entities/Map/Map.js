@@ -1,13 +1,21 @@
 var Map = /** @class */ (function (){
+
     
 
     // TODO Strange issue occuring where this might be getting called upon ending level and switching to UI
     function Map(points)
     {
+        this.SpecialPoints = {
+            Bound:1 // A point you can't move past or move onto
+        }
+
         this.ExPoints = [];
         for(var i = 0; i < points.length; i++)
         {
-            this.ExPoints.push(new Vector2(points[i].x,points[i].y));
+            if(points[i] == null)
+                this.ExPoints.push(this.SpecialPoints.Bound);
+            else
+                this.ExPoints.push(new Vector2(points[i].x,points[i].y));
         }
         
         this.InnerScale = 0.075;
@@ -21,18 +29,32 @@ var Map = /** @class */ (function (){
         // Total scale for making a level bigger
         for(var i = 0; i < this.ExPoints.length; i++)
         {
-            this.ExPoints[i].x *= this.TotalScale; 
-            this.ExPoints[i].y *= this.TotalScale; 
+            if(this.ExPoints[i] == this.SpecialPoints.Bound)
+            {
+
+            }
+            else
+            {
+                this.ExPoints[i].x *= this.TotalScale; 
+                this.ExPoints[i].y *= this.TotalScale; 
+            }
         }
             
         // Scale of inner relative to total scale
         this.InPoints = [];
         for(var i = 0; i < this.ExPoints.length; i++)
         {
-            this.InPoints.push(
-                new Vector2
-                (this.ExPoints[i].x * this.InnerScale,
-                     this.ExPoints[i].y * this.InnerScale))
+            if(this.ExPoints[i] == this.SpecialPoints.Bound)
+            {
+                this.InPoints.push(this.SpecialPoints.Bound);
+            }
+            else
+            {
+                this.InPoints.push(
+                    new Vector2
+                    (this.ExPoints[i].x * this.InnerScale,
+                         this.ExPoints[i].y * this.InnerScale))
+            }
         }
     }
 
@@ -74,6 +96,11 @@ var Map = /** @class */ (function (){
                 graphics.lineStyle(1, this.FlipLineColor, 1);
             else
                 graphics.lineStyle(1, this.BaseLineColor, 1)
+
+            // Skip drawing bound points
+            if(this.ExPoints[i] == this.SpecialPoints.Bound || nextPoint == this.SpecialPoints.Bound)
+                continue;
+
             graphics.lineBetween(this.ExPoints[i].x,this.ExPoints[i].y,nextPoint.x,nextPoint.y);         
         }
 
@@ -95,6 +122,11 @@ var Map = /** @class */ (function (){
                 graphics.lineStyle(1, this.FlipLineColor, 1);
             else
                 graphics.lineStyle(1, this.BaseLineColor, 1)
+
+            // Skip drawing bound points
+            if(this.InPoints[i] == this.SpecialPoints.Bound || nextPoint == this.SpecialPoints.Bound)
+                continue;
+
             graphics.lineBetween(this.InPoints[i].x,this.InPoints[i].y,nextPoint.x,nextPoint.y);
         }
 
@@ -108,23 +140,40 @@ var Map = /** @class */ (function (){
             else
                 graphics.lineStyle(1, this.BaseLineColor, 1)
 
+            // Bounds Check
+            if(this.ExPoints[i] == this.SpecialPoints.Bound ||  this.InPoints[i] == this.SpecialPoints.Bound)
+                continue;
+            if(this.ExPoints[nextIndex] == this.SpecialPoints.Bound ||  this.InPoints[nextIndex] == this.SpecialPoints.Bound)
+                continue;
+
             graphics.lineBetween(this.ExPoints[i].x,this.ExPoints[i].y, this.InPoints[i].x, this.InPoints[i].y);
         }
     }
 
     Map.prototype.GetNextIndexCW = function(index){
         var nextIndex = index + 1;
+
         if(nextIndex >= this.ExPoints.length)
-            return 0;
-        else
-            return nextIndex;
+            nextIndex = 0;
+
+        // Bounds Check
+        if(this.ExPoints[nextIndex] == this.SpecialPoints.Bound ||  this.InPoints[nextIndex] == this.SpecialPoints.Bound)
+            return index;
+
+        return nextIndex;
     }
 
     Map.prototype.GetFlipIndex = function(index){
         if(index < 0)
             return null;
         var divisor = (index + (this.ExPoints.length/2));
-        return divisor % this.ExPoints.length;
+        var nextIndex = divisor % this.ExPoints.length;
+
+        // Bounds Check
+        if(this.ExPoints[nextIndex] == this.SpecialPoints.Bound ||  this.InPoints[nextIndex] == this.SpecialPoints.Bound)
+            return index;
+
+        return nextIndex;
     }
 
     Map.prototype.GetNextIndexCCW = function(index){
@@ -133,6 +182,12 @@ var Map = /** @class */ (function (){
             return this.ExPoints.length - 1;
         else
             return nextIndex;
+
+            
+        if(this.ExPoints[i] == this.SpecialPoints.Bound || nextPoint == this.SpecialPoints.Bound)
+            return index;
+
+        return nextIndex;
     }
 
     Map.prototype.GetCenter = function(){
