@@ -1,78 +1,166 @@
+// Could swap this in for a level builder if we had time
+
+
+
+
 
 var LevelManager = /** @class */ (function ()
 {
     // Singleton
     var instance;
-    
-    //Levels
-
+   
     function init()
     {
         // Private methods and variables
         // function privateMethod(){
         //     console.log( "I am private" ); 
         // }
+         //Levels
+        var Levels = {
+            START:1,
+            GAMEOVER:2,
+            CREDITS:3,
+            LEVEL_1:4,
+            properties:{
+                1: {IS_UI:true, TEXT:"Start Game", X:-160, Y:-20},
+                2: {IS_UI:true, TEXT:"ALL YOUR BASE ARE\n     BELONG TO US!", X:-380, Y:-50},
+                3: {IS_UI:true, TEXT:"Our Great Credits:", X:-320, Y:-20},
+                4: {IS_UI:false,
+                    MAP_POINTS:[
+                        new Vector2(-10,100),
+                        new Vector2(10,100),
+                        new Vector2(15,80),
+                        new Vector2(30,50),
+                        new Vector2(70,40),
+                        new Vector2(100,35),
+                        new Vector2(100,-35),
+                        new Vector2(50,-50),
+                        new Vector2(50,-75),
+                        new Vector2(10,-100),
+                        new Vector2(-10,-100),
+                        new Vector2(-50,-75),
+                        new Vector2(-50,-50),
+                        new Vector2(-100,-35),
+                        new Vector2(-100,35),
+                        new Vector2(-70,40),
+                        new Vector2(-30,50),
+                        new Vector2(-15,80)
+                    ]
+                }
+            }
+        };
 
         
+
         //var privateRandomNumber = Math.random();
-        var _currentMap = null;
+        var _currentLevelState = null;
+        var _currentLevel = null;
         var _currentCamera = null;
-        var _currentPlayer = null;
+        var _prevKey = 0;
+
+        function EnterKeyDetect(input){
+            if(input.enter.isDown)
+                return true;
+            else
+                return false;
+        }
+
+        function ESCKeyDetect(input){
+            if(input.esc.isDown)
+                return true;
+            else
+                return false;
+        }
+
+        function LoadLevel(level){
+            var enemyManager = EnemyManager.getInstance();
+
+            // Clear enemies
+            enemyManager.ResetEnemies();
+            enemyManager.DeactivateEnemies();
+
+            // Clean up
+            _currentLevelState = level;
+            _currentLevel.AttemptToWipeAss();
+            delete _currentLevel;
+
+            // Instantiate new level
+            _currentLevel = new Level(Levels.properties[_currentLevelState])
+            TempestGame.getInstance().ShowScore();
+            return;
+        }
+
+        function LoadMenu(level){
+            var enemyManager = EnemyManager.getInstance();
+
+            // Clear enemies
+            enemyManager.ResetEnemies();
+            enemyManager.DeactivateEnemies();
+            
+            // Clean up
+            _currentLevelState = level;
+            _currentLevel.AttemptToWipeAss();
+            delete _currentLevel; // Don't know if javascripts shitty garbage collector actually does anything with this
+            
+            _currentLevel = new Level(Levels.properties[_currentLevelState])
+
+            TempestGame.getInstance().HideScore();
+            TempestGame.getInstance().ClearScore();
+            return;
+        }
+
         
         return{
 
             Initialize: function () {
 
                 _currentCamera = new Camera(TempestGame.getInstance().GetCurrentScene());
-
-                // Map TEMP till we get something better.
-                var points = [
-                    new Vector2(-10,100),
-                    new Vector2(10,100),
-                    new Vector2(15,80),
-                    new Vector2(30,50),
-                    new Vector2(70,40),
-                    new Vector2(100,35),
-                    new Vector2(100,-35),
-                    new Vector2(50,-50),
-                    new Vector2(50,-75),
-                    new Vector2(10,-100),
-                    new Vector2(-10,-100),
-                    new Vector2(-50,-75),
-                    new Vector2(-50,-50),
-                    new Vector2(-100,-35),
-                    new Vector2(-100,35),
-                    new Vector2(-70,40),
-                    new Vector2(-30,50),
-                    new Vector2(-15,80)
-                ]
-                _currentMap = new Map(points);
-
-
-                //Spawn Player
-                var pIndex = 0
-                var newPosition = _currentMap.GetEdgeVectorPosition(pIndex)
-                _currentPlayer = new Player(pIndex, newPosition);
+                _currentLevelState = Levels.START;
+                _currentLevel = new Level(Levels.properties[_currentLevelState]);
             }, 
         
             Update:  function (deltaTime) {
-                _currentMap.Update(deltaTime);
-                _currentPlayer.Update(deltaTime);
+                if(_currentLevel != null)
+                {
+                    var input = TempestGame.getInstance().GetInput();
+                    switch(_currentLevelState)
+                    {
+                        case Levels.START:
+                            if(EnterKeyDetect(input))
+                                LoadLevel(Levels.LEVEL_1)
+                            break;
+                        case Levels.GAMEOVER:
+                            if(ESCKeyDetect(input))
+                                LoadMenu(Levels.START)
+                            break;
+                        case Levels.CREDITS:
+                            if(ESCKeyDetect(input))
+                                LoadMenu(Levels.START)
+                            break;
+                        case Levels.LEVEL_1:
+                            if(ESCKeyDetect(input))
+                                LoadMenu(Levels.START)
+                            break;
+                    }
+                    _currentLevel.Update(deltaTime);
+                }
             },
 
-            GetCurrentMap : function(){
-                return _currentMap;
+            TriggerGameOver: function(){
+                LoadMenu(Levels.GAMEOVER)
             },
 
-            GetCurrentPlayer : function(){
-                return _currentPlayer;
+            TriggerCredits: function(){
+                LoadMenu(Levels.CREDITS)
+            },
+
+            GetCurrentLevel: function(){
+                return _currentLevel;
+            },
+
+            GetCurrentCamera: function(){
+                return _currentCamera;
             }
-
-            //publicProperty: "I am also public",
-            //   getRandomNumber: function() {
-            //     return privateRandomNumber;
-            //   }
-            
         }
     };
     return{

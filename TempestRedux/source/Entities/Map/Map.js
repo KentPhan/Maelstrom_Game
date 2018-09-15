@@ -1,8 +1,15 @@
 var Map = /** @class */ (function (){
     
+
+    // TODO Strange issue occuring where this might be getting called upon ending level and switching to UI
     function Map(points)
     {
-        this.ExPoints = points;
+        this.ExPoints = [];
+        for(var i = 0; i < points.length; i++)
+        {
+            this.ExPoints.push(new Vector2(points[i].x,points[i].y));
+        }
+        
         this.InnerScale = 0.075;
         this.TotalScale = 2.5;
         this.BaseLineColor = 0xF00000;
@@ -27,8 +34,6 @@ var Map = /** @class */ (function (){
                 (this.ExPoints[i].x * this.InnerScale,
                      this.ExPoints[i].y * this.InnerScale))
         }
-
-        this.DrawMap()
     }
 
     Map.prototype.Update = function(deltaTime){
@@ -47,7 +52,8 @@ var Map = /** @class */ (function (){
             return;
 
         // For drawing map stuff relevant to player
-        var playerIndex = (LevelManager.getInstance().GetCurrentPlayer()) ? LevelManager.getInstance().GetCurrentPlayer().GetPIndex() : null;
+        var currentPlayer = LevelManager.getInstance().GetCurrentLevel().GetPlayer();
+        var playerIndex = (currentPlayer) ? currentPlayer.GetPIndex() : null;
         var playerFlipIndex = this.GetFlipIndex(playerIndex);
 
         // Draw Outside
@@ -146,6 +152,11 @@ var Map = /** @class */ (function (){
 
         var offset = new Vector2((this.ExPoints[nextIndex].x - this.ExPoints[index].x)* 0.5, (this.ExPoints[nextIndex].y - this.ExPoints[index].y)* 0.5)
         return new Vector2(this.ExPoints[index].x + offset.x, this.ExPoints[index].y + offset.y);
+    }
+
+    Map.prototype.AttemptToWipeAss = function(){
+        this.ExPoints = null;
+        this.InPoints = null;
     }
 
     return Map;

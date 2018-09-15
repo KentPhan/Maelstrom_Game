@@ -17,7 +17,7 @@ var Player = /** @class */ (function (){
 
     Player.prototype.Update = function (deltaTime) {
         var input = TempestGame.getInstance().GetInput();
-        var currentMap = LevelManager.getInstance().GetCurrentMap();
+        var currentMap = LevelManager.getInstance().GetCurrentLevel().GetMap();
 
         // Return... Cause you need a map
         if(currentMap == null)
@@ -56,6 +56,12 @@ var Player = /** @class */ (function (){
                     enemies[i].IMustDie();
                     TempestGame.getInstance().AddToScore()
                 }
+                if(TempestGame.getInstance().GetScore() >= 100)
+                {
+                    LevelManager.getInstance().TriggerCredits();
+                    return;
+                }
+                    
                 currentMap.DrawMap();
             }
 
@@ -92,6 +98,12 @@ var Player = /** @class */ (function (){
     Player.prototype.SetPPosition = function (position) {
         this.Position = position;
     };
+
+    Player.prototype.AttemptToWipeAss = function(){
+        this.Sprite.visible = false;
+        this.Sprite.destroy();
+        this.Sprite = null;
+    }
 
     return Player;
 }())

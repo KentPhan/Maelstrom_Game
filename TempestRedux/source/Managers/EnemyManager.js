@@ -5,7 +5,7 @@ var EnemyManager = (function (){
     function init() {
  
         // Singleton
-        var _active = true;
+        var _active = false;
         var _enemySpawnTimeLimit = 1.0;
         var _currentSpawnTimer = 5; 
 
@@ -34,9 +34,10 @@ var EnemyManager = (function (){
                 // Spawning more enemies timer Probs need to swap for something smarter and better later
                 if(_currentSpawnTimer <=0 && _active)
                 {
-                    var index = LevelManager.getInstance().GetCurrentMap().GetRandomIndex();
+                    var currentMap = LevelManager.getInstance().GetCurrentLevel().GetMap();
+                    var index = currentMap.GetRandomIndex();
                     var start = new Vector2(0,0);
-                    var end = LevelManager.getInstance().GetCurrentMap().GetEdgeVectorPosition(index);
+                    var end = currentMap.GetEdgeVectorPosition(index);
 
                     var newEnemy = _standardPool.pop();
                     newEnemy.IMustLive(index,start,end)

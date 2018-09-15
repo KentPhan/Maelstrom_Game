@@ -49,6 +49,9 @@ var StandardEnemy = /** @class */ (function (){
         }
         else if (this.CurrentState == this.EnemyStates.OnEdge)
         {
+            playerIndex = LevelManager.getInstance().GetCurrentLevel().GetPlayer().GetPIndex();
+            if(playerIndex == this.PIndex);
+                LevelManager.getInstance().TriggerGameOver();
             this.IMustDie();
         }
     };
