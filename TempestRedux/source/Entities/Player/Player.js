@@ -16,29 +16,27 @@ var Player = /** @class */ (function (){
     }
 
     Player.prototype.Update = function (deltaTime) {
-        var input = InputManager.getInstance().GetInput();
+        var input = InputManager.getInstance();
         var currentMap = LevelManager.getInstance().GetCurrentLevel().GetMap();
 
         // Return... Cause you need a map
         if(currentMap == null)
             return;
 
-        if(input.left.isDown && this.PrevKey != input.left.keyCode)
+        if(input.GetCounterClockWiseInput())
         {
             
             this.PIndex = currentMap.GetNextIndexCCW(this.PIndex);
             this.Position =  currentMap.GetEdgeVectorPosition(this.PIndex)
-            this.PrevKey = input.left.keyCode;
             currentMap.DrawMap();
         }
-        else if(input.right.isDown && this.PrevKey != input.right.keyCode)
+        else if(input.GetClockWiseInput())
         {
             this.PIndex = currentMap.GetNextIndexCW(this.PIndex);
             this.Position = currentMap.GetEdgeVectorPosition(this.PIndex)
-            this.PrevKey = input.right.keyCode;
             currentMap.DrawMap();
         }
-        else if(input.space.isDown && this.PrevKey != input.space.keyCode)
+        else if(input.GetPrimaryInput())
         {
             // Flip stuff
             if(this.FlipCurrentCooldown < 0)
@@ -46,7 +44,6 @@ var Player = /** @class */ (function (){
                 // Flip to other size
                 this.PIndex = currentMap.GetFlipIndex(this.PIndex)
                 this.Position = currentMap.GetEdgeVectorPosition(this.PIndex)    
-                this.PrevKey = input.space.keyCode;
                 this.FlipCurrentCooldown = this.FlipCooldown;
 
                 // Destroy all enemies in current PIndex
@@ -73,11 +70,6 @@ var Player = /** @class */ (function (){
             //     this.BulletCurrentCooldown = this.BulletCooldown;
             // }
         }
-        else if (input.space.isUp && input.left.isUp && input.right.isUp)
-        {
-            this.PrevKey = 0;
-        }
-
         this.FlipCurrentCooldown -= deltaTime;
         this.Sprite.setPosition(this.Position.x, this.Position.y, 0)
         // this.BulletCurrentCooldown -= deltaTime;

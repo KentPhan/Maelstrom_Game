@@ -116,11 +116,11 @@ var LevelManager = /** @class */ (function ()
                                 LoadLevel(Levels.LEVEL_1)
                             break;
                         case Levels.GAMEOVER:
-                            if(input.GetEscapeInput())
+                            if(input.GetEnterInput())
                                 LoadMenu(Levels.START)
                             break;
                         case Levels.CREDITS:
-                            if(input.GetEscapeInput())
+                            if(input.GetEnterInput())
                                 LoadMenu(Levels.START)
                             break;
                         case Levels.LEVEL_1:

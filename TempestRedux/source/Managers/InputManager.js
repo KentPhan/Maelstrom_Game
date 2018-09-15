@@ -15,6 +15,13 @@ var InputManager = /** @class */ (function ()
         // important game variables in phaser
         var _keyCodes = Phaser.Input.Keyboard.KeyCodes;
         var _input = null;
+        var _prevKey = {
+            Left:false,
+            Right:false,
+            Space: false,
+            Esc: false,
+            Enter: false,
+        };
 
         var Schemes = {
             Keyboard:0,
@@ -44,34 +51,45 @@ var InputManager = /** @class */ (function ()
             }, 
 
             GetClockWiseInput(){
-                
-            },
-            GetCounterClockWiseInput(){
+                var positive = (_input.right.isDown && !_prevKey.Right);
 
+                _prevKey.Right = (positive) ? true : !(_input.right.isUp);
+
+                return positive;
+            },
+
+            GetCounterClockWiseInput(){
+                var positive = (_input.left.isDown && !_prevKey.Left);
+
+                _prevKey.Left = (positive) ? true : !(_input.left.isUp);
+
+                return positive;
             },
 
             GetPrimaryInput(){
 
+                var positive = (_input.space.isDown && !_prevKey.Space);
+
+                _prevKey.Space = (positive) ? true : !(_input.space.isUp);
+                
+                return positive;
             },
 
             GetEscapeInput(){
-                if(_input.esc.isDown)
-                    return true;
-                else
-                    return false;
+                var positive = (_input.esc.isDown && !_prevKey.Esc);
+
+                _prevKey.Esc = (positive) ? true : !(_input.esc.isUp);
+                
+                return positive;
             },
 
             GetEnterInput(){
-                if(_input.enter.isDown)
-                    return true;
-                else
-                    return false;
-                },
+                var positive = (_input.enter.isDown && !_prevKey.Enter);
 
-            GetInput: function(){
-                return _input;
+                _prevKey.Enter = (positive) ? true : !(_input.enter.isUp);
+                
+                return positive;
             }
-        
             //publicProperty: "I am also public",
             //   getRandomNumber: function() {
             //     return privateRandomNumber;
