@@ -39,6 +39,7 @@ var InputManager = /** @class */ (function ()
         }
         var _schemeState = Schemes.Keyboard;
         var _schemeText = "Keyboard";
+        var _instructionText = "SHIFT to Switch"
 
         
         return{
@@ -67,6 +68,7 @@ var InputManager = /** @class */ (function ()
 
 
                 _schemeText = TempestGame.getInstance().GetCurrentScene().add.text( (config.width/2) - 170 , 15 - (config.height/2) , _schemeText, { font: "Bold 32px Arial", fill: '#ffffff' });
+                _instructionText = TempestGame.getInstance().GetCurrentScene().add.text( (config.width/2) - 270 , (config.height/2) - 55 , _instructionText, { font: "Bold 32px Arial", fill: '#ffffff' });
             },
 
             Create: function () {                
@@ -102,6 +104,20 @@ var InputManager = /** @class */ (function ()
                     //     positive = (mouseDirection.dot(directionNormal) > 0)
                     // }
                     // _prevMousePosition =  _mousePointerInput.prevPosition;
+
+                    // Mouse controls 2.0 With locking
+                    if(playerPosition != null)
+                    {
+                        var mouseDirection = new Vector2(_mousePointerInput.movementX, _mousePointerInput.movementY)
+
+                        if(mouseDirection.length() < _minimumMagnitude)
+                        {
+                            return false;
+                        }
+
+                        var directionNormal = new Vector2(playerPosition.y, playerPosition.x * -1)
+                        positive = (mouseDirection.dot(directionNormal) > 0)
+                    }
                 }
 
                 return positive;
@@ -135,6 +151,20 @@ var InputManager = /** @class */ (function ()
                     //     positive = (mouseDirection.dot(directionNormal) > 0)
                     // }
                     // _prevMousePosition =  _mousePointerInput.prevPosition;
+
+                    // Mouse controls 2.0 With locking
+                    if(playerPosition != null)
+                    {
+                        var mouseDirection = new Vector2(_mousePointerInput.movementX, _mousePointerInput.movementY)
+
+                        if(mouseDirection.length() < _minimumMagnitude)
+                        {
+                            return false;
+                        }
+
+                        var directionNormal = new Vector2(playerPosition.y * -1, playerPosition.x)
+                        positive = (mouseDirection.dot(directionNormal) > 0)
+                    }
                 }
 
                 return positive;

@@ -9,7 +9,7 @@ var Player = /** @class */ (function (){
         this.FlipCooldown = 0.1;
         this.FlipCurrentCooldown = 0;
 
-        this.MoveCooldown = 0.1;
+        this.MoveCooldown = 0.08;
         this.MoveCurrentCooldown = 0;
 
         // this.BulletCooldown = 0.1;

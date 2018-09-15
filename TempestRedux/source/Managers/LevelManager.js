@@ -133,7 +133,7 @@ var LevelManager = /** @class */ (function ()
                         input.SwapSchemes();
 
 
-                    console.log(input.GetInput().mousePointer.movementX + " " + input.GetInput().mousePointer.movementY);
+                    //console.log(input.GetInput().mousePointer.movementX + " " + input.GetInput().mousePointer.movementY);
                     //console.log(input.GetInput().mousePointer.prevPosition.x + ""  + input.GetInput().mousePointer.prevPosition.y + " " + input.GetInput().mousePointer.position.x + "" + input.GetInput().mousePointer.position.y);
                     _currentLevel.Update(deltaTime);
                 }
