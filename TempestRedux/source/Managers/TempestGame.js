@@ -13,17 +13,15 @@ var TempestGame = /** @class */ (function ()
         //     console.log( "I am private" );
         // }
         
-        
         //var privateRandomNumber = Math.random();
-        var _camera = null;
-        var _currentMap = null;
+        // important game variables in phaser
         var _scene = scene;
-
         var _graphics = _scene.add.graphics({ });
         var _input = _scene.input.keyboard.createCursorKeys();
 
         // Current Managers
         var _enemyManager = new EnemyManager.getInstance()
+        var _levelManager = new LevelManager.getInstance();
         // var _bulletManager = new BulletManager.getInstance();
 
         var _score = 0;
@@ -31,49 +29,22 @@ var TempestGame = /** @class */ (function ()
 
         return{
 
-            Create: function () {
-
-                // Map TEMP till we get something better.
-                var points = [
-                    new Vector2(-10,100),
-                    new Vector2(10,100),
-                    new Vector2(15,80),
-                    new Vector2(30,50),
-                    new Vector2(70,40),
-                    new Vector2(100,35),
-                    new Vector2(100,-35),
-                    new Vector2(50,-50),
-                    new Vector2(50,-75),
-                    new Vector2(10,-100),
-                    new Vector2(-10,-100),
-                    new Vector2(-50,-75),
-                    new Vector2(-50,-50),
-                    new Vector2(-100,-35),
-                    new Vector2(-100,35),
-                    new Vector2(-70,40),
-                    new Vector2(-30,50),
-                    new Vector2(-15,80)
-                ]
-                _currentMap = new Map(points);                
-                _camera = new Camera(_scene);
+            Create: function () {                
                 _scoreText = _scene.add.text(-600, -325, "Score: " + _score,  { font: "Bold 32px Arial", fill: '#ffffff' });
+
                 _enemyManager.InitializePools();
+                _levelManager.Initialize();
                 //var _playerDeathEffect = new PlayerDeathEffect();
             }, 
         
             Update:  function () {
                 var deltaTime = game.loop.delta/1000;
-                _currentMap.Update(deltaTime, _input);
-        
+
                 _enemyManager.Update(deltaTime);
-                // _bulletManager.Update(deltaTime);
+                _levelManager.Update(deltaTime);
             },
         
             Draw: function () {
-            },
-
-            GetCurrentMap : function(){
-                return _currentMap;
             },
 
             GetGraphics: function(){
@@ -82,6 +53,10 @@ var TempestGame = /** @class */ (function ()
 
             GetCurrentScene: function(){
                 return _scene;
+            },
+
+            GetInput: function(){
+                return _input;
             },
 
             AddToScore: function(){

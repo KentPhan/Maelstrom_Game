@@ -34,9 +34,9 @@ var EnemyManager = (function (){
                 // Spawning more enemies timer Probs need to swap for something smarter and better later
                 if(_currentSpawnTimer <=0 && _active)
                 {
-                    var index = TempestGame.getInstance().GetCurrentMap().GetRandomIndex();
+                    var index = LevelManager.getInstance().GetCurrentMap().GetRandomIndex();
                     var start = new Vector2(0,0);
-                    var end = TempestGame.getInstance().GetCurrentMap().GetEdgeVectorPosition(index);
+                    var end = LevelManager.getInstance().GetCurrentMap().GetEdgeVectorPosition(index);
 
                     var newEnemy = _standardPool.pop();
                     newEnemy.IMustLive(index,start,end)

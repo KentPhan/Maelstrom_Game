@@ -15,20 +15,28 @@ var Player = /** @class */ (function (){
         this.Sprite.scaleY = 0.1;        
     }
 
-    Player.prototype.Update = function (deltaTime,input) {
+    Player.prototype.Update = function (deltaTime) {
+        var input = TempestGame.getInstance().GetInput();
+        var currentMap = LevelManager.getInstance().GetCurrentMap();
+
+        // Return... Cause you need a map
+        if(currentMap == null)
+            return;
+
         if(input.left.isDown && this.PrevKey != input.left.keyCode)
         {
-            this.PIndex = TempestGame.getInstance().GetCurrentMap().GetNextIndexCCW(this.PIndex);
-            this.Position =  TempestGame.getInstance().GetCurrentMap().GetEdgeVectorPosition(this.PIndex)
+            
+            this.PIndex = currentMap.GetNextIndexCCW(this.PIndex);
+            this.Position =  currentMap.GetEdgeVectorPosition(this.PIndex)
             this.PrevKey = input.left.keyCode;
-            TempestGame.getInstance().GetCurrentMap().DrawMap();
+            currentMap.DrawMap();
         }
         else if(input.right.isDown && this.PrevKey != input.right.keyCode)
         {
-            this.PIndex = TempestGame.getInstance().GetCurrentMap().GetNextIndexCW(this.PIndex);
-            this.Position = TempestGame.getInstance().GetCurrentMap().GetEdgeVectorPosition(this.PIndex)
+            this.PIndex = currentMap.GetNextIndexCW(this.PIndex);
+            this.Position = currentMap.GetEdgeVectorPosition(this.PIndex)
             this.PrevKey = input.right.keyCode;
-            TempestGame.getInstance().GetCurrentMap().DrawMap();
+            currentMap.DrawMap();
         }
         else if(input.space.isDown && this.PrevKey != input.space.keyCode)
         {
@@ -36,8 +44,8 @@ var Player = /** @class */ (function (){
             if(this.FlipCurrentCooldown < 0)
             {
                 // Flip to other size
-                this.PIndex = TempestGame.getInstance().GetCurrentMap().GetFlipIndex(this.PIndex)
-                this.Position = TempestGame.getInstance().GetCurrentMap().GetEdgeVectorPosition(this.PIndex)    
+                this.PIndex = currentMap.GetFlipIndex(this.PIndex)
+                this.Position = currentMap.GetEdgeVectorPosition(this.PIndex)    
                 this.PrevKey = input.space.keyCode;
                 this.FlipCurrentCooldown = this.FlipCooldown;
 
@@ -48,7 +56,7 @@ var Player = /** @class */ (function (){
                     enemies[i].IMustDie();
                     TempestGame.getInstance().AddToScore()
                 }
-                TempestGame.getInstance().GetCurrentMap().DrawMap();
+                currentMap.DrawMap();
             }
 
             // Bullet stuff

@@ -28,17 +28,11 @@ var Map = /** @class */ (function (){
                      this.ExPoints[i].y * this.InnerScale))
         }
 
-        //Spawn Player
-        var pIndex = 1
-        var offset = new Vector2((this.ExPoints[pIndex + 1].x - this.ExPoints[pIndex].x)* 0.5, (this.ExPoints[pIndex + 1].y - this.ExPoints[pIndex].y)* 0.5)
-        var newPosition = new Vector2(this.ExPoints[pIndex].x + offset.x, this.ExPoints[pIndex].y + offset.y)
-        this.Player = new Player(pIndex, newPosition);
-
         this.DrawMap()
     }
 
-    Map.prototype.Update = function(deltaTime , input){
-        this.Player.Update(deltaTime, input);
+    Map.prototype.Update = function(deltaTime){
+        
     }
 
     Map.prototype.Draw = function(graphics){
@@ -53,7 +47,7 @@ var Map = /** @class */ (function (){
             return;
 
         // For drawing map stuff relevant to player
-        var playerIndex = this.Player.GetPIndex();
+        var playerIndex = (LevelManager.getInstance().GetCurrentPlayer()) ? LevelManager.getInstance().GetCurrentPlayer().GetPIndex() : null;
         var playerFlipIndex = this.GetFlipIndex(playerIndex);
 
         // Draw Outside
@@ -70,7 +64,7 @@ var Map = /** @class */ (function (){
             }
 
             // Draw lines
-            if(i == playerFlipIndex)
+            if(playerFlipIndex >= 0  && i == playerFlipIndex)
                 graphics.lineStyle(1, this.FlipLineColor, 1);
             else
                 graphics.lineStyle(1, this.BaseLineColor, 1)
@@ -91,7 +85,7 @@ var Map = /** @class */ (function (){
             }
 
             // Draw lines
-            if(i == playerFlipIndex)
+            if(playerFlipIndex >= 0 && i == playerFlipIndex)
                 graphics.lineStyle(1, this.FlipLineColor, 1);
             else
                 graphics.lineStyle(1, this.BaseLineColor, 1)
@@ -103,7 +97,7 @@ var Map = /** @class */ (function (){
         {
             // Define color
             var nextIndex =  ((this.ExPoints.length - 1 ) == playerFlipIndex)? 0 : playerFlipIndex + 1;
-            if(i == playerFlipIndex  || i == nextIndex)
+            if(playerFlipIndex >= 0 && (i == playerFlipIndex  || i == nextIndex))
                 graphics.lineStyle(1, this.FlipLineColor, 1);
             else
                 graphics.lineStyle(1, this.BaseLineColor, 1)
@@ -121,14 +115,10 @@ var Map = /** @class */ (function (){
     }
 
     Map.prototype.GetFlipIndex = function(index){
+        if(index < 0)
+            return null;
         var divisor = (index + (this.ExPoints.length/2));
-
         return divisor % this.ExPoints.length;
-
-        // if(divisor < this.ExPoints.length)
-        //     return divisor % this.ExPoints.length;
-        // else
-        //     return this.ExPoints.length % divisor;
     }
 
     Map.prototype.GetNextIndexCCW = function(index){
