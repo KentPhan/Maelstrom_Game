@@ -21,13 +21,15 @@ var InputManager = /** @class */ (function ()
             Space: false,
             Esc: false,
             Enter: false,
+            Shift: false
         };
 
         var Schemes = {
             Keyboard:0,
             Mouse:1
         }
-        var SchemeState = Schemes.Keyboard;
+        var _schemeState = Schemes.Keyboard;
+        var _schemeText = "Keyboard";
 
         
         return{
@@ -44,6 +46,8 @@ var InputManager = /** @class */ (function ()
                         space:_keyCodes.SPACE,
                         shift:_keyCodes.SHIFT
                     });
+
+                _schemeText = TempestGame.getInstance().GetCurrentScene().add.text( (config.width/2) - 280 , 15 - (config.height/2) , _schemeText, { font: "Bold 32px Arial", fill: '#ffffff' });
             },
 
             Create: function () {                
@@ -89,6 +93,28 @@ var InputManager = /** @class */ (function ()
                 _prevKey.Enter = (positive) ? true : !(_input.enter.isUp);
                 
                 return positive;
+            },
+
+            GetSwapInput(){
+                var positive = (_input.shift.isDown && !_prevKey.Shift);
+
+                _prevKey.Shift = (positive) ? true : !(_input.shift.isUp);
+                
+                return positive;
+            },
+
+
+            SwapSchemes(){
+                if(_schemeState == Schemes.Keyboard)
+                {
+                    _schemeState = Schemes.Mouse;
+                    _schemeText.text = "Mouse";
+                }
+                else
+                {
+                    _schemeState = Schemes.Keyboard;
+                    _schemeText.text = "Keyboard";
+                }
             }
             //publicProperty: "I am also public",
             //   getRandomNumber: function() {

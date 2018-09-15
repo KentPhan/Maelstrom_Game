@@ -128,6 +128,10 @@ var LevelManager = /** @class */ (function ()
                                 LoadMenu(Levels.START)
                             break;
                     }
+
+                    if(input.GetSwapInput())
+                        input.SwapSchemes();
+
                     _currentLevel.Update(deltaTime);
                 }
             },
