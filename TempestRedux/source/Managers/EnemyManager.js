@@ -12,7 +12,7 @@ var EnemyManager = (function (){
         // Need to pool because Javascripts garbage collector is a POS. But I mean... my code is probably a POS too.
         var _activeEnemies = [];
         var _standardPool = [];
-        var _perPoolSize = 10;
+        var _perPoolSize = 20;
 
         return {
      

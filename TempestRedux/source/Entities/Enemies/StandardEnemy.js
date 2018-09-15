@@ -10,6 +10,12 @@ var StandardEnemy = /** @class */ (function (){
             "TowardsEdge":1,
             "OnEdge":2
         }
+
+        this.Rotation = {
+            "Clockwise":1,
+            "CounterClockwise":2
+        }
+        this.IWillGoThisWay = this.Rotation[Math.floor(Math.random() * 2)];
         this.CurrentState = this.EnemyStates.TowardsEdge;
 
 
@@ -18,6 +24,8 @@ var StandardEnemy = /** @class */ (function (){
         this.EndPosition = null;
 
         this.Speed =  50.0;
+        this.EdgeSpeedTimer = 1.5;
+        this.CurrentEdgeSpeedTimer = this.EdgeSpeedTimer;
         this.ScaleSpeed = .05;
 
         this.Direction = null;
@@ -27,6 +35,14 @@ var StandardEnemy = /** @class */ (function (){
         this.Sprite.visible = false;
         this.Sprite.scaleX = 0.05;
         this.Sprite.scaleY = 0.05;        
+
+        this.AngrySprite = TempestGame.getInstance().GetCurrentScene().add.image(0,0, 'alien_angry')
+        this.AngrySprite.visible = false;
+        this.AngrySprite.scaleX = 0.3;
+        this.AngrySprite.scaleY = 0.3;        
+
+
+        this.DangerTint = 0xf00f00 ;
     }
 
     StandardEnemy.prototype.Update = function (deltaTime) {
@@ -45,14 +61,39 @@ var StandardEnemy = /** @class */ (function (){
             if((placement.dot(this.Direction) < 0.0))
             {
                 this.CurrentState = this.EnemyStates.OnEdge;
+                this.Sprite.visible = false;
+                this.AngrySprite.visible = true;
+                this.AngrySprite.setPosition(this.Position.x, this.Position.y, 0)
+                // this.Sprite.tint = this.DangerTint;
             }
         }
         else if (this.CurrentState == this.EnemyStates.OnEdge)
         {
             playerIndex = LevelManager.getInstance().GetCurrentLevel().GetPlayer().GetPIndex();
-            if(playerIndex == this.PIndex);
+            if(playerIndex == this.PIndex)
                 LevelManager.getInstance().TriggerGameOver();
-            this.IMustDie();
+
+            // Pick a random direction to rotate
+            this.CurrentEdgeSpeedTimer -= deltaTime;
+            if(this.CurrentEdgeSpeedTimer <= 0)
+            {
+                var currentMap = LevelManager.getInstance().GetCurrentLevel().GetMap();
+
+                if(this.IWillGoThisWay == this.Rotation.CounterClockwise)
+                {
+                    this.PIndex = currentMap.GetNextIndexCCW(this.PIndex);
+                }
+                else
+                {
+                    this.PIndex = currentMap.GetNextIndexCW(this.PIndex);
+                }
+
+                this.Position =  currentMap.GetEdgeVectorPosition(this.PIndex)
+                this.AngrySprite.setPosition(this.Position.x, this.Position.y, 0)
+                this.CurrentEdgeSpeedTimer = this.EdgeSpeedTimer;
+            }
+            
+            // this.IMustDie();
         }
     };
 
@@ -66,9 +107,14 @@ var StandardEnemy = /** @class */ (function (){
 
     StandardEnemy.prototype.IMustLive = function(pIndex, position, endPosition){
         this.Active = true;
+
         this.Sprite.visible = true;
         this.Sprite.scaleX = 0.05;
         this.Sprite.scaleY = 0.05;        
+        this.AngrySprite.visible = false;
+        this.AngrySprite.scaleX = 0.3;
+        this.AngrySprite.scaleY = 0.3;   
+
         this.CurrentState = this.EnemyStates.TowardsEdge;
         
         this.PIndex = pIndex;
@@ -83,7 +129,8 @@ var StandardEnemy = /** @class */ (function (){
     StandardEnemy.prototype.IMustDie = function(){
         this.Active = false;
         this.Sprite.visible = false;
-        
+        this.AngrySprite.visible = false;
+
         this.PIndex = -1;
         this.Position = null;
         this.EndPosition = null;
