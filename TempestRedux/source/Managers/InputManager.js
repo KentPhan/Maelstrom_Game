@@ -55,51 +55,70 @@ var InputManager = /** @class */ (function ()
             }, 
 
             GetClockWiseInput(){
-                var positive = (_input.right.isDown && !_prevKey.Right);
+                var positive = false;
 
-                _prevKey.Right = (positive) ? true : !(_input.right.isUp);
+                if(_schemeState == Schemes.Keyboard)
+                {
+                    positive = (_input.right.isDown && !_prevKey.Right);
+                    _prevKey.Right = (positive) ? true : !(_input.right.isUp);
+                }
+                else
+                {
+
+                }
 
                 return positive;
             },
 
             GetCounterClockWiseInput(){
-                var positive = (_input.left.isDown && !_prevKey.Left);
+                var positive = false;
 
-                _prevKey.Left = (positive) ? true : !(_input.left.isUp);
+                if(_schemeState == Schemes.Keyboard)
+                {
+                    var positive = (_input.left.isDown && !_prevKey.Left);
+                    _prevKey.Left = (positive) ? true : !(_input.left.isUp);
+                }
+                else
+                {
+                    
+                }
+
+                
 
                 return positive;
             },
 
             GetPrimaryInput(){
-
-                var positive = (_input.space.isDown && !_prevKey.Space);
-
-                _prevKey.Space = (positive) ? true : !(_input.space.isUp);
+                var positive = false;
+                if(_schemeState == Schemes.Keyboard)
+                {
+                    positive = (_input.space.isDown && !_prevKey.Space);
+                    _prevKey.Space = (positive) ? true : !(_input.space.isUp);
+                }
+                else
+                {
+                    
+                }
+                
                 
                 return positive;
             },
 
             GetEscapeInput(){
                 var positive = (_input.esc.isDown && !_prevKey.Esc);
-
                 _prevKey.Esc = (positive) ? true : !(_input.esc.isUp);
-                
                 return positive;
             },
 
             GetEnterInput(){
                 var positive = (_input.enter.isDown && !_prevKey.Enter);
-
                 _prevKey.Enter = (positive) ? true : !(_input.enter.isUp);
-                
                 return positive;
             },
 
             GetSwapInput(){
                 var positive = (_input.shift.isDown && !_prevKey.Shift);
-
                 _prevKey.Shift = (positive) ? true : !(_input.shift.isUp);
-                
                 return positive;
             },
 
