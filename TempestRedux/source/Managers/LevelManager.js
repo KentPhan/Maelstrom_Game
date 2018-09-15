@@ -56,21 +56,7 @@ var LevelManager = /** @class */ (function ()
         var _currentLevelState = null;
         var _currentLevel = null;
         var _currentCamera = null;
-        var _prevKey = 0;
-
-        function EnterKeyDetect(input){
-            if(input.enter.isDown)
-                return true;
-            else
-                return false;
-        }
-
-        function ESCKeyDetect(input){
-            if(input.esc.isDown)
-                return true;
-            else
-                return false;
-        }
+        
 
         function LoadLevel(level){
             var enemyManager = EnemyManager.getInstance();
@@ -122,23 +108,23 @@ var LevelManager = /** @class */ (function ()
             Update:  function (deltaTime) {
                 if(_currentLevel != null)
                 {
-                    var input = InputManager.getInstance().GetInput();
+                    var input = InputManager.getInstance();
                     switch(_currentLevelState)
                     {
                         case Levels.START:
-                            if(EnterKeyDetect(input))
+                            if(input.GetEnterInput())
                                 LoadLevel(Levels.LEVEL_1)
                             break;
                         case Levels.GAMEOVER:
-                            if(ESCKeyDetect(input))
+                            if(input.GetEscapeInput())
                                 LoadMenu(Levels.START)
                             break;
                         case Levels.CREDITS:
-                            if(ESCKeyDetect(input))
+                            if(input.GetEscapeInput())
                                 LoadMenu(Levels.START)
                             break;
                         case Levels.LEVEL_1:
-                            if(ESCKeyDetect(input))
+                            if(input.GetEscapeInput())
                                 LoadMenu(Levels.START)
                             break;
                     }

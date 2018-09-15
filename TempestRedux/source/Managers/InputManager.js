@@ -15,6 +15,13 @@ var InputManager = /** @class */ (function ()
         // important game variables in phaser
         var _keyCodes = Phaser.Input.Keyboard.KeyCodes;
         var _input = null;
+
+        var Schemes = {
+            Keyboard:0,
+            Mouse:1
+        }
+        var SchemeState = Schemes.Keyboard;
+
         
         return{
 
@@ -35,6 +42,31 @@ var InputManager = /** @class */ (function ()
             Create: function () {                
                 
             }, 
+
+            GetClockWiseInput(){
+                
+            },
+            GetCounterClockWiseInput(){
+
+            },
+
+            GetPrimaryInput(){
+
+            },
+
+            GetEscapeInput(){
+                if(_input.esc.isDown)
+                    return true;
+                else
+                    return false;
+            },
+
+            GetEnterInput(){
+                if(_input.enter.isDown)
+                    return true;
+                else
+                    return false;
+                },
 
             GetInput: function(){
                 return _input;
