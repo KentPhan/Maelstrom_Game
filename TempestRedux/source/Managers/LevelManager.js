@@ -23,7 +23,7 @@ var LevelManager = /** @class */ (function ()
             LEVEL_1:4,
             properties:{
                 1: {IS_UI:true, TEXT:"Start Game", X:-160, Y:-20},
-                2: {IS_UI:true, TEXT:"ALL YOUR BASE ARE\n     BELONG TO US!", X:-380, Y:-50},
+                2: {IS_UI:true, TEXT:"ALL YOUR BASE ARE\n     BELONG TO US", X:-380, Y:-50},
                 3: {IS_UI:true, TEXT:"Our Great Credits:", X:-320, Y:-20},
                 4: {IS_UI:false,
                     MAP_POINTS:[

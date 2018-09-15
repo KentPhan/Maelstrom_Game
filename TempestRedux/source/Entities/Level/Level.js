@@ -20,7 +20,7 @@ var Level = /** @class */ (function (){
             var newPosition = this.Map.GetEdgeVectorPosition(pIndex)
             this.Player = new Player(pIndex, newPosition);
             this.Map.DrawMap();
-            //EnemyManager.getInstance().ActivateEnemies();
+            EnemyManager.getInstance().ActivateEnemies();
         }
     }
 

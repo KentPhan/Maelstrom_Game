@@ -28,7 +28,7 @@ var InputManager = /** @class */ (function ()
 
 
         var _prevMousePosition = null;
-        var _minimumMagnitude = 4;
+        var _minimumMagnitude = 10;
         var _prevMousePress ={
             LeftClick: false
         }
