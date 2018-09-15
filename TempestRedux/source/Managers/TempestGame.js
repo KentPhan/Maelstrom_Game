@@ -16,23 +16,10 @@ var TempestGame = /** @class */ (function ()
         var _scene = scene;
         var _graphics = _scene.add.graphics({ });
 
-        var keyCodes = Phaser.Input.Keyboard.KeyCodes;
-        var _input = _scene.input.keyboard.addKeys(
-            {
-                enter: keyCodes.ENTER,
-                esc: keyCodes.ESC,
-                up:keyCodes.UP,
-                down:keyCodes.DOWN,
-                left:keyCodes.LEFT,
-                right:keyCodes.RIGHT,
-                space:keyCodes.SPACE,
-                shift:keyCodes.SHIFT
-            });
-        //_input.keyboard.addKeys({Phaser.Input.Keyboard.KeyCodes.ENTER})
-
         // Current Managers
-        var _enemyManager = new EnemyManager.getInstance()
+        var _enemyManager = new EnemyManager.getInstance();
         var _levelManager = new LevelManager.getInstance();
+        var _inputManager = new InputManager.getInstance();
         // var _bulletManager = new BulletManager.getInstance();
 
         var _score = 0;
@@ -45,6 +32,7 @@ var TempestGame = /** @class */ (function ()
                 _scoreText.visible = false;
                 _enemyManager.InitializePools(); // could probably move this to level maybe
                 _levelManager.Initialize();
+                _inputManager.Initialize();
                 //var _playerDeathEffect = new PlayerDeathEffect();
             }, 
         
@@ -64,10 +52,6 @@ var TempestGame = /** @class */ (function ()
 
             GetCurrentScene: function(){
                 return _scene;
-            },
-
-            GetInput: function(){
-                return _input;
             },
 
             AddToScore: function(){

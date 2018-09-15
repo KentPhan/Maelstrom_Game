@@ -122,7 +122,7 @@ var LevelManager = /** @class */ (function ()
             Update:  function (deltaTime) {
                 if(_currentLevel != null)
                 {
-                    var input = TempestGame.getInstance().GetInput();
+                    var input = InputManager.getInstance().GetInput();
                     switch(_currentLevelState)
                     {
                         case Levels.START:

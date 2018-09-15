@@ -16,7 +16,7 @@ var Player = /** @class */ (function (){
     }
 
     Player.prototype.Update = function (deltaTime) {
-        var input = TempestGame.getInstance().GetInput();
+        var input = InputManager.getInstance().GetInput();
         var currentMap = LevelManager.getInstance().GetCurrentLevel().GetMap();
 
         // Return... Cause you need a map
