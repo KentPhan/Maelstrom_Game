@@ -8,6 +8,10 @@ var Player = /** @class */ (function (){
 
         this.FlipCooldown = 0.1;
         this.FlipCurrentCooldown = 0;
+
+        this.MoveCooldown = 0.1;
+        this.MoveCurrentCooldown = 0;
+
         // this.BulletCooldown = 0.1;
         // this.BulletCurrentCooldown = 0;
         this.Sprite = TempestGame.getInstance().GetCurrentScene().add.image(0,0,'bullet');
@@ -23,18 +27,22 @@ var Player = /** @class */ (function (){
         if(currentMap == null)
             return;
 
-        if(input.GetCounterClockWiseInput())
+        if(this.MoveCurrentCooldown <= 0 && input.GetCounterClockWiseInput(this.Position))
         {
             
             this.PIndex = currentMap.GetNextIndexCCW(this.PIndex);
             this.Position =  currentMap.GetEdgeVectorPosition(this.PIndex)
             currentMap.DrawMap();
+
+            this.MoveCurrentCooldown = this.MoveCooldown;
         }
-        else if(input.GetClockWiseInput())
+        else if(this.MoveCurrentCooldown <= 0 && input.GetClockWiseInput(this.Position))
         {
             this.PIndex = currentMap.GetNextIndexCW(this.PIndex);
             this.Position = currentMap.GetEdgeVectorPosition(this.PIndex)
             currentMap.DrawMap();
+
+            this.MoveCurrentCooldown = this.MoveCooldown;
         }
         else if(input.GetPrimaryInput())
         {
@@ -71,6 +79,7 @@ var Player = /** @class */ (function (){
             // }
         }
         this.FlipCurrentCooldown -= deltaTime;
+        this.MoveCurrentCooldown -= deltaTime;
         this.Sprite.setPosition(this.Position.x, this.Position.y, 0)
         // this.BulletCurrentCooldown -= deltaTime;
     };
