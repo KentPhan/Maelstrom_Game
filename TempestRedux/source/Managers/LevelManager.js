@@ -27,7 +27,6 @@ var LevelManager = /** @class */ (function ()
                 3: {IS_UI:true, TEXT:"Our Great Credits:", X:-320, Y:-20},
                 4: {IS_UI:false,
                     MAP_POINTS:[
-                        new Vector2(-100,-100),
                         new Vector2(-90,-75),
                         new Vector2(-80,-50),
                         new Vector2(-70,-25),
