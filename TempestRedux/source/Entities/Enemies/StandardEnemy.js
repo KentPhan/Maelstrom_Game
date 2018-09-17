@@ -23,7 +23,7 @@ var StandardEnemy = /** @class */ (function (){
         this.Position = null;
         this.EndPosition = null;
 
-        this.Speed =  50.0;
+        this.Speed =  100.0;
         this.EdgeSpeedTimer = 1.5;
         this.CurrentEdgeSpeedTimer = this.EdgeSpeedTimer;
         this.ScaleSpeed = .05;
@@ -64,7 +64,6 @@ var StandardEnemy = /** @class */ (function (){
                 this.Sprite.visible = false;
                 this.AngrySprite.visible = true;
                 this.AngrySprite.setPosition(this.Position.x, this.Position.y, 0)
-                // this.Sprite.tint = this.DangerTint;
             }
         }
         else if (this.CurrentState == this.EnemyStates.OnEdge)
@@ -73,27 +72,30 @@ var StandardEnemy = /** @class */ (function (){
             if(playerIndex == this.PIndex)
                 LevelManager.getInstance().TriggerGameOver();
 
-            // Pick a random direction to rotate
-            this.CurrentEdgeSpeedTimer -= deltaTime;
-            if(this.CurrentEdgeSpeedTimer <= 0)
-            {
-                var currentMap = LevelManager.getInstance().GetCurrentLevel().GetMap();
 
-                if(this.IWillGoThisWay == this.Rotation.CounterClockwise)
-                {
-                    this.PIndex = currentMap.GetNextIndexCCW(this.PIndex);
-                }
-                else
-                {
-                    this.PIndex = currentMap.GetNextIndexCW(this.PIndex);
-                }
+            this.IMustDie();
 
-                this.Position =  currentMap.GetEdgeVectorPosition(this.PIndex)
-                this.AngrySprite.setPosition(this.Position.x, this.Position.y, 0)
-                this.CurrentEdgeSpeedTimer = this.EdgeSpeedTimer;
-            }
+            // // Pick a random direction to rotate
+            // this.CurrentEdgeSpeedTimer -= deltaTime;
+            // if(this.CurrentEdgeSpeedTimer <= 0)
+            // {
+            //     var currentMap = LevelManager.getInstance().GetCurrentLevel().GetMap();
+
+            //     if(this.IWillGoThisWay == this.Rotation.CounterClockwise)
+            //     {
+            //         this.PIndex = currentMap.GetNextIndexCCW(this.PIndex);
+            //     }
+            //     else
+            //     {
+            //         this.PIndex = currentMap.GetNextIndexCW(this.PIndex);
+            //     }
+
+            //     this.Position =  currentMap.GetEdgeVectorPosition(this.PIndex)
+            //     this.AngrySprite.setPosition(this.Position.x, this.Position.y, 0)
+            //     this.CurrentEdgeSpeedTimer = this.EdgeSpeedTimer;
+            // }
             
-            // this.IMustDie();
+            
         }
     };
 
