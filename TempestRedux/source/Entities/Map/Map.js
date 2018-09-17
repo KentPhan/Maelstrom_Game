@@ -1,3 +1,9 @@
+var SpecialPoints = {
+    BoundStart:1, // A point you can't move past or move onto
+    BoundEnd:2
+
+}
+
 var Map = /** @class */ (function (){
 
     
@@ -5,23 +11,23 @@ var Map = /** @class */ (function (){
     // TODO Strange issue occuring where this might be getting called upon ending level and switching to UI
     function Map(points)
     {
-        this.SpecialPoints = {
-            Bound:1 // A point you can't move past or move onto
-        }
-
-        this.ExPoints = [];
-        for(var i = 0; i < points.length; i++)
-        {
-            if(points[i] == null)
-                this.ExPoints.push(this.SpecialPoints.Bound);
-            else
-                this.ExPoints.push(new Vector2(points[i].x,points[i].y));
-        }
-        
+        // Set scale values and colors
         this.InnerScale = 0.075;
         this.TotalScale = 2.5;
         this.BaseLineColor = 0xF00000;
         this.FlipLineColor = 0xFFFF33;
+
+        // Store ExPoints
+        this.ExPoints = [];
+        for(var i = 0; i < points.length; i++)
+        {
+            if(points[i] == SpecialPoints.BoundStart)
+                this.ExPoints.push(SpecialPoints.BoundStart);
+            else if (points[i] == SpecialPoints.BoundEnd)
+                this.ExPoints.push(SpecialPoints.BoundEnd);
+            else
+                this.ExPoints.push(new Vector2(points[i].x,points[i].y));
+        }
 
         if(this.ExPoints.length <= 1)
             return;
@@ -29,7 +35,7 @@ var Map = /** @class */ (function (){
         // Total scale for making a level bigger
         for(var i = 0; i < this.ExPoints.length; i++)
         {
-            if(this.ExPoints[i] == this.SpecialPoints.Bound)
+            if(this.ExPoints[i] == SpecialPoints.BoundStart || this.ExPoints[i] == SpecialPoints.BoundEnd)
             {
 
             }
@@ -39,15 +45,16 @@ var Map = /** @class */ (function (){
                 this.ExPoints[i].y *= this.TotalScale; 
             }
         }
-            
+        
+        // Set InPoints
         // Scale of inner relative to total scale
         this.InPoints = [];
         for(var i = 0; i < this.ExPoints.length; i++)
         {
-            if(this.ExPoints[i] == this.SpecialPoints.Bound)
-            {
-                this.InPoints.push(this.SpecialPoints.Bound);
-            }
+            if(this.ExPoints[i] == SpecialPoints.BoundStart)
+                this.InPoints.push(SpecialPoints.BoundStart);
+            else if(this.ExPoints[i] == SpecialPoints.BoundEnd)
+                this.InPoints.push(SpecialPoints.BoundEnd);
             else
             {
                 this.InPoints.push(
@@ -78,7 +85,7 @@ var Map = /** @class */ (function (){
         var playerIndex = (currentPlayer) ? currentPlayer.GetPIndex() : null;
         var playerFlipIndex = this.GetFlipIndex(playerIndex);
 
-        // Draw Outside
+        // Draw Outside ExPoints
         for(var i = 0; i < this.ExPoints.length; i++)
         {
             var nextPoint;
@@ -97,8 +104,8 @@ var Map = /** @class */ (function (){
             else
                 graphics.lineStyle(1, this.BaseLineColor, 1)
 
-            // Skip drawing bound points
-            if(this.ExPoints[i] == this.SpecialPoints.Bound || nextPoint == this.SpecialPoints.Bound)
+            // Skip drawing boundary
+            if(this.ExPoints[i] == SpecialPoints.BoundEnd && nextPoint == SpecialPoints.BoundStart)
                 continue;
 
             graphics.lineBetween(this.ExPoints[i].x,this.ExPoints[i].y,nextPoint.x,nextPoint.y);         
@@ -124,7 +131,7 @@ var Map = /** @class */ (function (){
                 graphics.lineStyle(1, this.BaseLineColor, 1)
 
             // Skip drawing bound points
-            if(this.InPoints[i] == this.SpecialPoints.Bound || nextPoint == this.SpecialPoints.Bound)
+            if(this.InPoints[i] == SpecialPoints.BoundEnd && nextPoint == SpecialPoints.BoundStart)
                 continue;
 
             graphics.lineBetween(this.InPoints[i].x,this.InPoints[i].y,nextPoint.x,nextPoint.y);
@@ -141,10 +148,11 @@ var Map = /** @class */ (function (){
                 graphics.lineStyle(1, this.BaseLineColor, 1)
 
             // Bounds Check
-            if(this.ExPoints[i] == this.SpecialPoints.Bound ||  this.InPoints[i] == this.SpecialPoints.Bound)
-                continue;
-            if(this.ExPoints[nextIndex] == this.SpecialPoints.Bound ||  this.InPoints[nextIndex] == this.SpecialPoints.Bound)
-                continue;
+            // if(this.ExPoints[i] == SpecialPoints.BoundStart ||  this.InPoints[i] == SpecialPoints.BoundStart ||
+            //     this.ExPoints[nextIndex] == SpecialPoints.BoundEnd ||  this.InPoints[nextIndex] == SpecialPoints.BoundEnd )
+            //     continue;
+            // if()
+            //     continue;
 
             graphics.lineBetween(this.ExPoints[i].x,this.ExPoints[i].y, this.InPoints[i].x, this.InPoints[i].y);
         }
@@ -157,7 +165,19 @@ var Map = /** @class */ (function (){
             nextIndex = 0;
 
         // Bounds Check
-        if(this.ExPoints[nextIndex] == this.SpecialPoints.Bound ||  this.InPoints[nextIndex] == this.SpecialPoints.Bound)
+        if(this.ExPoints[nextIndex + 2] == SpecialPoints.BoundEnd)
+            return index;
+
+        return nextIndex;
+    }
+
+    Map.prototype.GetNextIndexCCW = function(index){
+        var nextIndex = index -  1 ;
+
+        if(nextIndex < 0)
+            nextIndex = this.ExPoints.length - 1;
+            
+        if(this.ExPoints[nextIndex] == SpecialPoints.BoundEnd)
             return index;
 
         return nextIndex;
@@ -170,31 +190,21 @@ var Map = /** @class */ (function (){
         var nextIndex = divisor % this.ExPoints.length;
 
         // Bounds Check
-        if(this.ExPoints[nextIndex] == this.SpecialPoints.Bound ||  this.InPoints[nextIndex] == this.SpecialPoints.Bound)
+        if(this.ExPoints[nextIndex] == SpecialPoints.BoundEnd)
             return index;
 
         return nextIndex;
     }
 
-    Map.prototype.GetNextIndexCCW = function(index){
-        var nextIndex = index -  1 ;
-        if(nextIndex < 0)
-            return this.ExPoints.length - 1;
-        else
-            return nextIndex;
-
-            
-        if(this.ExPoints[i] == this.SpecialPoints.Bound || nextPoint == this.SpecialPoints.Bound)
-            return index;
-
-        return nextIndex;
-    }
+    
 
     Map.prototype.GetCenter = function(){
         return new Vector2(0,0);
     }
 
     Map.prototype.GetRandomIndex = function(){
+        // Make sure spawn is not a boundary
+
         return Math.floor(Math.random() * this.ExPoints.length)
     }
 
@@ -213,6 +223,5 @@ var Map = /** @class */ (function (){
         this.ExPoints = null;
         this.InPoints = null;
     }
-
     return Map;
 }())

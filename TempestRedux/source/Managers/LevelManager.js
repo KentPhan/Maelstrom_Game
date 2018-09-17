@@ -35,6 +35,8 @@ var LevelManager = /** @class */ (function ()
                         new Vector2(-40,50),
                         new Vector2(-30,75),
                         new Vector2(-20,100),
+                        SpecialPoints.BoundStart,
+                        SpecialPoints.BoundEnd,
                         new Vector2(20,100),
                         new Vector2(30,75),
                         new Vector2(40,50),
@@ -44,6 +46,8 @@ var LevelManager = /** @class */ (function ()
                         new Vector2(80,-50),
                         new Vector2(90,-75),
                         new Vector2(100,-100),
+                        SpecialPoints.BoundStart,
+                        SpecialPoints.BoundEnd,
                         new Vector2(-100,-100),
                     ]
                 }
