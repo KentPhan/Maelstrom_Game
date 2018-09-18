@@ -5,13 +5,15 @@ var Player = /** @class */ (function (){
         this.PlayerStates = {
             TeleportingIn:0,
             TeleportingOut:1,
-            Default:2
+            Default:2,
+            LevelTransitioning:3
         }
         this.CurrentState = this.PlayerStates.Default
         this.TeleportedFrom = null;
         this.TeleportDestination = null;
         this.TeleportDirection = null;
         this.OriginDirection = null;
+        this.TransitionCallBack = null;
         
         this.TeleportSpeed = 1500;
 
@@ -33,9 +35,6 @@ var Player = /** @class */ (function (){
         this.CenterScale = 0.1;
         this.Sprite.scaleX = this.FinalScale;
         this.Sprite.scaleY = this.FinalScale;
-
-        //audio
-        this.DashSound = TempestGame.getInstance().GetCurrentScene().sound.add('dash_sfx');
         
     }
 
@@ -86,8 +85,6 @@ var Player = /** @class */ (function (){
                     this.OriginDirection.normalize();
 
                     this.CurrentState = this.PlayerStates.TeleportingIn;
-
-                    this.DashSound.play();
                 }
     
                 // Bullet stuff
@@ -99,7 +96,7 @@ var Player = /** @class */ (function (){
                 // }
             }
         }
-        else if (this.CurrentState == this.PlayerStates.TeleportingIn)
+        else if (this.CurrentState == this.PlayerStates.TeleportingIn || this.CurrentState == this.PlayerStates.LevelTransitioning)
         {
             var mapCenter = currentMap.GetCenter();
             var velocity = new Vector2( deltaTime * this.OriginDirection.x * this.TeleportSpeed, deltaTime * this.OriginDirection.y * this.TeleportSpeed)
@@ -114,6 +111,13 @@ var Player = /** @class */ (function (){
             // Check if past center, if so. mark bullet for deletion
             if((ToOriginDestination.dot(this.OriginDirection) < 0.0))
             {
+                if(this.CurrentState == this.PlayerStates.LevelTransitioning)
+                {
+                    this.TransitionCallBack();
+                    this.Sprite.visible = false;
+                    return;
+                }
+
 
                 this.Position = mapCenter;
                 this.TeleportDirection = new Vector2(this.TeleportDestination.x - this.Position.x, this.TeleportDestination.y - this.Position.y);
@@ -152,8 +156,6 @@ var Player = /** @class */ (function (){
             // Check if past center, if so. mark bullet for deletion
             if((ToTeleportDestination.dot(this.TeleportDirection) < 0.0))
             {
-                
-
                 this.Position = this.TeleportDestination;
                 
                 // Point out now
@@ -172,9 +174,10 @@ var Player = /** @class */ (function (){
                     enemies[i].IMustDie();
                     TempestGame.getInstance().AddToScore()
                 }
-                if(TempestGame.getInstance().GetScore() >= 100)
+
+                if(TempestGame.getInstance().CheckScoreMileStone())
                 {
-                    LevelManager.getInstance().TriggerCredits();
+                    LevelManager.getInstance().TriggerNextLevel();
                     return;
                 }
 
@@ -190,6 +193,17 @@ var Player = /** @class */ (function (){
 
     Player.prototype.Draw = function (graphics) {
         // graphics.fillCircle(this.Position.x,this.Position.y, 25);
+    };
+
+    Player.prototype.TransitionToNextLevel = function(callback)
+    {
+        var mapCenter = LevelManager.getInstance().GetCurrentLevel().GetMap().GetCenter();
+        this.TeleportedFrom = new Vector2(this.Position.x, this.Position.y);
+        this.OriginDirection = new Vector2(mapCenter.x - this.Position.x, mapCenter.y - this.Position.y);
+        this.OriginDirection.normalize();
+        this.CurrentState = this.PlayerStates.LevelTransitioning;
+
+        this.TransitionCallBack = callback;
     };
 
     Player.prototype.IsImmortal = function(){

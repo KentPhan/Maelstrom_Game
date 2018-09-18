@@ -24,6 +24,8 @@ var TempestGame = /** @class */ (function ()
 
         var _score = 0;
         var _scoreText;
+        var _pointMilestone = 20;
+        var _previousMilestrong = _score;
 
         var _background;
 
@@ -71,6 +73,15 @@ var TempestGame = /** @class */ (function ()
                 _scoreText.visible = false;
             },
             
+            CheckScoreMileStone: function(){
+                if(_score > (_previousMilestrong + _pointMilestone))
+                {
+                    _previousMilestrong = _score;
+                    return true;
+                }
+                return false;
+            },
+
             ShowScore: function(){
                 _scoreText.visible = true;
             },

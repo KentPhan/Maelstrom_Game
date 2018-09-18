@@ -1,5 +1,5 @@
 var Level = /** @class */ (function (){
-
+    var self;
     function Level(properties)
     {
         if(properties.IS_UI)
@@ -22,6 +22,8 @@ var Level = /** @class */ (function (){
             this.Player = new Player(pIndex, newPosition);
             EnemyManager.getInstance().ActivateEnemies();
         }
+        self = this;
+        
     }
 
     Level.prototype.Update = function (deltaTime) {
@@ -42,7 +44,13 @@ var Level = /** @class */ (function (){
     {
         if(!this.IsUI)
         {
-            this.Map.BeingUnloadMap(function(){
+            // this.Player.TransitionToNextLevel(function(){
+            //     self.Map.BeingUnloadMap(function(){
+            //         callback();
+            //     });        
+            // });
+
+            self.Map.BeingUnloadMap(function(){
                 callback();
             });    
         }
