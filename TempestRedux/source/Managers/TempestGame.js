@@ -12,7 +12,7 @@ var TempestGame = /** @class */ (function ()
         // }
         
         //var privateRandomNumber = Math.random();
-        // important game variables in phaser
+        // important game variables in phaserx
         var _scene = scene;
         var _graphics = _scene.add.graphics({ });
 
@@ -25,9 +25,17 @@ var TempestGame = /** @class */ (function ()
         var _score = 0;
         var _scoreText;
 
+        var _background;
+
+        //audio
+        var _track;
+
         return{
 
-            Create: function () {                
+            Create: function () {         
+                _track = _scene.sound.add('track');
+                _track.play( { loop: true, volume: 0.75 });
+                _background = new Background();            
                 _scoreText = _scene.add.text(-600, -325, "Score: " + _score,  { font: "Bold 32px Arial", fill: '#ffffff' });
                 _scoreText.visible = false;
                 _enemyManager.InitializePools(); // could probably move this to level maybe

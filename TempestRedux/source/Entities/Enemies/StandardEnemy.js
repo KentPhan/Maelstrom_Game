@@ -43,6 +43,9 @@ var StandardEnemy = /** @class */ (function (){
 
         this.DeathParticle = new PlayerDeathEffect();
 
+        //audio
+        this.DashSound = TempestGame.getInstance().GetCurrentScene().sound.add('explosion_sfx');
+
         this.DangerTint = 0xf00f00 ;
     }
 
@@ -148,6 +151,7 @@ var StandardEnemy = /** @class */ (function (){
         //this.DeathParticle.GetEmitter().tint = this.DangerTint;
         this.DeathParticle.GetEmitter().explode();
         TempestGame.getInstance().GetCurrentScene().cameras.main.shake(350, 0.01);
+        this.DashSound.play();
         
         this.Active = false;
         this.Sprite.visible = false;

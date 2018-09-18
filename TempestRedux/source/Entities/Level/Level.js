@@ -18,8 +18,8 @@ var Level = /** @class */ (function (){
             //Spawn Player
             var pIndex = 0
             var newPosition = this.Map.GetEdgeVectorPosition(pIndex)
-            this.Player = new Player(pIndex, newPosition);
             this.Map.DrawMap();
+            this.Player = new Player(pIndex, newPosition);
             EnemyManager.getInstance().ActivateEnemies();
         }
     }

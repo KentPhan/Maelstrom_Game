@@ -33,6 +33,9 @@ var Player = /** @class */ (function (){
         this.CenterScale = 0.1;
         this.Sprite.scaleX = this.FinalScale;
         this.Sprite.scaleY = this.FinalScale;
+
+        //audio
+        this.DashSound = TempestGame.getInstance().GetCurrentScene().sound.add('dash_sfx');
         
     }
 
@@ -84,7 +87,7 @@ var Player = /** @class */ (function (){
 
                     this.CurrentState = this.PlayerStates.TeleportingIn;
 
-                    
+                    this.DashSound.play();
                 }
     
                 // Bullet stuff
@@ -149,6 +152,8 @@ var Player = /** @class */ (function (){
             // Check if past center, if so. mark bullet for deletion
             if((ToTeleportDestination.dot(this.TeleportDirection) < 0.0))
             {
+                
+
                 this.Position = this.TeleportDestination;
                 
                 // Point out now
