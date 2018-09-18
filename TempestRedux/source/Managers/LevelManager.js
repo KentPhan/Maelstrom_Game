@@ -29,7 +29,7 @@ var LevelManager = /** @class */ (function ()
             properties:{
                 1: {IS_UI:true, TEXT:function(){return "Start Game"}, X:-160, Y:-20},
                 2: {IS_UI:true, TEXT:function(){return "ALL YOUR BASE ARE\n     BELONG TO US\n        Final Score: " + TempestGame.getInstance().GetScore()}, X:-380, Y:-70},
-                3: {IS_UI:true, TEXT:function(){return "Our Great Credits:"}, X:-320, Y:-20},
+                3: {IS_UI:true, TEXT:function(){return "Our Great Credits:\nFinal Score:"+ TempestGame.getInstance().GetScore()}, X:-320, Y:-20},
                 4: {IS_UI:false,
                     MAP_POINTS:[
                         new Vector2(-100,-100),
