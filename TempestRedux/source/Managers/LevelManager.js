@@ -22,6 +22,10 @@ var LevelManager = /** @class */ (function ()
             CREDITS:3,
             LEVEL_1:4,
             LEVEL_2:5,
+            LEVEL_3:6,
+            LEVEL_4:7,
+            LEVEL_5:8,
+            LEVEL_6:9,
             properties:{
                 1: {IS_UI:true, TEXT:"Start Game", X:-160, Y:-20},
                 2: {IS_UI:true, TEXT:"ALL YOUR BASE ARE\n     BELONG TO US", X:-380, Y:-50},
@@ -72,7 +76,113 @@ var LevelManager = /** @class */ (function ()
                         new Vector2(100,-75),
                         new Vector2(50,-87.5),
                     ]
+                },
+                6: {IS_UI:false,
+                    MAP_POINTS:[
+                        new Vector2(0,-100),
+                        new Vector2(-15,-65),
+                        new Vector2(-25,-35),
+                        new Vector2(-62.5,-35),
+                        new Vector2(-100,-35),
+                        new Vector2(-70.67,-12.375),
+                        new Vector2(-41.34,10.25),
+                        new Vector2(-58.17,55.125),
+                        new Vector2(-75,100),
+                        new Vector2(-37.4,71.07),
+                        new Vector2(0,42.14),
+                        new Vector2(37.4,71.07),
+                        new Vector2(75,100),
+                        new Vector2(58.17,55.125),
+                        new Vector2(41.34,10.25),
+                        new Vector2(70.67,-12.375),
+                        new Vector2(100,-35),
+                        new Vector2(62.5,-35),
+                        new Vector2(25,-35),
+                        new Vector2(15,-65),
+                    ]
+                },
+                7: {IS_UI:false,
+                    MAP_POINTS:[
+                        new Vector2(0,-75),
+                        new Vector2(-50,-100),
+                        new Vector2(-65,-50),
+                        new Vector2(-100,-25),
+                        new Vector2(-80,0),
+                        new Vector2(-100,25),
+                        new Vector2(-60,45),
+                        new Vector2(-45,90),
+                        new Vector2(0,80),
+                        new Vector2(45,90),
+                        new Vector2(60,45),
+                        new Vector2(100,25),
+                        new Vector2(80,0),
+                        new Vector2(100,-25),
+                        new Vector2(65,-50),
+                        new Vector2(50,-100),
+                    ]
+                },
+                8: {IS_UI:false,
+                    MAP_POINTS:[
+                        new Vector2(-15,-75),
+                        new Vector2(-50,-100),
+                        new Vector2(-85,-60),
+                        new Vector2(-100,-15),
+                        new Vector2(-100,20),
+                        new Vector2(-85,60),
+                        new Vector2(-50,100),
+                        new Vector2(-10,50),
+                        new Vector2(10,50),
+                        new Vector2(50,100),
+                        new Vector2(85,60),
+                        new Vector2(100,20),
+                        new Vector2(100,-15),
+                        new Vector2(85,-60),
+                        new Vector2(50,-100),
+                        new Vector2(15,-75),
+                    ]
+                },
+                9: {IS_UI:false,
+                    MAP_POINTS:[
+                        new Vector2(-20,-100),
+                        new Vector2(-20,-80),
+                        new Vector2(-40,-80),
+                        new Vector2(-40,-60),
+                        new Vector2(-60,-60),
+                        new Vector2(-60,-40),
+                        new Vector2(-80,-40),
+                        new Vector2(-80,-20),
+                        new Vector2(-100,-20),
+                        new Vector2(-100,20),
+                        new Vector2(-80,20),
+                        new Vector2(-80,40),
+                        new Vector2(-60,40),
+                        new Vector2(-60,60),
+                        new Vector2(-40,60),
+                        new Vector2(-40,80),
+                        new Vector2(-20,80),
+                        new Vector2(-20,100),
+                        new Vector2(20,100),
+                        new Vector2(20,80),
+                        new Vector2(40,80),
+                        new Vector2(40,60),
+                        new Vector2(60,60),
+                        new Vector2(60,40),
+                        new Vector2(80,40),
+                        new Vector2(80,20),
+                        new Vector2(100,20),
+                        new Vector2(100,-20),
+                        new Vector2(80,-20),
+                        new Vector2(80,-40),
+                        new Vector2(60,-40),
+                        new Vector2(60,-60),
+                        new Vector2(40,-60),
+                        new Vector2(40,-80),
+                        new Vector2(20,-80),
+                        new Vector2(20,-100),
+                                       ]
                 }
+
+                
                 // 4: {IS_UI:false,
                 //     MAP_POINTS:[
                 //         new Vector2(-10,100),
@@ -172,13 +282,10 @@ var LevelManager = /** @class */ (function ()
                             if(input.GetEnterInput())
                                 LoadMenu(Levels.START)
                             break;
-                        case Levels.LEVEL_1:
+                        default:
                             if(input.GetEscapeInput())
-                                LoadLevel(Levels.LEVEL_2)
-                            break;
-                        case Levels.LEVEL_2:
-                            if(input.GetEscapeInput())
-                                LoadMenu(Levels.START)
+                                //LoadMenu(Levels.START)
+                                this.TriggerNextLevel();
                             break;
                     }
 
@@ -197,7 +304,36 @@ var LevelManager = /** @class */ (function ()
             },
 
             TriggerNextLevel: function(){
-
+                switch(_currentLevelState)
+                {
+                    case Levels.START:
+                        LoadLevel(Levels.LEVEL_1)
+                        break;
+                    case Levels.GAMEOVER:
+                        LoadMenu(Levels.START)
+                        break;
+                    case Levels.CREDITS:
+                        LoadMenu(Levels.START)
+                        break;
+                    case Levels.LEVEL_1:
+                        LoadLevel(Levels.LEVEL_2)
+                        break;
+                    case Levels.LEVEL_2:
+                        LoadLevel(Levels.LEVEL_3)
+                        break;
+                    case Levels.LEVEL_3:
+                        LoadLevel(Levels.LEVEL_4)
+                        break;
+                    case Levels.LEVEL_4:
+                        LoadLevel(Levels.LEVEL_5)
+                        break;
+                    case Levels.LEVEL_5:
+                        LoadLevel(Levels.LEVEL_6)
+                        break;
+                    case Levels.LEVEL_6:
+                        this.TriggerCredits();
+                        break;
+                }
             },
 
             TriggerCredits: function(){
