@@ -69,8 +69,10 @@ var StandardEnemy = /** @class */ (function (){
         }
         else if (this.CurrentState == this.EnemyStates.OnEdge)
         {
-            playerIndex = LevelManager.getInstance().GetCurrentLevel().GetPlayer().GetPIndex();
-            if(playerIndex == this.PIndex)
+            var player = LevelManager.getInstance().GetCurrentLevel().GetPlayer();
+            var playerIndex = player.GetPIndex();
+
+            if(playerIndex == this.PIndex && !player.IsImmortal())
                 LevelManager.getInstance().TriggerGameOver();
 
 

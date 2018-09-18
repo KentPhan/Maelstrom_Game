@@ -14,8 +14,9 @@ var Map = /** @class */ (function (){
         // Set scale values and colors
         this.InnerScale = 0.075;
         this.TotalScale = 2.5;
-        this.BaseLineColor = 0xF00000;
-        this.FlipLineColor = 0xFFFF33;
+        this.BaseLineColor = 0x1fd2a2;
+        this.FlipLineColor = 0xedc81f;
+        this.LineWidth = 2;
 
         // Store ExPoints
         this.ExPoints = [];
@@ -120,9 +121,9 @@ var Map = /** @class */ (function (){
 
             // Draw lines
             if(playerFlipIndex >= 0  && i == playerFlipIndex)
-                graphics.lineStyle(1, this.FlipLineColor, 1);
+                graphics.lineStyle(this.LineWidth, this.FlipLineColor, 1);
             else
-                graphics.lineStyle(1, this.BaseLineColor, 1)
+                graphics.lineStyle(this.LineWidth, this.BaseLineColor, 1)
 
             // Skip drawing boundary
             if(this.ExPoints[i] == SpecialPoints.BoundEnd && nextPoint == SpecialPoints.BoundStart)
@@ -146,9 +147,9 @@ var Map = /** @class */ (function (){
 
             // Draw lines
             if(playerFlipIndex >= 0 && i == playerFlipIndex)
-                graphics.lineStyle(1, this.FlipLineColor, 1);
+                graphics.lineStyle(this.LineWidth, this.FlipLineColor, 1);
             else
-                graphics.lineStyle(1, this.BaseLineColor, 1)
+                graphics.lineStyle(this.LineWidth, this.BaseLineColor, 1)
 
             // Skip drawing bound points
             if(this.InPoints[i] == SpecialPoints.BoundEnd && nextPoint == SpecialPoints.BoundStart)
@@ -163,9 +164,9 @@ var Map = /** @class */ (function (){
             // Define color
             var nextIndex =  ((this.ExPoints.length - 1 ) == playerFlipIndex)? 0 : playerFlipIndex + 1;
             if(playerFlipIndex >= 0 && (i == playerFlipIndex  || i == nextIndex))
-                graphics.lineStyle(1, this.FlipLineColor, 1);
+                graphics.lineStyle(this.LineWidth, this.FlipLineColor, 1);
             else
-                graphics.lineStyle(1, this.BaseLineColor, 1)
+                graphics.lineStyle(this.LineWidth, this.BaseLineColor, 1)
 
             // Bounds Check
             // if(this.ExPoints[i] == SpecialPoints.BoundStart ||  this.InPoints[i] == SpecialPoints.BoundStart ||
