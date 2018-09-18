@@ -21,6 +21,7 @@ var LevelManager = /** @class */ (function ()
             GAMEOVER:2,
             CREDITS:3,
             LEVEL_1:4,
+            LEVEL_2:5,
             properties:{
                 1: {IS_UI:true, TEXT:"Start Game", X:-160, Y:-20},
                 2: {IS_UI:true, TEXT:"ALL YOUR BASE ARE\n     BELONG TO US", X:-380, Y:-50},
@@ -50,6 +51,26 @@ var LevelManager = /** @class */ (function ()
                         SpecialPoints.BoundStart,
                         SpecialPoints.BoundEnd
                         
+                    ]
+                },
+                5: {IS_UI:false,
+                    MAP_POINTS:[
+                        new Vector2(0,-100),
+                        new Vector2(-50,-87.5),
+                        new Vector2(-100,-75),
+                        new Vector2(-87.5,-37.5),
+                        new Vector2(-75,0),
+                        new Vector2(-87.5,37.5),
+                        new Vector2(-100,75),
+                        new Vector2(-50,87.5),
+                        new Vector2(0,100),
+                        new Vector2(50,87.5),
+                        new Vector2(100,75),
+                        new Vector2(87.5,37.5),
+                        new Vector2(75,0),
+                        new Vector2(87.5,-37.5),
+                        new Vector2(100,-75),
+                        new Vector2(50,-87.5),
                     ]
                 }
                 // 4: {IS_UI:false,
@@ -152,6 +173,10 @@ var LevelManager = /** @class */ (function ()
                                 LoadMenu(Levels.START)
                             break;
                         case Levels.LEVEL_1:
+                            if(input.GetEscapeInput())
+                                LoadMenu(Levels.LEVEL_2)
+                            break;
+                        case Levels.LEVEL_2:
                             if(input.GetEscapeInput())
                                 LoadMenu(Levels.START)
                             break;
