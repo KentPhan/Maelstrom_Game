@@ -23,8 +23,8 @@ var Player = /** @class */ (function (){
         var input = InputManager.getInstance();
         var currentMap = LevelManager.getInstance().GetCurrentLevel().GetMap();
 
-        var angle = Math.atan2(0 - this.Position.x, 0 - this.Position.y) + 90;
-        this.Sprite.angle = angle;
+        var angle = Math.atan2(0 - this.Position.x, 0 + this.Position.y);
+        this.Sprite.rotation = angle;
 
         // Return... Cause you need a map
         if(currentMap == null)
@@ -41,6 +41,8 @@ var Player = /** @class */ (function (){
         }
         else if(this.MoveCurrentCooldown <= 0 && input.GetPositiveInput(this.Position))
         {
+            
+
             this.PIndex = currentMap.GetNextIndexPositive(this.PIndex);
             this.Position = currentMap.GetEdgeVectorPosition(this.PIndex)
             currentMap.DrawMap();
