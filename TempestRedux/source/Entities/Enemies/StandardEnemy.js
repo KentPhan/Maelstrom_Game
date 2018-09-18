@@ -41,6 +41,7 @@ var StandardEnemy = /** @class */ (function (){
         this.AngrySprite.scaleX = 1;
         this.AngrySprite.scaleY = 1;
 
+        this.DeathParticle = new PlayerDeathEffect();
 
         this.DangerTint = 0xf00f00 ;
     }
@@ -101,8 +102,6 @@ var StandardEnemy = /** @class */ (function (){
                 this.AngrySprite.setPosition(this.Position.x, this.Position.y, 0)
                 this.CurrentEdgeSpeedTimer = this.EdgeSpeedTimer;
             }
-            
-            
         }
     };
 
@@ -114,7 +113,8 @@ var StandardEnemy = /** @class */ (function (){
         return this.Position;
     };
 
-    StandardEnemy.prototype.IMustLive = function(pIndex, position, endPosition){
+    StandardEnemy.prototype.IMustLive = function(pIndex, position, endPosition)
+    {
         this.Active = true;
 
         this.Sprite.visible = true;
@@ -135,7 +135,17 @@ var StandardEnemy = /** @class */ (function (){
         this.Direction = direction;
     }
 
-    StandardEnemy.prototype.IMustDie = function(){
+    StandardEnemy.prototype.IMustDie = function()
+    {
+        if(!this.Active)
+        {
+            return;
+        }
+
+        this.DeathParticle.GetEmitter().setPosition(this.Position.x, this.Position.y);
+        //this.DeathParticle.GetEmitter().tint = this.DangerTint;
+        this.DeathParticle.GetEmitter().explode();
+        
         this.Active = false;
         this.Sprite.visible = false;
         this.AngrySprite.visible = false;

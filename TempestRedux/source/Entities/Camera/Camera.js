@@ -1,5 +1,6 @@
 var Camera = /** @class */ (function (){
     var self = this;
+    //var instance;
 
     function Camera(scene)
     {
@@ -10,4 +11,20 @@ var Camera = /** @class */ (function (){
     }
 
     return Camera;
+
+    /*
+    return {
+ 
+        // Get the Singleton instance if one exists
+        // or create one if it doesn't
+        getInstance: function () {
+     
+          if ( !instance ) {
+            instance = init();
+          }
+     
+          return instance;
+        }
+      };
+      */
 }())

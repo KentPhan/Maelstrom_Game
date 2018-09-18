@@ -3,26 +3,24 @@ var PlayerDeathEffect = /** @class */ (function (){
     function PlayerDeathEffect()
     {
         var scene = TempestGame.getInstance().GetCurrentScene();
-        this.particles = scene.add.particles('alien');
-        this.emitter = this.particles.createEmitter({speed: 100, scale: {start: 1, end: 0}, blendMode: 'ADD'});
+        this.emitter = scene.add.particles('death_particle').createEmitter({
+            speed: { min: -150, max: 150 },
+            angle: { min: 0, max: 360 },
+            scale: {start: 0.5, end: 0}, 
+            quantity: { min: 7, max: 15 },
+            lifespan: { min: 500, max: 800 },
+            blendMode: 'ADD',
+            rotate: { min: 0, max: 360 },
+            radial: true
+        })
 
-        //this.Emit();
+        this.emitter.on = false;
     }
 
-    PlayerDeathEffect.prototype.Emit = function()
+    PlayerDeathEffect.prototype.GetEmitter = function()
     {
-        this.emitter.start(true, 2000, null, 10);
+        return this.emitter;
     }
-
-    PlayerDeathEffect.prototype.Update = function (deltaTime,input) {
-        
-    };
-
-    /*
-    PlayerDeathEffect.prototype.Draw = function (graphics) {
-        graphics.fillCircle(this.Position.x,this.Position.y, 25);
-    };
-    */
-
+    
     return PlayerDeathEffect;
 }())
