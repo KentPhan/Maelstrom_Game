@@ -63,6 +63,26 @@ var Map = /** @class */ (function (){
                          this.ExPoints[i].y * this.InnerScale))
             }
         }
+
+        this.GetNextCWIndex = function(index)
+        {
+            var nextIndex = index + 1;
+
+            if(nextIndex >= this.ExPoints.length)
+                nextIndex = 0;
+
+            return nextIndex;
+        }
+
+        this.GetNextCCWIndex = function(index)
+        {
+            var nextIndex = index -  1 ;
+
+            if(nextIndex < 0)
+                nextIndex = this.ExPoints.length - 1;
+
+            return nextIndex;
+        }
     }
 
     Map.prototype.Update = function(deltaTime){
@@ -159,24 +179,19 @@ var Map = /** @class */ (function (){
     }
 
     Map.prototype.GetNextIndexCW = function(index){
-        var nextIndex = index + 1;
-
-        if(nextIndex >= this.ExPoints.length)
-            nextIndex = 0;
+        var nextIndex = this.GetNextCWIndex(index)        ;
 
         // Bounds Check
-        if(this.ExPoints[nextIndex + 2] == SpecialPoints.BoundEnd)
+        if(this.ExPoints[nextIndex + 1] == SpecialPoints.BoundStart)
             return index;
 
         return nextIndex;
     }
 
     Map.prototype.GetNextIndexCCW = function(index){
-        var nextIndex = index -  1 ;
-
-        if(nextIndex < 0)
-            nextIndex = this.ExPoints.length - 1;
+        var nextIndex = this.GetNextCCWIndex(index)        ;
             
+        // Bounds Check
         if(this.ExPoints[nextIndex] == SpecialPoints.BoundEnd)
             return index;
 
@@ -204,8 +219,13 @@ var Map = /** @class */ (function (){
 
     Map.prototype.GetRandomIndex = function(){
         // Make sure spawn is not a boundary
-
-        return Math.floor(Math.random() * this.ExPoints.length)
+        while(true)
+        {
+            var index = Math.floor(Math.random() * this.ExPoints.length);
+            if(this.ExPoints[index] != SpecialPoints.BoundStart && this.ExPoints[index] != SpecialPoints.BoundEnd &&
+                this.ExPoints[index+1] != SpecialPoints.BoundStart)
+                return index;
+        }
     }
 
     Map.prototype.GetEdgeVectorPosition  = function(index){
