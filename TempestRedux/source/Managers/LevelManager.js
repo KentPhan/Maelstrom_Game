@@ -27,6 +27,7 @@ var LevelManager = /** @class */ (function ()
                 3: {IS_UI:true, TEXT:"Our Great Credits:", X:-320, Y:-20},
                 4: {IS_UI:false,
                     MAP_POINTS:[
+                        new Vector2(-100,-100),
                         new Vector2(-90,-75),
                         new Vector2(-80,-50),
                         new Vector2(-70,-25),
@@ -37,18 +38,18 @@ var LevelManager = /** @class */ (function ()
                         new Vector2(-20,100),
                         SpecialPoints.BoundStart,
                         SpecialPoints.BoundEnd,
-                        new Vector2(20,100),
-                        new Vector2(30,75),
-                        new Vector2(40,50),
-                        new Vector2(50,25),
-                        new Vector2(60,0),
-                        new Vector2(70,-25),
-                        new Vector2(80,-50),
-                        new Vector2(90,-75),
                         new Vector2(100,-100),
+                        new Vector2(90,-75),
+                        new Vector2(80,-50),
+                        new Vector2(70,-25),
+                        new Vector2(60,0),
+                        new Vector2(50,25),
+                        new Vector2(40,50),
+                        new Vector2(30,75),
+                        new Vector2(20,100),
                         SpecialPoints.BoundStart,
-                        SpecialPoints.BoundEnd,
-                        new Vector2(-100,-100),
+                        SpecialPoints.BoundEnd
+                        
                     ]
                 }
                 // 4: {IS_UI:false,
