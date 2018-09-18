@@ -14,14 +14,17 @@ var Player = /** @class */ (function (){
 
         // this.BulletCooldown = 0.1;
         // this.BulletCurrentCooldown = 0;
-        this.Sprite = TempestGame.getInstance().GetCurrentScene().add.image(0,0,'bullet');
-        this.Sprite.scaleX = 0.1;
-        this.Sprite.scaleY = 0.1;        
+        this.Sprite = TempestGame.getInstance().GetCurrentScene().add.image(0,0,'player');
+        this.Sprite.scaleX = 1;
+        this.Sprite.scaleY = 1;
     }
 
     Player.prototype.Update = function (deltaTime) {
         var input = InputManager.getInstance();
         var currentMap = LevelManager.getInstance().GetCurrentLevel().GetMap();
+
+        var angle = Math.atan2(0 - this.Position.x, 0 - this.Position.y) + 90;
+        this.Sprite.angle = angle;
 
         // Return... Cause you need a map
         if(currentMap == null)
