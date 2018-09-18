@@ -187,6 +187,12 @@ var Player = /** @class */ (function (){
         // graphics.fillCircle(this.Position.x,this.Position.y, 25);
     };
 
+    Player.prototype.IsImmortal = function(){
+        if(this.CurrentState == this.PlayerStates.TeleportingIn || this.CurrentState == this.PlayerStates.TeleportingOut)
+            return true;
+        return false;
+    }
+
     Player.prototype.GetPIndex = function () {
         return this.PIndex;
     };
@@ -204,6 +210,8 @@ var Player = /** @class */ (function (){
         this.Sprite.destroy();
         this.Sprite = null;
     }
+
+    
 
     return Player;
 }())
