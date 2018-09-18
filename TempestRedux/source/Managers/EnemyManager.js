@@ -7,7 +7,9 @@ var EnemyManager = (function (){
         // Singleton
         var _active = false;
         var _enemySpawnTimeLimit = 1.0;
-        var _currentSpawnTimer = 3; 
+        var _initialSpawnTimer = 3;
+        var _currentSpawnTimer = _initialSpawnTimer; 
+        
 
         // Need to pool because Javascripts garbage collector is a POS. But I mean... my code is probably a POS too.
         var _activeEnemies = [];
@@ -96,6 +98,7 @@ var EnemyManager = (function (){
 
             ActivateEnemies()
             {
+                _currentSpawnTimer = _initialSpawnTimer;
                 _active = true;
             }
             //   publicProperty: "I am also public",
