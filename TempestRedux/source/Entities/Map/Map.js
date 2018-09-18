@@ -64,7 +64,7 @@ var Map = /** @class */ (function (){
             }
         }
 
-        this.GetNextCWIndex = function(index)
+        this.GetNextPositiveIndex = function(index)
         {
             var nextIndex = index + 1;
 
@@ -74,7 +74,7 @@ var Map = /** @class */ (function (){
             return nextIndex;
         }
 
-        this.GetNextCCWIndex = function(index)
+        this.GetNextNegativeIndex = function(index)
         {
             var nextIndex = index -  1 ;
 
@@ -178,8 +178,8 @@ var Map = /** @class */ (function (){
         }
     }
 
-    Map.prototype.GetNextIndexCW = function(index){
-        var nextIndex = this.GetNextCWIndex(index)        ;
+    Map.prototype.GetNextIndexPositive = function(index){
+        var nextIndex = this.GetNextPositiveIndex(index)        ;
 
         // Bounds Check
         if(this.ExPoints[nextIndex + 1] == SpecialPoints.BoundStart)
@@ -188,8 +188,8 @@ var Map = /** @class */ (function (){
         return nextIndex;
     }
 
-    Map.prototype.GetNextIndexCCW = function(index){
-        var nextIndex = this.GetNextCCWIndex(index)        ;
+    Map.prototype.GetNextIndexNegative = function(index){
+        var nextIndex = this.GetNextNegativeIndex(index);
             
         // Bounds Check
         if(this.ExPoints[nextIndex] == SpecialPoints.BoundEnd)

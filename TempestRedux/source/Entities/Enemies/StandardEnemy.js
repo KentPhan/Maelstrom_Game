@@ -12,8 +12,8 @@ var StandardEnemy = /** @class */ (function (){
         }
 
         this.Rotation = {
-            "Clockwise":1,
-            "CounterClockwise":2
+            "Positive":1,
+            "Negative":2
         }
         this.IWillGoThisWay = this.Rotation[Math.floor(Math.random() * 2)];
         this.CurrentState = this.EnemyStates.TowardsEdge;
@@ -81,18 +81,18 @@ var StandardEnemy = /** @class */ (function (){
             {
                 var currentMap = LevelManager.getInstance().GetCurrentLevel().GetMap();
 
-                if(this.IWillGoThisWay == this.Rotation.CounterClockwise)
+                if(this.IWillGoThisWay == this.Rotation.Negative)
                 {
-                    var newIndex  = currentMap.GetNextIndexCCW(this.PIndex);
+                    var newIndex  = currentMap.GetNextIndexNegative(this.PIndex);
                     if(this.PIndex == newIndex)
-                        this.IWillGoThisWay = this.Rotation.Clockwise;
+                        this.IWillGoThisWay = this.Rotation.Positive;
                     this.PIndex = newIndex;
                 }
                 else
                 {
-                    var newIndex = currentMap.GetNextIndexCW(this.PIndex);
+                    var newIndex = currentMap.GetNextIndexPositive(this.PIndex);
                     if(this.PIndex == newIndex)
-                        this.IWillGoThisWay = this.Rotation.CounterClockwise
+                        this.IWillGoThisWay = this.Rotation.Negative
                         ;
                     this.PIndex = newIndex;
                 }

@@ -75,7 +75,7 @@ var InputManager = /** @class */ (function ()
                 
             }, 
 
-            GetClockWiseInput(playerPosition){
+            GetPositiveInput(playerPosition){
                 var positive = false;
 
                 if(_schemeState == Schemes.Keyboard)
@@ -123,7 +123,7 @@ var InputManager = /** @class */ (function ()
                 return positive;
             },
 
-            GetCounterClockWiseInput(playerPosition){
+            GetNegativeInput(playerPosition){
                 var positive = false;
 
                 if(_schemeState == Schemes.Keyboard)

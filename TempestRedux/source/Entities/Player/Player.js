@@ -27,18 +27,18 @@ var Player = /** @class */ (function (){
         if(currentMap == null)
             return;
 
-        if(this.MoveCurrentCooldown <= 0 && input.GetCounterClockWiseInput(this.Position))
+        if(this.MoveCurrentCooldown <= 0 && input.GetNegativeInput(this.Position))
         {
             
-            this.PIndex = currentMap.GetNextIndexCCW(this.PIndex);
+            this.PIndex = currentMap.GetNextIndexNegative(this.PIndex);
             this.Position =  currentMap.GetEdgeVectorPosition(this.PIndex)
             currentMap.DrawMap();
 
             this.MoveCurrentCooldown = this.MoveCooldown;
         }
-        else if(this.MoveCurrentCooldown <= 0 && input.GetClockWiseInput(this.Position))
+        else if(this.MoveCurrentCooldown <= 0 && input.GetPositiveInput(this.Position))
         {
-            this.PIndex = currentMap.GetNextIndexCW(this.PIndex);
+            this.PIndex = currentMap.GetNextIndexPositive(this.PIndex);
             this.Position = currentMap.GetEdgeVectorPosition(this.PIndex)
             currentMap.DrawMap();
 
