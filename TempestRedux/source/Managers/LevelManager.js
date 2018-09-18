@@ -174,7 +174,7 @@ var LevelManager = /** @class */ (function ()
                             break;
                         case Levels.LEVEL_1:
                             if(input.GetEscapeInput())
-                                LoadMenu(Levels.LEVEL_2)
+                                LoadLevel(Levels.LEVEL_2)
                             break;
                         case Levels.LEVEL_2:
                             if(input.GetEscapeInput())
@@ -194,6 +194,10 @@ var LevelManager = /** @class */ (function ()
 
             TriggerGameOver: function(){
                 LoadMenu(Levels.GAMEOVER)
+            },
+
+            TriggerNextLevel: function(){
+
             },
 
             TriggerCredits: function(){
