@@ -6,7 +6,7 @@ var EnemyManager = (function (){
  
         // Singleton
         var _active = false;
-        var _enemySpawnTimeLimit = 3.0;
+        var _enemySpawnTimeLimit = 1.0;
         var _currentSpawnTimer = 3; 
 
         // Need to pool because Javascripts garbage collector is a POS. But I mean... my code is probably a POS too.

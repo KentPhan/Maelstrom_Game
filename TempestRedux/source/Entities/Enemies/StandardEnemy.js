@@ -23,7 +23,7 @@ var StandardEnemy = /** @class */ (function (){
         this.Position = null;
         this.EndPosition = null;
 
-        this.Speed =  50.0;
+        this.Speed =  60.0;
         this.EdgeSpeedTimer = 1.5;
         this.CurrentEdgeSpeedTimer = this.EdgeSpeedTimer;
         this.ScaleSpeed = .25;
@@ -33,8 +33,8 @@ var StandardEnemy = /** @class */ (function (){
         // THIS IS REALLL SHITTY I THINK
         this.Sprite = TempestGame.getInstance().GetCurrentScene().add.image(0,0,'alien');
         this.Sprite.visible = false;
-        this.Sprite.scaleX = 0.01;
-        this.Sprite.scaleY = 0.01
+        this.Sprite.scaleX = 0.001;
+        this.Sprite.scaleY = 0.001;
 
         this.AngrySprite = TempestGame.getInstance().GetCurrentScene().add.image(0,0, 'alien_angry')
         this.AngrySprite.visible = false;
