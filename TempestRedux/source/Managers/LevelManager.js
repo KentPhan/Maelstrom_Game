@@ -259,7 +259,8 @@ var LevelManager = /** @class */ (function ()
 
             Initialize: function () {
 
-                _currentCamera = new Camera(TempestGame.getInstance().GetCurrentScene());
+                _currentCamera = Camera.getInstance();
+                _currentCamera.Initialize();
                 _currentLevelState = Levels.START;
                 _currentLevel = new Level(Levels.properties[_currentLevelState]);
             }, 

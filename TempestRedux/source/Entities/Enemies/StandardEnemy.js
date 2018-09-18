@@ -147,6 +147,7 @@ var StandardEnemy = /** @class */ (function (){
         this.DeathParticle.GetEmitter().setPosition(this.Position.x, this.Position.y);
         //this.DeathParticle.GetEmitter().tint = this.DangerTint;
         this.DeathParticle.GetEmitter().explode();
+        TempestGame.getInstance().GetCurrentScene().cameras.main.shake(350, 0.01);
         
         this.Active = false;
         this.Sprite.visible = false;
