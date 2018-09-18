@@ -8,7 +8,7 @@ var Level = /** @class */ (function (){
             this.Map = null;
             this.Player = null;
             this.Text = properties.TEXT;
-            this.UIText = TempestGame.getInstance().GetCurrentScene().add.text( properties.X, properties.Y, this.Text, { font: "Bold 72px Arial", fill: '#ffffff' });
+            this.UIText = TempestGame.getInstance().GetCurrentScene().add.text( properties.X, properties.Y, this.Text(), { font: "Bold 72px Arial", fill: '#ffffff' });
         }
         else
         {
