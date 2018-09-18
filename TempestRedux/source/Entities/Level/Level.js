@@ -31,9 +31,27 @@ var Level = /** @class */ (function (){
         }
         else
         {
-            this.Map.Update(deltaTime)
-            this.Player.Update(deltaTime)
+            if(this.Map != null)
+                this.Map.Update(deltaTime)
+            if(this.Player != null)
+                this.Player.Update(deltaTime)
         }
+    };
+
+    Level.prototype.BeginUnloadLevel = function(callback)
+    {
+        if(!this.IsUI)
+        {
+            this.Map.BeingUnloadMap(function(){
+                callback();
+            });    
+        }
+        else
+        {
+            callback();
+        }
+
+        
     };
 
     Level.prototype.AttemptToWipeAss = function(){

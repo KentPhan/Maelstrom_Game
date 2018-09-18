@@ -9,14 +9,33 @@ var Map = /** @class */ (function (){
     
 
     // TODO Strange issue occuring where this might be getting called upon ending level and switching to UI
-    function Map(points)
+    function Map(points, callBackStart)
     {
+        this.MapStates = 
+        {
+            Default:0,
+            Starting:1,
+            Ending:2,
+        }
+        this.CurrentMapState = this.MapStates.Starting;
+        this.ZoomInScale = 0.01;
+        this.ZoomOutScale = 80;
+        this.CurrentScaleModifier = this.ZoomInScale;
+        this.ScaleSpeedIn = 0.8;
+        this.ScaleSpeedOut = 50;
+        this.UnloadCompleteCallback = null;
+        
         // Set scale values and colors
         this.InnerScale = 0.075;
         this.TotalScale = 2.5;
         this.BaseLineColor = 0x1fd2a2;
         this.FlipLineColor = 0xedc81f;
         this.LineWidth = 2;
+
+        this.GetCurrentScale = function()
+        {
+            return this.CurrentScaleModifier;
+        }
 
         // Store ExPoints
         this.ExPoints = [];
@@ -87,7 +106,31 @@ var Map = /** @class */ (function (){
     }
 
     Map.prototype.Update = function(deltaTime){
-        
+
+        if(this.CurrentMapState == this.MapStates.Starting)
+        {
+            this.CurrentScaleModifier += (this.ScaleSpeedIn * deltaTime)
+            this.DrawMap();
+            if(this.CurrentScaleModifier > 1)
+            {
+                this.CurrentScaleModifier = 1;
+                this.CurrentMapState = this.MapStates.Default;
+            }
+        }
+        else if(this.CurrentMapState == this.MapStates.Ending)
+        {
+            this.CurrentScaleModifier += (this.ScaleSpeedOut * deltaTime)
+            this.DrawMap();
+            if(this.CurrentScaleModifier > this.ZoomOutScale)
+            {
+                this.CurrentScaleModifier = this.ZoomOutScale;
+                this.UnloadCompleteCallback();
+            }
+        }
+        else
+        {
+            
+        }
     }
 
     Map.prototype.Draw = function(graphics){
@@ -105,6 +148,10 @@ var Map = /** @class */ (function (){
         var currentPlayer = LevelManager.getInstance().GetCurrentLevel().GetPlayer();
         var playerIndex = (currentPlayer) ? currentPlayer.GetPIndex() : null;
         var playerFlipIndex = this.GetFlipIndex(playerIndex);
+
+        // Scales
+        var currentScale = this.GetCurrentScale();
+
 
         // Draw Outside ExPoints
         for(var i = 0; i < this.ExPoints.length; i++)
@@ -129,7 +176,7 @@ var Map = /** @class */ (function (){
             if(this.ExPoints[i] == SpecialPoints.BoundEnd && nextPoint == SpecialPoints.BoundStart)
                 continue;
 
-            graphics.lineBetween(this.ExPoints[i].x,this.ExPoints[i].y,nextPoint.x,nextPoint.y);         
+            graphics.lineBetween(this.ExPoints[i].x * currentScale,this.ExPoints[i].y * currentScale,nextPoint.x * currentScale,nextPoint.y * currentScale);         
         }
 
         //Draw Inside
@@ -155,7 +202,7 @@ var Map = /** @class */ (function (){
             if(this.InPoints[i] == SpecialPoints.BoundEnd && nextPoint == SpecialPoints.BoundStart)
                 continue;
 
-            graphics.lineBetween(this.InPoints[i].x,this.InPoints[i].y,nextPoint.x,nextPoint.y);
+            graphics.lineBetween(this.InPoints[i].x * currentScale,this.InPoints[i].y * currentScale,nextPoint.x * currentScale,nextPoint.y * currentScale);
         }
 
         // // Draw Pathing Lines
@@ -175,8 +222,14 @@ var Map = /** @class */ (function (){
             // if()
             //     continue;
 
-            graphics.lineBetween(this.ExPoints[i].x,this.ExPoints[i].y, this.InPoints[i].x, this.InPoints[i].y);
+            graphics.lineBetween(this.ExPoints[i].x * currentScale,this.ExPoints[i].y * currentScale, this.InPoints[i].x * currentScale, this.InPoints[i].y * currentScale);
         }
+    }
+
+    Map.prototype.BeingUnloadMap = function (callback)
+    {
+        this.UnloadCompleteCallback = callback;
+        this.CurrentMapState = this.MapStates.Ending;
     }
 
     Map.prototype.GetNextIndexPositive = function(index){
@@ -212,8 +265,6 @@ var Map = /** @class */ (function (){
         return nextIndex;
     }
 
-    
-
     Map.prototype.GetCenter = function(){
         return new Vector2(0,0);
     }
@@ -239,6 +290,8 @@ var Map = /** @class */ (function (){
         var offset = new Vector2((this.ExPoints[nextIndex].x - this.ExPoints[index].x)* 0.5, (this.ExPoints[nextIndex].y - this.ExPoints[index].y)* 0.5)
         return new Vector2(this.ExPoints[index].x + offset.x, this.ExPoints[index].y + offset.y);
     }
+
+    
 
     Map.prototype.AttemptToWipeAss = function(){
         this.ExPoints = null;

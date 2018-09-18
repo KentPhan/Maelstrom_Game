@@ -225,13 +225,15 @@ var LevelManager = /** @class */ (function ()
             enemyManager.DeactivateEnemies();
 
             // Clean up
-            _currentLevelState = level;
-            _currentLevel.AttemptToWipeAss();
-            delete _currentLevel;
+            _currentLevel.BeginUnloadLevel(function(){
+                _currentLevelState = level;
+                _currentLevel.AttemptToWipeAss();
+                delete _currentLevel;
 
-            // Instantiate new level
-            _currentLevel = new Level(Levels.properties[_currentLevelState])
-            TempestGame.getInstance().ShowScore();
+                // Instantiate new level
+                _currentLevel = new Level(Levels.properties[_currentLevelState])
+                TempestGame.getInstance().ShowScore();
+            })
             return;
         }
 
