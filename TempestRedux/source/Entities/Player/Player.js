@@ -2,11 +2,25 @@ var Player = /** @class */ (function (){
    
     function Player(pIndex, position)
     {
+        this.PlayerStates = {
+            TeleportingIn:0,
+            TeleportingOut:1,
+            Default:2
+        }
+        this.CurrentState = this.PlayerStates.Default
+        this.TeleportedFrom = null;
+        this.TeleportDestination = null;
+        this.TeleportDirection = null;
+        this.OriginDirection = null;
+        
+        this.TeleportSpeed = 1500;
+
         this.PIndex = pIndex;
         this.Position = position;
         this.PrevKey = 0;
 
-        this.FlipCooldown = 0.1;
+        this.PreviousPIndex = null;
+        this.FlipCooldown = 0.5;
         this.FlipCurrentCooldown = 0;
 
         this.MoveCooldown = 0.08;
@@ -15,51 +29,138 @@ var Player = /** @class */ (function (){
         // this.BulletCooldown = 0.1;
         // this.BulletCurrentCooldown = 0;
         this.Sprite = TempestGame.getInstance().GetCurrentScene().add.image(0,0,'player');
-        this.Sprite.scaleX = 1;
-        this.Sprite.scaleY = 1;
+        this.FinalScale = 1;
+        this.CenterScale = 0.1;
+        this.Sprite.scaleX = this.FinalScale;
+        this.Sprite.scaleY = this.FinalScale;
+        
     }
 
     Player.prototype.Update = function (deltaTime) {
-        var input = InputManager.getInstance();
+
         var currentMap = LevelManager.getInstance().GetCurrentLevel().GetMap();
-
-        var angle = Math.atan2(0 - this.Position.x, 0 + this.Position.y);
-        this.Sprite.rotation = angle;
-
-        // Return... Cause you need a map
-        if(currentMap == null)
-            return;
-
-        if(this.MoveCurrentCooldown <= 0 && input.GetNegativeInput(this.Position))
+        if(this.CurrentState == this.PlayerStates.Default)
         {
-            
-            this.PIndex = currentMap.GetNextIndexNegative(this.PIndex);
-            this.Position =  currentMap.GetEdgeVectorPosition(this.PIndex)
-            currentMap.DrawMap();
-
-            this.MoveCurrentCooldown = this.MoveCooldown;
-        }
-        else if(this.MoveCurrentCooldown <= 0 && input.GetPositiveInput(this.Position))
-        {
-            
-
-            this.PIndex = currentMap.GetNextIndexPositive(this.PIndex);
-            this.Position = currentMap.GetEdgeVectorPosition(this.PIndex)
-            currentMap.DrawMap();
-
-            this.MoveCurrentCooldown = this.MoveCooldown;
-        }
-        else if(input.GetPrimaryInput())
-        {
-            // Flip stuff
-            if(this.FlipCurrentCooldown < 0)
+            var input = InputManager.getInstance();
+    
+            var angle = Math.atan2(0 - this.Position.x, 0 + this.Position.y);
+            this.Sprite.rotation = angle;
+    
+            // Return... Cause you need a map
+            if(currentMap == null)
+                return;
+    
+            if(this.MoveCurrentCooldown <= 0 && input.GetNegativeInput(this.Position))
             {
-                // Flip to other size
-                this.PIndex = currentMap.GetFlipIndex(this.PIndex)
-                this.Position = currentMap.GetEdgeVectorPosition(this.PIndex)    
-                this.FlipCurrentCooldown = this.FlipCooldown;
+                
+                this.PIndex = currentMap.GetNextIndexNegative(this.PIndex);
+                this.Position =  currentMap.GetEdgeVectorPosition(this.PIndex)
+                currentMap.DrawMap();
+    
+                this.MoveCurrentCooldown = this.MoveCooldown;
+            }
+            else if(this.MoveCurrentCooldown <= 0 && input.GetPositiveInput(this.Position))
+            {
+                this.PIndex = currentMap.GetNextIndexPositive(this.PIndex);
+                this.Position = currentMap.GetEdgeVectorPosition(this.PIndex)
+                currentMap.DrawMap();
+    
+                this.MoveCurrentCooldown = this.MoveCooldown;
+            }
+            else if(input.GetPrimaryInput())
+            {
+                // Flip stuff
+                if(this.FlipCurrentCooldown < 0)
+                {
+                    var mapCenter = currentMap.GetCenter();
 
-                // Destroy all enemies in current PIndex
+                    // Begin transition to other side
+                    this.PreviousPIndex = this.PIndex;
+                    this.PIndex = currentMap.GetFlipIndex(this.PIndex)
+                    this.TeleportedFrom = new Vector2(this.Position.x, this.Position.y);
+                    this.TeleportDestination = currentMap.GetEdgeVectorPosition(this.PIndex);
+                    this.OriginDirection = new Vector2(mapCenter.x - this.Position.x, mapCenter.y - this.Position.y);
+                    this.OriginDirection.normalize();
+
+                    this.CurrentState = this.PlayerStates.TeleportingIn;
+
+                    
+                }
+    
+                // Bullet stuff
+                // if(this.BulletCurrentCooldown < 0)
+                // {
+                //     BulletManager.getInstance().FireBullet(this.PIndex);
+                //     this.PrevKey = input.space.keyCode;
+                //     this.BulletCurrentCooldown = this.BulletCooldown;
+                // }
+            }
+        }
+        else if (this.CurrentState == this.PlayerStates.TeleportingIn)
+        {
+            var mapCenter = currentMap.GetCenter();
+            var velocity = new Vector2( deltaTime * this.OriginDirection.x * this.TeleportSpeed, deltaTime * this.OriginDirection.y * this.TeleportSpeed)
+            this.Position.add(velocity);
+            
+            var ToOriginDestination = new Vector2(mapCenter.x - this.Position.x, mapCenter.y - this.Position.y);
+
+            var totalLength = new Vector2(mapCenter.x - this.TeleportedFrom.x, mapCenter.y - this.TeleportedFrom.y).length();
+            var newScale = ((this.FinalScale - this.CenterScale) * (ToOriginDestination.length())) / totalLength; 
+            this.Sprite.setScale(newScale, newScale);
+
+            // Check if past center, if so. mark bullet for deletion
+            if((ToOriginDestination.dot(this.OriginDirection) < 0.0))
+            {
+
+                this.Position = mapCenter;
+                this.TeleportDirection = new Vector2(this.TeleportDestination.x - this.Position.x, this.TeleportDestination.y - this.Position.y);
+                this.TeleportDirection.normalize();
+
+                // Point out now
+                var angle = Math.atan2(0 + this.TeleportDirection.x, 0 - this.TeleportDirection.y);
+                this.Sprite.rotation = angle;
+                this.Sprite.setScale(this.CenterScale, this.CenterScale);
+
+                this.CurrentState = this.PlayerStates.TeleportingOut;
+
+                // Destroy all enemies in previous PIndex
+                var enemies = EnemyManager.getInstance().GetEnemiesInMapIndex(this.PreviousPIndex);
+                for(var i = 0; i < enemies.length; i++)
+                {
+                    enemies[i].IMustDie();
+                    TempestGame.getInstance().AddToScore()
+                }
+                return;
+            }
+        }
+        else
+        {
+            var mapCenter = currentMap.GetCenter();
+            var velocity = new Vector2( deltaTime * this.TeleportDirection.x * this.TeleportSpeed, deltaTime * this.TeleportDirection.y * this.TeleportSpeed)
+            this.Position.add(velocity);
+
+            var ToTeleportDestination = new Vector2(this.TeleportDestination.x - this.Position.x, this.TeleportDestination.y - this.Position.y);
+            
+            var originLength = new Vector2(mapCenter.x - this.Position.x, mapCenter.y - this.Position.y).length();
+            var totalLength = new Vector2(mapCenter.x - this.TeleportDestination.x, mapCenter.y - this.TeleportDestination.y).length();
+            var newScale = ((this.FinalScale - this.CenterScale) * (originLength)) / totalLength; 
+            this.Sprite.setScale(newScale, newScale);
+
+            // Check if past center, if so. mark bullet for deletion
+            if((ToTeleportDestination.dot(this.TeleportDirection) < 0.0))
+            {
+                this.Position = this.TeleportDestination;
+                
+                // Point out now
+                var angle = Math.atan2(0 - this.Position.x, 0 + this.Position.y);
+                this.Sprite.rotation = angle;
+                this.Sprite.setScale(this.FinalScale, this.FinalScale);
+
+                this.CurrentState = this.PlayerStates.Default;
+                this.FlipCurrentCooldown = this.FlipCooldown;
+                currentMap.DrawMap();
+
+                // Destroy all enemies in current PIndex and trigger events if applicable
                 var enemies = EnemyManager.getInstance().GetEnemiesInMapIndex(this.PIndex);
                 for(var i = 0; i < enemies.length; i++)
                 {
@@ -71,21 +172,14 @@ var Player = /** @class */ (function (){
                     LevelManager.getInstance().TriggerCredits();
                     return;
                 }
-                    
-                currentMap.DrawMap();
-            }
 
-            // Bullet stuff
-            // if(this.BulletCurrentCooldown < 0)
-            // {
-            //     BulletManager.getInstance().FireBullet(this.PIndex);
-            //     this.PrevKey = input.space.keyCode;
-            //     this.BulletCurrentCooldown = this.BulletCooldown;
-            // }
+                return;
+            }
         }
+        
         this.FlipCurrentCooldown -= deltaTime;
         this.MoveCurrentCooldown -= deltaTime;
-        this.Sprite.setPosition(this.Position.x, this.Position.y, 0)
+        this.Sprite.setPosition(this.Position.x, this.Position.y, 0)        
         // this.BulletCurrentCooldown -= deltaTime;
     };
 
