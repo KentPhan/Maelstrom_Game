@@ -1,6 +1,6 @@
 var Level = /** @class */ (function (){
     var self;
-    function Level(properties)
+    function Level(properties, player)
     {
         if(properties.IS_UI)
         {
@@ -19,8 +19,11 @@ var Level = /** @class */ (function (){
             var pIndex = 0
             var newPosition = this.Map.GetEdgeVectorPosition(pIndex)
             this.Map.DrawMap();
-            this.Player = new Player(pIndex, newPosition);
-            EnemyManager.getInstance().ActivateEnemies();
+
+            if(player == null)
+                this.Player = new Player(pIndex, newPosition);
+            else
+                this.Player = player;
         }
         self = this;
         
@@ -49,8 +52,8 @@ var Level = /** @class */ (function (){
             //         callback();
             //     });        
             // });
-
-            self.Map.BeingUnloadMap(function(){
+            self.Player.DeactivatePlayer();
+            self.Map.BeginUnloadMap(function(){
                 callback();
             });    
         }
@@ -58,9 +61,22 @@ var Level = /** @class */ (function (){
         {
             callback();
         }
-
-        
     };
+
+    Level.prototype.BeginLoadLevel = function(callback)
+    {
+        if(!this.IsUI)
+        {
+            self.Map.BeginLoadMap(function(){
+                self.Player.ActivatePlayer();
+                callback();
+            });    
+        }
+        else
+        {
+            callback();
+        }
+    }
 
     Level.prototype.AttemptToWipeAss = function(){
         // Clear any possible drawings of map
@@ -72,11 +88,11 @@ var Level = /** @class */ (function (){
             delete this.Map
         }
         
-        if(this.Player != null)
-        {
-            this.Player.AttemptToWipeAss();
-            delete this.Player
-        }
+        // if(this.Player != null)
+        // {
+        //     this.Player.AttemptToWipeAss();
+        //     delete this.Player
+        // }
 
         if(this.UIText != null)
         {
@@ -96,6 +112,10 @@ var Level = /** @class */ (function (){
     Level.prototype.GetPlayer = function () {
         return this.Player;
     };
+
+    Level.prototype.GetIsUI = function(){
+        return this.IsUI;
+    }
 
     return Level;
 }())

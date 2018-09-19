@@ -76,7 +76,10 @@ var StandardEnemy = /** @class */ (function (){
             var playerIndex = player.GetPIndex();
 
             if(playerIndex == this.PIndex && !player.IsImmortal())
-                LevelManager.getInstance().TriggerGameOver();
+            {
+                player.Die();
+            }
+                
 
 
             // this.IMustDie();

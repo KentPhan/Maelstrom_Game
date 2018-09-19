@@ -226,13 +226,49 @@ var LevelManager = /** @class */ (function ()
 
             // Clean up
             _currentLevel.BeginUnloadLevel(function(){
+
+                var player = null;
+                if(!_currentLevel.GetIsUI())
+                    player = _currentLevel.GetPlayer();
+
                 _currentLevelState = level;
                 _currentLevel.AttemptToWipeAss();
                 delete _currentLevel;
 
                 // Instantiate new level
-                _currentLevel = new Level(Levels.properties[_currentLevelState])
-                TempestGame.getInstance().ShowScore();
+                _currentLevel = new Level(Levels.properties[_currentLevelState], player)
+                _currentLevel.BeginLoadLevel(function(){
+                    TempestGame.getInstance().ShowScore();
+                    EnemyManager.getInstance().ActivateEnemies();
+                })
+            })
+            return;
+        }
+
+        function LoadMenuSkipTransition(level){
+            var enemyManager = EnemyManager.getInstance();
+
+            // Clear enemies
+            enemyManager.ResetEnemies();
+            enemyManager.DeactivateEnemies();
+            
+            // Clean up
+            var player = null;
+            if(!_currentLevel.GetIsUI())
+                player = _currentLevel.GetPlayer();
+            
+            if(player != null)
+                player.AttemptToWipeAss();
+            delete player;
+            _currentLevelState = level;
+            _currentLevel.AttemptToWipeAss();
+            delete _currentLevel;
+
+            // Instantiate new level
+            _currentLevel = new Level(Levels.properties[_currentLevelState])
+            _currentLevel.BeginLoadLevel(function(){
+                TempestGame.getInstance().HideScore();
+                TempestGame.getInstance().ClearScore();
             })
             return;
         }
@@ -245,14 +281,27 @@ var LevelManager = /** @class */ (function ()
             enemyManager.DeactivateEnemies();
             
             // Clean up
-            _currentLevelState = level;
-            _currentLevel.AttemptToWipeAss();
-            delete _currentLevel; // Don't know if javascripts shitty garbage collector actually does anything with this
-            
-            _currentLevel = new Level(Levels.properties[_currentLevelState])
+            // Clean up
+            _currentLevel.BeginUnloadLevel(function(){
 
-            TempestGame.getInstance().HideScore();
-            TempestGame.getInstance().ClearScore();
+                var player = null;
+                if(!_currentLevel.GetIsUI())
+                    player = _currentLevel.GetPlayer();
+                
+                if(player != null)
+                    player.AttemptToWipeAss();
+                delete player;
+                _currentLevelState = level;
+                _currentLevel.AttemptToWipeAss();
+                delete _currentLevel;
+
+                // Instantiate new level
+                _currentLevel = new Level(Levels.properties[_currentLevelState])
+                _currentLevel.BeginLoadLevel(function(){
+                    TempestGame.getInstance().HideScore();
+                    TempestGame.getInstance().ClearScore();
+                })
+            })
             return;
         }
 
@@ -303,7 +352,7 @@ var LevelManager = /** @class */ (function ()
             },
 
             TriggerGameOver: function(){
-                LoadMenu(Levels.GAMEOVER)
+                LoadMenuSkipTransition(Levels.GAMEOVER)
             },
 
             TriggerNextLevel: function(){
@@ -340,7 +389,7 @@ var LevelManager = /** @class */ (function ()
             },
 
             TriggerCredits: function(){
-                LoadMenu(Levels.CREDITS)
+                LoadMenuSkipTransition(Levels.CREDITS)
             },
 
             GetCurrentLevel: function(){

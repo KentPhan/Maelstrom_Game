@@ -9,20 +9,22 @@ var Map = /** @class */ (function (){
     
 
     // TODO Strange issue occuring where this might be getting called upon ending level and switching to UI
-    function Map(points, callBackStart)
+    function Map(points)
     {
         this.MapStates = 
         {
             Default:0,
             Starting:1,
             Ending:2,
+            None:3
         }
-        this.CurrentMapState = this.MapStates.Starting;
+        this.CurrentMapState = this.MapStates.Default;
         this.ZoomInScale = 0.01;
         this.ZoomOutScale = 80;
         this.CurrentScaleModifier = this.ZoomInScale;
         this.ScaleSpeedIn = 0.8;
         this.ScaleSpeedOut = 50;
+        this.LoadCompleteCallback = null;
         this.UnloadCompleteCallback = null;
         
         // Set scale values and colors
@@ -35,6 +37,7 @@ var Map = /** @class */ (function (){
         //audio
         this.TransitionSound = TempestGame.getInstance().GetCurrentScene().sound.add('transition_sfx');
 
+        // For modifying scale on fly
         this.GetCurrentScale = function()
         {
             return this.CurrentScaleModifier;
@@ -118,6 +121,7 @@ var Map = /** @class */ (function (){
             {
                 this.CurrentScaleModifier = 1;
                 this.CurrentMapState = this.MapStates.Default;
+                this.LoadCompleteCallback();
             }
         }
         else if(this.CurrentMapState == this.MapStates.Ending)
@@ -229,7 +233,13 @@ var Map = /** @class */ (function (){
         }
     }
 
-    Map.prototype.BeingUnloadMap = function (callback)
+    Map.prototype.BeginLoadMap = function( callback)
+    {
+        this.LoadCompleteCallback = callback;
+        this.CurrentMapState = this.MapStates.Starting;
+    }
+
+    Map.prototype.BeginUnloadMap = function (callback)
     {
         //transition sfx
         this.TransitionSound.play();

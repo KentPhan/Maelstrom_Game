@@ -9,17 +9,20 @@ var Player = /** @class */ (function (){
             LevelTransitioning:3
         }
         this.CurrentState = this.PlayerStates.Default
+
+        this.Active = false;
+
+        // Teleport crap
         this.TeleportedFrom = null;
         this.TeleportDestination = null;
         this.TeleportDirection = null;
         this.OriginDirection = null;
         this.TransitionCallBack = null;
-        
         this.TeleportSpeed = 1500;
 
+        // Key properties
         this.PIndex = pIndex;
         this.Position = position;
-        this.PrevKey = 0;
 
         this.PreviousPIndex = null;
         this.FlipCooldown = 0.5;
@@ -43,7 +46,11 @@ var Player = /** @class */ (function (){
 
     Player.prototype.Update = function (deltaTime) {
 
+        if(!this.Active)
+            return;
+
         var currentMap = LevelManager.getInstance().GetCurrentLevel().GetMap();
+
         if(this.CurrentState == this.PlayerStates.Default)
         {
             var input = InputManager.getInstance();
@@ -210,7 +217,6 @@ var Player = /** @class */ (function (){
         this.OriginDirection = new Vector2(mapCenter.x - this.Position.x, mapCenter.y - this.Position.y);
         this.OriginDirection.normalize();
         this.CurrentState = this.PlayerStates.LevelTransitioning;
-
         this.TransitionCallBack = callback;
     };
 
@@ -220,6 +226,16 @@ var Player = /** @class */ (function (){
         return false;
     }
 
+    Player.prototype.ActivatePlayer = function()
+    {
+        this.Active = true;
+    }
+
+    Player.prototype.DeactivatePlayer = function()
+    {
+        this.Active = false;
+    }
+
     Player.prototype.GetPIndex = function () {
         return this.PIndex;
     };
@@ -227,6 +243,12 @@ var Player = /** @class */ (function (){
     Player.prototype.SetPIndex = function (pIndex) {
         this.PIndex = pIndex;
     };
+
+    Player.prototype.Die = function(){
+        this.Sprite.visible = false;
+        this.Active = false;
+        LevelManager.getInstance().TriggerGameOver();
+    }
 
     Player.prototype.SetPPosition = function (position) {
         this.Position = position;
