@@ -53,6 +53,7 @@ var Level = /** @class */ (function (){
             //     });        
             // });
             self.Player.DeactivatePlayer();
+
             self.Map.BeginUnloadMap(function(){
                 callback();
             });    
@@ -67,8 +68,15 @@ var Level = /** @class */ (function (){
     {
         if(!this.IsUI)
         {
+            if(self.Player != null)
+            {
+                self.Player.SetPIndex(0);
+                self.Player.TransitionToIndex(function(){
+                    self.Player.ActivatePlayer();
+                });
+            }
+
             self.Map.BeginLoadMap(function(){
-                self.Player.ActivatePlayer();
                 callback();
             });    
         }
@@ -88,12 +96,6 @@ var Level = /** @class */ (function (){
             delete this.Map
         }
         
-        // if(this.Player != null)
-        // {
-        //     this.Player.AttemptToWipeAss();
-        //     delete this.Player
-        // }
-
         if(this.UIText != null)
         {
             this.UIText.visible =false;

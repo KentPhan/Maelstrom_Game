@@ -222,13 +222,7 @@ var Map = /** @class */ (function (){
             else
                 graphics.lineStyle(this.LineWidth, this.BaseLineColor, 1)
 
-            // Bounds Check
-            // if(this.ExPoints[i] == SpecialPoints.BoundStart ||  this.InPoints[i] == SpecialPoints.BoundStart ||
-            //     this.ExPoints[nextIndex] == SpecialPoints.BoundEnd ||  this.InPoints[nextIndex] == SpecialPoints.BoundEnd )
-            //     continue;
-            // if()
-            //     continue;
-
+           
             graphics.lineBetween(this.ExPoints[i].x * currentScale,this.ExPoints[i].y * currentScale, this.InPoints[i].x * currentScale, this.InPoints[i].y * currentScale);
         }
     }
@@ -249,7 +243,7 @@ var Map = /** @class */ (function (){
     }
 
     Map.prototype.GetNextIndexPositive = function(index){
-        var nextIndex = this.GetNextPositiveIndex(index)        ;
+        var nextIndex = this.GetNextPositiveIndex(index);
 
         // Bounds Check
         if(this.ExPoints[nextIndex + 1] == SpecialPoints.BoundStart)

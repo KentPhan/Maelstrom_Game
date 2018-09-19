@@ -17,8 +17,13 @@ var Player = /** @class */ (function (){
         this.TeleportDestination = null;
         this.TeleportDirection = null;
         this.OriginDirection = null;
-        this.TransitionCallBack = null;
         this.TeleportSpeed = 1500;
+
+        // Transition crap
+        this.TransitionDestination = null;
+        this.TransitionDirection = null;
+        this.TransitionSpeed = 500;
+        this.TransitionCallBack = null;
 
         // Key properties
         this.PIndex = pIndex;
@@ -47,7 +52,26 @@ var Player = /** @class */ (function (){
     Player.prototype.Update = function (deltaTime) {
 
         if(!this.Active)
+        {
+            if(this.CurrentState == this.PlayerStates.LevelTransitioning)
+            {
+                var velocity = new Vector2( deltaTime * this.TransitionDirection.x * this.TransitionSpeed, deltaTime * this.TransitionDirection.y * this.TransitionSpeed)
+                this.Position.add(velocity);
+    
+                var ToTransitionDestination = new Vector2(this.TransitionDestination.x - this.Position.x, this.TransitionDestination.y - this.Position.y);
+                if((ToTransitionDestination.dot(this.TransitionDirection) <= 0.0))
+                {
+                    this.Position = this.TransitionDestination;
+                    this.CurrentState = this.PlayerStates.Default;
+                    this.TransitionCallBack();
+                }
+                this.Sprite.setPosition(this.Position.x, this.Position.y, 0)        
+                var angle = Math.atan2(0 - this.Position.x, 0 + this.Position.y);
+                this.Sprite.rotation = angle;
+            }
             return;
+        }
+            
 
         var currentMap = LevelManager.getInstance().GetCurrentLevel().GetMap();
 
@@ -111,7 +135,7 @@ var Player = /** @class */ (function (){
                 // }
             }
         }
-        else if (this.CurrentState == this.PlayerStates.TeleportingIn || this.CurrentState == this.PlayerStates.LevelTransitioning)
+        else if (this.CurrentState == this.PlayerStates.TeleportingIn)
         {
             var mapCenter = currentMap.GetCenter();
             var velocity = new Vector2( deltaTime * this.OriginDirection.x * this.TeleportSpeed, deltaTime * this.OriginDirection.y * this.TeleportSpeed)
@@ -126,14 +150,6 @@ var Player = /** @class */ (function (){
             // Check if past center, if so. mark bullet for deletion
             if((ToOriginDestination.dot(this.OriginDirection) < 0.0))
             {
-                if(this.CurrentState == this.PlayerStates.LevelTransitioning)
-                {
-                    this.TransitionCallBack();
-                    this.Sprite.visible = false;
-                    return;
-                }
-
-
                 this.Position = mapCenter;
                 this.TeleportDirection = new Vector2(this.TeleportDestination.x - this.Position.x, this.TeleportDestination.y - this.Position.y);
                 this.TeleportDirection.normalize();
@@ -210,13 +226,12 @@ var Player = /** @class */ (function (){
         // graphics.fillCircle(this.Position.x,this.Position.y, 25);
     };
 
-    Player.prototype.TransitionToNextLevel = function(callback)
+    Player.prototype.TransitionToIndex = function(callback)
     {
-        var mapCenter = LevelManager.getInstance().GetCurrentLevel().GetMap().GetCenter();
-        this.TeleportedFrom = new Vector2(this.Position.x, this.Position.y);
-        this.OriginDirection = new Vector2(mapCenter.x - this.Position.x, mapCenter.y - this.Position.y);
-        this.OriginDirection.normalize();
         this.CurrentState = this.PlayerStates.LevelTransitioning;
+        this.TransitionDestination = LevelManager.getInstance().GetCurrentLevel().GetMap().GetEdgeVectorPosition(this.PIndex);
+        this.TransitionDirection = new Vector2(this.TransitionDestination.x - this.Position.x, this.TransitionDestination.y - this.Position.y);
+        this.TransitionDirection.normalize();
         this.TransitionCallBack = callback;
     };
 

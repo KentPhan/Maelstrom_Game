@@ -224,6 +224,8 @@ var LevelManager = /** @class */ (function ()
             enemyManager.ResetEnemies();
             enemyManager.DeactivateEnemies();
 
+            
+
             // Clean up
             _currentLevel.BeginUnloadLevel(function(){
 
@@ -237,6 +239,11 @@ var LevelManager = /** @class */ (function ()
 
                 // Instantiate new level
                 _currentLevel = new Level(Levels.properties[_currentLevelState], player)
+
+                var playerDestination = null;
+                // if(!_currentLevel.GetIsUI())
+                //     playerDestination = new Vector2(_currentLevel.GetMap().GetEdgeVectorPosition(0).x,_currentLevel.GetMap().GetEdgeVectorPosition(0).y);
+
                 _currentLevel.BeginLoadLevel(function(){
                     TempestGame.getInstance().ShowScore();
                     EnemyManager.getInstance().ActivateEnemies();
@@ -280,7 +287,6 @@ var LevelManager = /** @class */ (function ()
             enemyManager.ResetEnemies();
             enemyManager.DeactivateEnemies();
             
-            // Clean up
             // Clean up
             _currentLevel.BeginUnloadLevel(function(){
 
