@@ -32,6 +32,9 @@ var Map = /** @class */ (function (){
         this.FlipLineColor = 0xedc81f;
         this.LineWidth = 2;
 
+        //audio
+        this.TransitionSound = TempestGame.getInstance().GetCurrentScene().sound.add('transition_sfx');
+
         this.GetCurrentScale = function()
         {
             return this.CurrentScaleModifier;
@@ -228,6 +231,9 @@ var Map = /** @class */ (function (){
 
     Map.prototype.BeingUnloadMap = function (callback)
     {
+        //transition sfx
+        this.TransitionSound.play();
+
         this.UnloadCompleteCallback = callback;
         this.CurrentMapState = this.MapStates.Ending;
     }
