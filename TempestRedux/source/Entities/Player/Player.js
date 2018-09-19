@@ -36,6 +36,9 @@ var Player = /** @class */ (function (){
         this.Sprite.scaleX = this.FinalScale;
         this.Sprite.scaleY = this.FinalScale;
         
+        //audio
+        this.MoveSound = TempestGame.getInstance().GetCurrentScene().sound.add('move_sfx');
+        this.DashSound = TempestGame.getInstance().GetCurrentScene().sound.add('dash_sfx');
     }
 
     Player.prototype.Update = function (deltaTime) {
@@ -54,7 +57,8 @@ var Player = /** @class */ (function (){
     
             if(this.MoveCurrentCooldown <= 0 && input.GetNegativeInput(this.Position))
             {
-                
+                this.MoveSound.play();
+
                 this.PIndex = currentMap.GetNextIndexNegative(this.PIndex);
                 this.Position =  currentMap.GetEdgeVectorPosition(this.PIndex)
                 currentMap.DrawMap();
@@ -63,6 +67,8 @@ var Player = /** @class */ (function (){
             }
             else if(this.MoveCurrentCooldown <= 0 && input.GetPositiveInput(this.Position))
             {
+                this.MoveSound.play();
+
                 this.PIndex = currentMap.GetNextIndexPositive(this.PIndex);
                 this.Position = currentMap.GetEdgeVectorPosition(this.PIndex)
                 currentMap.DrawMap();
@@ -74,6 +80,8 @@ var Player = /** @class */ (function (){
                 // Flip stuff
                 if(this.FlipCurrentCooldown < 0)
                 {
+                    this.DashSound.play();
+
                     var mapCenter = currentMap.GetCenter();
 
                     // Begin transition to other side

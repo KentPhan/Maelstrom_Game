@@ -22,6 +22,7 @@
     <script src="source/Entities/Camera/Camera.js"></script>
 
     <script src="source/Entities/Effects/PlayerDeathEffect.js"></script>
+    <script src="source/Entities/Level/Background.js"></script>
 
     <script>
         // Included
@@ -51,11 +52,20 @@
             this.load.image('alien_angry', 'assets/sprites/pulsarcolor_small.png');
             this.load.image('bullet', 'assets/testbullet.png');
 
+            //load sprites
             this.load.image('player', 'assets/sprites/Player_Ship.png');
-            this.load.image('background_01', 'assets/sprites/Background_01.png');
+            this.load.image('background', 'assets/sprites/Background_02.png');
             this.load.image('stars_01', 'assets/sprites/Stars_01.png');
-
             this.load.image('death_particle', 'assets/sprites/particleSprite_01.png');
+
+            //load sounds
+            
+            this.load.audio('track', 'assets/audio/The Way Out.mp3'); 
+            this.load.audio('move_sfx', 'assets/audio/Player_movement.mp3'); 
+            this.load.audio('dash_sfx', 'assets/audio/Dash.mp3');
+            this.load.audio('explosion_sfx', 'assets/audio/Explosion_Short.mp3');
+            this.load.audio('death_sfx', 'assets/audio/playerdeath.mp3');
+            this.load.audio('transition_sfx', 'assets/audio/Level_Transition_2-8.mp3');
 
             Tempest = TempestGame.getInstance(this);
         }
