@@ -14,7 +14,7 @@ var EnemyManager = (function (){
         // Need to pool because Javascripts garbage collector is a POS. But I mean... my code is probably a POS too.
         var _activeEnemies = [];
         var _standardPool = [];
-        var _perPoolSize = 30;
+        var _perPoolSize = 100;
 
         return {
      
@@ -32,7 +32,7 @@ var EnemyManager = (function (){
 
             Update: function(deltaTime){
                 _currentSpawnTimer -= deltaTime;
-
+                // console.log(_activeEnemies.length);
                 // Spawning more enemies timer Probs need to swap for something smarter and better later
                 if(_currentSpawnTimer <=0 && _active)
                 {
@@ -96,8 +96,9 @@ var EnemyManager = (function (){
                 _active = false;
             },
 
-            ActivateEnemies()
+            ActivateEnemies(spawnFrequency)
             {
+                _enemySpawnTimeLimit = spawnFrequency;
                 _currentSpawnTimer = _initialSpawnTimer;
                 _active = true;
             }

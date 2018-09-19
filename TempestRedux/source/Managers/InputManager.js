@@ -67,7 +67,7 @@ var InputManager = /** @class */ (function ()
                 }
 
 
-                _schemeText = TempestGame.getInstance().GetCurrentScene().add.text( (config.width/2) - 170 , 15 - (config.height/2) , _schemeText, { font: "Bold 32px Arial", fill: '#ffffff' });
+                _schemeText = TempestGame.getInstance().GetCurrentScene().add.text( (config.width/2) - 170 , 40 - (config.height/2) , _schemeText, { font: "Bold 32px Arial", fill: '#ffffff' });
                 _instructionText = TempestGame.getInstance().GetCurrentScene().add.text( (config.width/2) - 270 , (config.height/2) - 55 , _instructionText, { font: "Bold 32px Arial", fill: '#ffffff' });
             },
 

@@ -30,7 +30,7 @@ var LevelManager = /** @class */ (function ()
                 1: {IS_UI:true, TEXT:function(){return "Start Game"}, X:-160, Y:-20},
                 2: {IS_UI:true, TEXT:function(){return "ALL YOUR BASE ARE\n     BELONG TO US\n        Final Score: " + TempestGame.getInstance().GetScore()}, X:-380, Y:-70},
                 3: {IS_UI:true, TEXT:function(){return "Our Great Credits:\nFinal Score:"+ TempestGame.getInstance().GetScore()}, X:-320, Y:-20},
-                4: {IS_UI:false,
+                4: {IS_UI:false, SPAWN_RATE:0.8,
                     MAP_POINTS:[
                         new Vector2(-100,-100),
                         new Vector2(-90,-75),
@@ -57,7 +57,7 @@ var LevelManager = /** @class */ (function ()
                         
                     ]
                 },
-                5: {IS_UI:false,
+                5: {IS_UI:false,SPAWN_RATE:0.7,
                     MAP_POINTS:[
                         new Vector2(0,-100),
                         new Vector2(-50,-87.5),
@@ -77,7 +77,7 @@ var LevelManager = /** @class */ (function ()
                         new Vector2(50,-87.5),
                     ]
                 },
-                6: {IS_UI:false,
+                6: {IS_UI:false,SPAWN_RATE:0.7,
                     MAP_POINTS:[
                         new Vector2(0,-100),
                         new Vector2(-15,-65),
@@ -101,7 +101,7 @@ var LevelManager = /** @class */ (function ()
                         new Vector2(15,-65),
                     ]
                 },
-                7: {IS_UI:false,
+                7: {IS_UI:false,SPAWN_RATE:0.6,
                     MAP_POINTS:[
                         new Vector2(0,-75),
                         new Vector2(-50,-100),
@@ -121,7 +121,7 @@ var LevelManager = /** @class */ (function ()
                         new Vector2(50,-100),
                     ]
                 },
-                8: {IS_UI:false,
+                8: {IS_UI:false,SPAWN_RATE:0.4,
                     MAP_POINTS:[
                         new Vector2(-15,-75),
                         new Vector2(-50,-100),
@@ -141,7 +141,7 @@ var LevelManager = /** @class */ (function ()
                         new Vector2(15,-75),
                     ]
                 },
-                9: {IS_UI:false,
+                9: {IS_UI:false,SPAWN_RATE:0.2,
                     MAP_POINTS:[
                         new Vector2(-20,-100),
                         new Vector2(-20,-80),
@@ -240,13 +240,9 @@ var LevelManager = /** @class */ (function ()
                 // Instantiate new level
                 _currentLevel = new Level(Levels.properties[_currentLevelState], player)
 
-                var playerDestination = null;
-                // if(!_currentLevel.GetIsUI())
-                //     playerDestination = new Vector2(_currentLevel.GetMap().GetEdgeVectorPosition(0).x,_currentLevel.GetMap().GetEdgeVectorPosition(0).y);
-
                 _currentLevel.BeginLoadLevel(function(){
                     TempestGame.getInstance().ShowScore();
-                    EnemyManager.getInstance().ActivateEnemies();
+                    EnemyManager.getInstance().ActivateEnemies(Levels.properties[_currentLevelState].SPAWN_RATE);
                 })
             })
             return;

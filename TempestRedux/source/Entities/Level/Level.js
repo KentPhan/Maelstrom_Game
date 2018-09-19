@@ -14,6 +14,8 @@ var Level = /** @class */ (function (){
         {
             this.IsUI = false;
             this.Map = new Map(properties.MAP_POINTS);
+            this.Timer = 20;
+            this.TimerText = TempestGame.getInstance().GetCurrentScene().add.text( (config.width/2) - 730 , 40 - (config.height/2), "Time: " + this.Timer.toFixed(2), { font: "Bold 32px Arial", fill: '#ffffff' });
 
             //Spawn Player
             var pIndex = 0
@@ -39,7 +41,21 @@ var Level = /** @class */ (function (){
             if(this.Map != null)
                 this.Map.Update(deltaTime)
             if(this.Player != null)
+            {
+                this.Timer -= deltaTime;
+                
+                if(this.Timer <= 0)
+                {
+                    this.TimerText.text = "Time: 0";
+                    LevelManager.getInstance().TriggerNextLevel();
+                }
+                else
+                {
+                    this.TimerText.text = "Time: " + this.Timer.toFixed(2);
+                }
+                
                 this.Player.Update(deltaTime)
+            }
         }
     };
 
@@ -101,6 +117,13 @@ var Level = /** @class */ (function (){
             this.UIText.visible =false;
             this.UIText.destroy();
             this.UIText = null;
+        }
+
+        if(this.TimerText != null)
+        {
+            this.TimerText.visible = false;
+            this.TimerText.destroy();
+            this.TimerText = null;
         }
 
         this.Map = null;

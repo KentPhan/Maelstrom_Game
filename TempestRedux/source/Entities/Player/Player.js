@@ -22,7 +22,7 @@ var Player = /** @class */ (function (){
         // Transition crap
         this.TransitionDestination = null;
         this.TransitionDirection = null;
-        this.TransitionSpeed = 500;
+        this.TransitionSpeed = 400;
         this.TransitionCallBack = null;
 
         // Key properties
@@ -30,7 +30,7 @@ var Player = /** @class */ (function (){
         this.Position = position;
 
         this.PreviousPIndex = null;
-        this.FlipCooldown = 0.5;
+        this.FlipCooldown = 0.2;
         this.FlipCurrentCooldown = 0;
 
         this.MoveCooldown = 0.08;
@@ -206,11 +206,11 @@ var Player = /** @class */ (function (){
                     TempestGame.getInstance().AddToScore()
                 }
 
-                if(TempestGame.getInstance().CheckScoreMileStone())
-                {
-                    LevelManager.getInstance().TriggerNextLevel();
-                    return;
-                }
+                // if(TempestGame.getInstance().CheckScoreMileStone())
+                // {
+                //     LevelManager.getInstance().TriggerNextLevel();
+                //     return;
+                // }
 
                 return;
             }
