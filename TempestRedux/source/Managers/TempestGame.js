@@ -87,6 +87,7 @@ var TempestGame = /** @class */ (function ()
             {
                 _scoreText.text =  "Score: 0";
                 _score = 0;
+                _previousMilestrong = _score;
             }
 
 
