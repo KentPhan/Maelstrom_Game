@@ -37,12 +37,6 @@ var StandardEnemy = /** @class */ (function (){
         this.Sprite.scaleY = 0.001;
 
         this.AngrySprite = TempestGame.getInstance().GetCurrentScene().add.sprite(0,0, 'pulsar_angry')
-        // this.AngrySprite.anims.create({
-        //     key:'idle',
-        //     frames: this.anims.generateFrameNumbers('pulsar_idle', {start:0, end:46}),
-        //     frameRate:20,
-        //     repeat:-1
-        // });
         this.AngrySprite.visible = false;
         this.AngrySprite.scaleX = 1;
         this.AngrySprite.scaleY = 1;
@@ -78,6 +72,7 @@ var StandardEnemy = /** @class */ (function (){
         }
         else if (this.CurrentState == this.EnemyStates.OnEdge)
         {
+            // this.AngrySprite.anims.play('pulsar_idle',true)
             var player = LevelManager.getInstance().GetCurrentLevel().GetPlayer();
             var playerIndex = player.GetPIndex();
 

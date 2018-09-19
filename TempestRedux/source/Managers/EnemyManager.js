@@ -16,6 +16,8 @@ var EnemyManager = (function (){
         var _standardPool = [];
         var _perPoolSize = 100;
 
+        
+
         return {
      
             // Public methods and variables
@@ -24,6 +26,12 @@ var EnemyManager = (function (){
             //   },
 
             InitializePools: function(){
+                // game.anims.create({
+                //     key:'idle',
+                //     frames: game.anims.generateFrameNumbers('pulsar_idle', {start:0, end:46}),
+                //     frameRate:20,
+                //     repeat:-1
+                // });
                 for(var i = 0; i < _perPoolSize; i++)
                 {
                     _standardPool.push(new StandardEnemy())
