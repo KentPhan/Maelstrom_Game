@@ -30,7 +30,27 @@ var LevelManager = /** @class */ (function ()
                 1: {IS_UI:true, TEXT:function(){return "Start Game"}, X:-160, Y:-20},
                 2: {IS_UI:true, TEXT:function(){return "ALL YOUR BASE ARE\n     BELONG TO US\n        Final Score: " + TempestGame.getInstance().GetScore()}, X:-380, Y:-70},
                 3: {IS_UI:true, TEXT:function(){return "Our Great Credits:\nFinal Score:"+ TempestGame.getInstance().GetScore()}, X:-320, Y:-20},
-                4: {IS_UI:false, SPAWN_RATE:0.8,
+                4: {IS_UI:false,SPAWN_RATE:0.7,
+                    MAP_POINTS:[
+                        new Vector2(0,-100),
+                        new Vector2(-50,-87.5),
+                        new Vector2(-100,-75),
+                        new Vector2(-87.5,-37.5),
+                        new Vector2(-75,0),
+                        new Vector2(-87.5,37.5),
+                        new Vector2(-100,75),
+                        new Vector2(-50,87.5),
+                        new Vector2(0,100),
+                        new Vector2(50,87.5),
+                        new Vector2(100,75),
+                        new Vector2(87.5,37.5),
+                        new Vector2(75,0),
+                        new Vector2(87.5,-37.5),
+                        new Vector2(100,-75),
+                        new Vector2(50,-87.5),
+                    ]
+                },
+                5: {IS_UI:false, SPAWN_RATE:0.8,
                     MAP_POINTS:[
                         new Vector2(-100,-100),
                         new Vector2(-90,-75),
@@ -57,26 +77,7 @@ var LevelManager = /** @class */ (function ()
                         
                     ]
                 },
-                5: {IS_UI:false,SPAWN_RATE:0.7,
-                    MAP_POINTS:[
-                        new Vector2(0,-100),
-                        new Vector2(-50,-87.5),
-                        new Vector2(-100,-75),
-                        new Vector2(-87.5,-37.5),
-                        new Vector2(-75,0),
-                        new Vector2(-87.5,37.5),
-                        new Vector2(-100,75),
-                        new Vector2(-50,87.5),
-                        new Vector2(0,100),
-                        new Vector2(50,87.5),
-                        new Vector2(100,75),
-                        new Vector2(87.5,37.5),
-                        new Vector2(75,0),
-                        new Vector2(87.5,-37.5),
-                        new Vector2(100,-75),
-                        new Vector2(50,-87.5),
-                    ]
-                },
+                
                 6: {IS_UI:false,SPAWN_RATE:0.7,
                     MAP_POINTS:[
                         new Vector2(0,-100),

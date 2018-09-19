@@ -54,9 +54,13 @@
 
             //load sprites
             this.load.image('player', 'assets/sprites/Player_Ship.png');
-            this.load.image('background', 'assets/sprites/Background_02.png');
-            this.load.image('stars_01', 'assets/sprites/Stars_01.png');
             this.load.image('death_particle', 'assets/sprites/particleSprite_01.png');
+
+            //backgrounds
+            this.load.image('box_left', 'assets/backgrounds/Cabinet_Art_Left.png');
+            this.load.image('box_right', 'assets/backgrounds/Cabinet_Art_Right.png');
+            this.load.image('background', 'assets/backgrounds/Background_02.png');
+            this.load.image('stars_01', 'assets/backgrounds/Stars_01.png');
 
             //load sounds
             
@@ -81,6 +85,17 @@
             Tempest.Draw();
 
         }
+
+        // var canvas = game.canvas;
+        // canvas.addEventListener("click",fullscreen)
+        // function fullscreen(){
+        //    if(canvas.webkitRequestFullScreen) {
+        //        canvas.webkitRequestFullScreen();
+        //    }
+        //   else {
+        //     canvas.mozRequestFullScreen();
+        //   }            
+        // }
     </script>
 </head>
 <body>
