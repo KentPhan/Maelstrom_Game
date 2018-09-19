@@ -27,9 +27,9 @@ var LevelManager = /** @class */ (function ()
             LEVEL_5:8,
             LEVEL_6:9,
             properties:{
-                1: {IS_UI:true, TEXT:function(){return "Start Game"}, X:-160, Y:-20},
-                2: {IS_UI:true, TEXT:function(){return "ALL YOUR BASE ARE\n     BELONG TO US\n        Final Score: " + TempestGame.getInstance().GetScore()}, X:-380, Y:-70},
-                3: {IS_UI:true, TEXT:function(){return "Our Great Credits:\nFinal Score:"+ TempestGame.getInstance().GetScore()}, X:-320, Y:-20},
+                1: {IS_UI:true, TEXT:function(){return "Maelstorm\n\n\n\n\n\nPress Start"}, X:-100, Y:-300},
+                2: {IS_UI:true, TEXT:function(){return "  Game Over\nFinal Score: " + TempestGame.getInstance().GetScore()}, X:-120, Y:-40},
+                3: {IS_UI:true, TEXT:function(){return "   You Win!\nFinal Score:"+ TempestGame.getInstance().GetScore()}, X:-120, Y:-40},
                 4: {IS_UI:false,SPAWN_RATE:0.7,
                     MAP_POINTS:[
                         new Vector2(0,-100),

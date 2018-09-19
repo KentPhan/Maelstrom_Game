@@ -8,14 +8,17 @@ var Level = /** @class */ (function (){
             this.Map = null;
             this.Player = null;
             this.Text = properties.TEXT;
-            this.UIText = TempestGame.getInstance().GetCurrentScene().add.text( properties.X, properties.Y, this.Text(), { font: "Bold 72px Arial", fill: '#ffffff' });
+            this.UIFlashVisibleTime = 1;
+            this.UIFlashNonVisibleTime = 0.3;
+            this.UIFlashCurrentTime = this.UIFlashVisibleTime;
+            this.UIText = TempestGame.getInstance().GetCurrentScene().add.text( properties.X, properties.Y, this.Text(), { font: "Bold 42px Arial", fill: '#ffffff' });
         }
         else
         {
             this.IsUI = false;
             this.Map = new Map(properties.MAP_POINTS);
             this.Timer = 20;
-            this.TimerText = TempestGame.getInstance().GetCurrentScene().add.text( (config.width/2) - 730 , 40 - (config.height/2), "Time: " + this.Timer.toFixed(2), { font: "Bold 32px Arial", fill: '#ffffff' });
+            this.TimerText = TempestGame.getInstance().GetCurrentScene().add.text( (config.width/2) - 730 , 10 - (config.height/2), "Time: " + this.Timer.toFixed(2), { font: "Bold 32px Arial", fill: '#ffffff' });
 
             //Spawn Player
             var pIndex = 0
@@ -34,7 +37,21 @@ var Level = /** @class */ (function (){
     Level.prototype.Update = function (deltaTime) {
         if(this.IsUI)
         {
-
+            if(this.UIFlashCurrentTime <=0)
+            {
+                if(this.UIText.visible)
+                {
+                    this.UIText.visible = false;   
+                    this.UIFlashCurrentTime = this.UIFlashNonVisibleTime;
+                }
+                else
+                {
+                    this.UIText.visible = true;
+                    this.UIFlashCurrentTime = this.UIFlashVisibleTime;
+                }
+            }
+            
+            this.UIFlashCurrentTime-= deltaTime;
         }
         else
         {
