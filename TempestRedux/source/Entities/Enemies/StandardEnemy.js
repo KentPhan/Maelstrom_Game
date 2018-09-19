@@ -31,12 +31,18 @@ var StandardEnemy = /** @class */ (function (){
         this.Direction = null;
 
         // THIS IS REALLL SHITTY I THINK
-        this.Sprite = TempestGame.getInstance().GetCurrentScene().add.image(0,0,'alien');
+        this.Sprite = TempestGame.getInstance().GetCurrentScene().add.image(0,0,'pulsar');
         this.Sprite.visible = false;
         this.Sprite.scaleX = 0.001;
         this.Sprite.scaleY = 0.001;
 
-        this.AngrySprite = TempestGame.getInstance().GetCurrentScene().add.image(0,0, 'alien_angry')
+        this.AngrySprite = TempestGame.getInstance().GetCurrentScene().add.sprite(0,0, 'pulsar_angry')
+        // this.AngrySprite.anims.create({
+        //     key:'idle',
+        //     frames: this.anims.generateFrameNumbers('pulsar_idle', {start:0, end:46}),
+        //     frameRate:20,
+        //     repeat:-1
+        // });
         this.AngrySprite.visible = false;
         this.AngrySprite.scaleX = 1;
         this.AngrySprite.scaleY = 1;
