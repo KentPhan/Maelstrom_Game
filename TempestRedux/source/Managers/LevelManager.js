@@ -26,6 +26,7 @@ var LevelManager = /** @class */ (function ()
             LEVEL_4:7,
             LEVEL_5:8,
             LEVEL_6:9,
+            LEVEL_7:10,
             properties:{
                 1: {IS_UI:true, TEXT:function(){return "Maelstorm\n\n\n\n\n\nPress Start"}, X:-100, Y:-300},
                 2: {IS_UI:true, TEXT:function(){return "  Game Over\nFinal Score: " + TempestGame.getInstance().GetScore()}, X:-120, Y:-40},
@@ -144,6 +145,37 @@ var LevelManager = /** @class */ (function ()
                 },
                 9: {IS_UI:false,SPAWN_RATE:0.2,
                     MAP_POINTS:[
+                        new Vector2(-25,-100),
+                        new Vector2(-25,-65),
+                        new Vector2(-50,-65),
+                        new Vector2(-50,-30),
+                        new Vector2(-75,-30),
+                        new Vector2(-75,-10),
+                        new Vector2(-100,-10),
+                        new Vector2(-100,10),
+                        new Vector2(-75,10),
+                        new Vector2(-75,30),
+                        new Vector2(-50,30),
+                        new Vector2(-50,65),
+                        new Vector2(-25,65),
+                        new Vector2(-25,100),
+                        new Vector2(25,100),
+                        new Vector2(25,65),
+                        new Vector2(50,65),
+                        new Vector2(50,30),
+                        new Vector2(75,30),
+                        new Vector2(75,10),
+                        new Vector2(100,10),
+                        new Vector2(100,-10),
+                        new Vector2(75,-10),
+                        new Vector2(75,-30),
+                        new Vector2(50,-30),
+                        new Vector2(50,-65),
+                        new Vector2(25,-65),
+                        new Vector2(25,-100)]            
+                },
+                10: {IS_UI:false,SPAWN_RATE:0.2,
+                    MAP_POINTS:[
                         new Vector2(-20,-100),
                         new Vector2(-20,-80),
                         new Vector2(-40,-80),
@@ -179,11 +211,13 @@ var LevelManager = /** @class */ (function ()
                         new Vector2(40,-60),
                         new Vector2(40,-80),
                         new Vector2(20,-80),
-                        new Vector2(20,-100),
-                                       ]
+                        new Vector2(20,-100)
+                    ]   
                 }
 
-                
+                 // MAP_POINTS:[
+                  
+                    //      
                 // 4: {IS_UI:false,
                 //     MAP_POINTS:[
                 //         new Vector2(-10,100),
@@ -386,6 +420,9 @@ var LevelManager = /** @class */ (function ()
                         LoadLevel(Levels.LEVEL_6)
                         break;
                     case Levels.LEVEL_6:
+                        LoadLevel(Levels.LEVEL_7)
+                        break;
+                    case Levels.LEVEL_7:
                         this.TriggerCredits();
                         break;
                 }
