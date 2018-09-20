@@ -40,6 +40,8 @@ var InputManager = /** @class */ (function ()
         var _schemeState = Schemes.Keyboard;
         var _schemeText = "Keyboard";
         var _instructionText = "SHIFT to Switch"
+        var _controlInstructions = "LEFT and RIGHT arrow keys to move\nSPACE to Dash"
+        
 
         
         return{
@@ -69,6 +71,9 @@ var InputManager = /** @class */ (function ()
 
                 _schemeText = TempestGame.getInstance().GetCurrentScene().add.text( (config.width/2) - 170 , 10 - (config.height/2) , _schemeText, { font: "Bold 32px Arial", fill: '#ffffff' });
                 _instructionText = TempestGame.getInstance().GetCurrentScene().add.text( (config.width/2) - 270 , (config.height/2) - 55 , _instructionText, { font: "Bold 32px Arial", fill: '#ffffff' });
+                _controlInstructions = TempestGame.getInstance().GetCurrentScene().add.text( (config.width/2) - 270 , (config.height/2) - 55 , _controlInstructions, { font: "Bold 12px Arial", fill: '#ffffff' });
+                _schemeText.visible = false;
+                _instructionText.visible = false;
             },
 
             Create: function () {                
@@ -213,11 +218,15 @@ var InputManager = /** @class */ (function ()
                 {
                     _schemeState = Schemes.Mouse;
                     _schemeText.text = "Mouse";
+                    _schemeText.visible = true;
+                    _instructionText.visible = true;
                 }
                 else
                 {
                     _schemeState = Schemes.Keyboard;
                     _schemeText.text = "Keyboard";
+                    _schemeText.visible = false;
+                    _instructionText.visible = false;
                 }
             },
 

@@ -31,7 +31,7 @@ var StandardEnemy = /** @class */ (function (){
         // When on edge
         this.EdgeSpeedTimer = 1.5;
         this.CurrentEdgeSpeedTimer = this.EdgeSpeedTimer;
-        this.EdgeMoveSpeed = 200;
+        this.EdgeMoveSpeed = 250;
         this.EdgeMoveDestination = null;
         this.EdgeMoveIndexDestination = null;
         this.EdgeMoveDirection = null;

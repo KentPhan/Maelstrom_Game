@@ -64,8 +64,8 @@ var TempestGame = /** @class */ (function ()
                 return _scene;
             },
 
-            AddToScore: function(){
-                _score +=5;
+            AddToScore: function(multiplier){
+                _score += (5* multiplier);
                 return _scoreText.text =  "Score: " + _score;
             },
 

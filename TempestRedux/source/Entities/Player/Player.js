@@ -86,7 +86,7 @@ var Player = /** @class */ (function (){
             if(currentMap == null)
                 return;
     
-            if(this.MoveCurrentCooldown <= 0 && input.GetNegativeInput(this.Position))
+            if(this.MoveCurrentCooldown <= 0 && input.GetPositiveInput(this.Position))
             {
                 this.MoveSound.play();
 
@@ -96,7 +96,7 @@ var Player = /** @class */ (function (){
     
                 this.MoveCurrentCooldown = this.MoveCooldown;
             }
-            else if(this.MoveCurrentCooldown <= 0 && input.GetPositiveInput(this.Position))
+            else if(this.MoveCurrentCooldown <= 0 && input.GetNegativeInput(this.Position))
             {
                 this.MoveSound.play();
 
@@ -163,10 +163,13 @@ var Player = /** @class */ (function (){
 
                 // Destroy all enemies in previous PIndex
                 var enemies = EnemyManager.getInstance().GetEnemiesInMapIndex(this.PreviousPIndex);
+                var multiplier = 1;
+                if(enemies.length > 0)
+                    multiplier = enemies.length;
                 for(var i = 0; i < enemies.length; i++)
                 {
                     enemies[i].IMustDie();
-                    TempestGame.getInstance().AddToScore()
+                    TempestGame.getInstance().AddToScore(multiplier)
                 }
                 return;
             }
@@ -200,10 +203,13 @@ var Player = /** @class */ (function (){
 
                 // Destroy all enemies in current PIndex and trigger events if applicable
                 var enemies = EnemyManager.getInstance().GetEnemiesInMapIndex(this.PIndex);
+                var multiplier = 1;
+                if(enemies.length > 0)
+                    multiplier = enemies.length;
                 for(var i = 0; i < enemies.length; i++)
                 {
                     enemies[i].IMustDie();
-                    TempestGame.getInstance().AddToScore()
+                    TempestGame.getInstance().AddToScore(multiplier)
                 }
 
                 // if(TempestGame.getInstance().CheckScoreMileStone())
