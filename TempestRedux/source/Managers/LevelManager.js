@@ -374,12 +374,12 @@ var LevelManager = /** @class */ (function ()
                         default:
                             if(input.GetEscapeInput())
                                 //LoadMenu(Levels.START)
-                                this.TriggerNextLevel();
+                                //this.TriggerNextLevel();
                             break;
                     }
 
-                    if(input.GetSwapInput())
-                        input.SwapSchemes();
+                    // if(input.GetSwapInput())
+                    //     input.SwapSchemes();
 
 
                     //console.log(input.GetInput().mousePointer.movementX + " " + input.GetInput().mousePointer.movementY);
