@@ -32,6 +32,12 @@ var EnemyManager = (function (){
                     frameRate:20,
                     repeat:-1
                 });
+                game.anims.create({
+                    key:'pulsar_idleC',
+                    frames: game.anims.generateFrameNumbers('pulsar_idleC', {start:0, end:46}),
+                    frameRate:20,
+                    repeat:-1
+                });
                 for(var i = 0; i < _perPoolSize; i++)
                 {
                     _standardPool.push(new StandardEnemy())

@@ -40,7 +40,7 @@ var StandardEnemy = /** @class */ (function (){
         this.Direction = null;
 
         // THIS IS REALLL SHITTY I THINK
-        this.Sprite = TempestGame.getInstance().GetCurrentScene().add.image(0,0,'pulsar');
+        this.Sprite = TempestGame.getInstance().GetCurrentScene().add.sprite(0,0,'pulsar');
         this.Sprite.visible = false;
         this.Sprite.scaleX = 0.001;
         this.Sprite.scaleY = 0.001;
@@ -81,6 +81,7 @@ var StandardEnemy = /** @class */ (function (){
                 this.CurrentState = this.EnemyStates.OnEdge;
                 this.Sprite.visible = false;
                 this.AngrySprite.visible = true;
+                this.Sprite.anims.stop();
                 this.AngrySprite.anims.play('pulsar_idle',true)
                 this.AngrySprite.setPosition(this.Position.x, this.Position.y, 0)
             }
@@ -159,7 +160,8 @@ var StandardEnemy = /** @class */ (function (){
 
         this.Sprite.visible = true;
         this.Sprite.scaleX = 0.15;
-        this.Sprite.scaleY = 0.15;        
+        this.Sprite.scaleY = 0.15;
+        this.Sprite.anims.play('pulsar_idleC', true);
         this.AngrySprite.visible = false;
         this.AngrySprite.scaleX = 1;
         this.AngrySprite.scaleY = 1;   
