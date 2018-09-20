@@ -86,7 +86,7 @@ var Player = /** @class */ (function (){
             if(currentMap == null)
                 return;
     
-            if(this.MoveCurrentCooldown <= 0 && input.GetNegativeInput(this.Position))
+            if(this.MoveCurrentCooldown <= 0 && input.GetPositiveInput(this.Position))
             {
                 this.MoveSound.play();
 
@@ -96,7 +96,7 @@ var Player = /** @class */ (function (){
     
                 this.MoveCurrentCooldown = this.MoveCooldown;
             }
-            else if(this.MoveCurrentCooldown <= 0 && input.GetPositiveInput(this.Position))
+            else if(this.MoveCurrentCooldown <= 0 && input.GetNegativeInput(this.Position))
             {
                 this.MoveSound.play();
 
