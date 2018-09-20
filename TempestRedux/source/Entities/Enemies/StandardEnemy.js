@@ -8,7 +8,8 @@ var StandardEnemy = /** @class */ (function (){
         this.Active = false;
         this.EnemyStates = {
             "TowardsEdge":1,
-            "OnEdge":2
+            "OnEdge":2,
+            "MovingOnEdge":3
         }
 
         this.Rotation = {
@@ -23,10 +24,18 @@ var StandardEnemy = /** @class */ (function (){
         this.Position = null;
         this.EndPosition = null;
 
+        // When moving towards edge
         this.Speed =  60.0;
+        this.ScaleSpeed = .25;
+
+        // When on edge
         this.EdgeSpeedTimer = 1.5;
         this.CurrentEdgeSpeedTimer = this.EdgeSpeedTimer;
-        this.ScaleSpeed = .25;
+        this.EdgeMoveSpeed = 200;
+        this.EdgeMoveDestination = null;
+        this.EdgeMoveIndexDestination = null;
+        this.EdgeMoveDirection = null;
+        
 
         this.Direction = null;
 
@@ -86,10 +95,6 @@ var StandardEnemy = /** @class */ (function (){
             {
                 player.Die();
             }
-                
-
-
-            // this.IMustDie();
 
             // Pick a random direction to rotate
             this.CurrentEdgeSpeedTimer -= deltaTime;
@@ -99,24 +104,44 @@ var StandardEnemy = /** @class */ (function (){
 
                 if(this.IWillGoThisWay == this.Rotation.Negative)
                 {
-                    var newIndex  = currentMap.GetNextIndexNegative(this.PIndex);
-                    if(this.PIndex == newIndex)
+                    this.EdgeMoveIndexDestination = currentMap.GetNextIndexNegative(this.PIndex);
+                    if(this.PIndex == this.EdgeMoveIndexDestination)
                         this.IWillGoThisWay = this.Rotation.Positive;
-                    this.PIndex = newIndex;
                 }
                 else
                 {
-                    var newIndex = currentMap.GetNextIndexPositive(this.PIndex);
-                    if(this.PIndex == newIndex)
-                        this.IWillGoThisWay = this.Rotation.Negative
-                        ;
-                    this.PIndex = newIndex;
+                    this.EdgeMoveIndexDestination = currentMap.GetNextIndexPositive(this.PIndex);
+                    if(this.PIndex == this.EdgeMoveIndexDestination)
+                        this.IWillGoThisWay = this.Rotation.Negative;
                 }
 
-                this.Position =  currentMap.GetEdgeVectorPosition(this.PIndex)
-                this.AngrySprite.setPosition(this.Position.x, this.Position.y, 0)
+                if(this.PIndex != this.EdgeMoveIndexDestination)
+                {
+                    this.EdgeMoveDestination = currentMap.GetEdgeVectorPosition(this.EdgeMoveIndexDestination);
+                    this.EdgeMoveDirection = new Vector2(this.EdgeMoveDestination.x - this.Position.x, this.EdgeMoveDestination.y - this.Position.y);
+                    this.EdgeMoveDirection.normalize();
+                    this.CurrentState = this.EnemyStates.MovingOnEdge;
+                }
                 this.CurrentEdgeSpeedTimer = this.EdgeSpeedTimer;
             }
+        }
+        else if (this.CurrentState == this.EnemyStates.MovingOnEdge){
+            
+            
+            // Move on edge
+            var velocity = new Vector2(this.EdgeMoveDirection.x * deltaTime * this.EdgeMoveSpeed, this.EdgeMoveDirection.y * deltaTime * this.EdgeMoveSpeed);
+            this.Position.add(velocity);
+
+            //if position is past destination
+            var DistanceToEdgeDestination = new Vector2(this.EdgeMoveDestination.x - this.Position.x, this.EdgeMoveDestination.y - this.Position.y);
+            if(DistanceToEdgeDestination.dot(this.EdgeMoveDirection) <= 0)
+            {
+                this.Position = this.EdgeMoveDestination;
+                this.PIndex = this.EdgeMoveIndexDestination;
+                this.CurrentState = this.EnemyStates.OnEdge;
+            }
+            
+            this.AngrySprite.setPosition(this.Position.x, this.Position.y, 0)
         }
     };
 
