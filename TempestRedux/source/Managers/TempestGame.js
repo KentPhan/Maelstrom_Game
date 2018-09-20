@@ -36,7 +36,7 @@ var TempestGame = /** @class */ (function ()
 
             Create: function () {         
                 _track = _scene.sound.add('track');
-                _track.play( { loop: true, volume: 0.75 });
+                _track.play( { loop: true, volume: 2 });
                 _background = new Background();            
                 _scoreText = _scene.add.text(-(config.width/2) +320,  10 - (config.height/2), "Score: " + _score,  { font: "Bold 32px Arial", fill: '#ffffff' });
                 _scoreText.visible = false;
