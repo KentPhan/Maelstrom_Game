@@ -35,11 +35,14 @@ var StandardEnemy = /** @class */ (function (){
         this.Sprite.visible = false;
         this.Sprite.scaleX = 0.001;
         this.Sprite.scaleY = 0.001;
+        
 
         this.AngrySprite = TempestGame.getInstance().GetCurrentScene().add.sprite(0,0, 'pulsar_angry')
         this.AngrySprite.visible = false;
         this.AngrySprite.scaleX = 1;
         this.AngrySprite.scaleY = 1;
+
+        
 
         this.DeathParticle = new PlayerDeathEffect();
 
@@ -53,6 +56,7 @@ var StandardEnemy = /** @class */ (function (){
 
         if(this.CurrentState == this.EnemyStates.TowardsEdge)
         {
+            
             var velocity = new Vector2(this.Direction.x * this.Speed * deltaTime, this.Direction.y * this.Speed * deltaTime);
             this.Position.add(velocity);
             this.Sprite.setPosition(this.Position.x, this.Position.y, 0)
@@ -64,15 +68,17 @@ var StandardEnemy = /** @class */ (function (){
             // TODO Add cost of having enemy get past player here
             if((placement.dot(this.Direction) < 0.0))
             {
+                
                 this.CurrentState = this.EnemyStates.OnEdge;
                 this.Sprite.visible = false;
                 this.AngrySprite.visible = true;
+                this.AngrySprite.anims.play('pulsar_idle',true)
                 this.AngrySprite.setPosition(this.Position.x, this.Position.y, 0)
             }
         }
         else if (this.CurrentState == this.EnemyStates.OnEdge)
         {
-            // this.AngrySprite.anims.play('pulsar_idle',true)
+            
             var player = LevelManager.getInstance().GetCurrentLevel().GetPlayer();
             var playerIndex = player.GetPIndex();
 
@@ -160,6 +166,7 @@ var StandardEnemy = /** @class */ (function (){
         this.Active = false;
         this.Sprite.visible = false;
         this.AngrySprite.visible = false;
+        this.AngrySprite.anims.stop();
 
         this.PIndex = -1;
         this.Position = null;

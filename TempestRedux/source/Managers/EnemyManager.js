@@ -26,12 +26,12 @@ var EnemyManager = (function (){
             //   },
 
             InitializePools: function(){
-                // game.anims.create({
-                //     key:'idle',
-                //     frames: game.anims.generateFrameNumbers('pulsar_idle', {start:0, end:46}),
-                //     frameRate:20,
-                //     repeat:-1
-                // });
+                game.anims.create({
+                    key:'pulsar_idle',
+                    frames: game.anims.generateFrameNumbers('pulsar_idle', {start:0, end:46}),
+                    frameRate:20,
+                    repeat:-1
+                });
                 for(var i = 0; i < _perPoolSize; i++)
                 {
                     _standardPool.push(new StandardEnemy())
